@@ -1,0 +1,18 @@
+{
+  "curios.identifier.relic": "Relic Slot",
+  "curios.identifier.trinket": "Trinket Slot",
+  "curios.identifier.amulet": "Amulet Slot",
+  "curios.identifier.emblem": "Emblem Slot",
+  "curios.modifiers.relic": "Relic Stats",
+  "curios.modifiers.emblem": "Emblem Stats",
+  "curios.modifiers.amulet": "Amulet Stats",
+  "curios.modifiers.trinket": "Trinket Stats",
+  "item.aeonspast.warrior_emblem": "Warrior's Emblem",
+  "item.aeonspast.red_kama": "Red Kama",
+  "item.aeonspast.blood_chalice": "Blood Chalice",
+  "generic.lifesteal": "Lifesteal",
+  "generic.magic_power" : "Magic Power",
+  "generic.maximum_resource" : "Maximum Mana",
+  "generic.health_regeneration": "Health Regeneration",
+  "generic.magic_resistance": "Magic Resistance"
+}
