@@ -7,7 +7,6 @@ import net.minecraft.world.item.Item;
 public class BaseItem extends Item {
 
 
-
     private final APItemProperties properties;
 
     public BaseItem(Properties properties, APItemProperties apItemProperties) {

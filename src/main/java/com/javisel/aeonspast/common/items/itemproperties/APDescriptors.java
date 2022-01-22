@@ -4,12 +4,7 @@ public enum APDescriptors {
 
     VERSATILE("aeonspast.properties.versatile"),
     TWOHANDED("aeonspast.properties.twohanded"),
-    HEAVY("aeonspast.properties.heavy")
-
-
-
-    ;
-
+    HEAVY("aeonspast.properties.heavy");
 
 
     private final String translationKey;
@@ -19,14 +14,14 @@ public enum APDescriptors {
     APDescriptors(String translationkey) {
 
 
-        this.translationKey=translationkey;
-        this.descriptionKey=translationkey+".description";
+        this.translationKey = translationkey;
+        this.descriptionKey = translationkey + ".description";
     }
 
 
-  public String getTranslationKey() {
+    public String getTranslationKey() {
 
 
-      return  translationKey;
-  }
+        return translationKey;
+    }
 }

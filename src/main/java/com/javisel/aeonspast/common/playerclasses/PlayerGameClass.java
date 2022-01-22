@@ -1,18 +1,30 @@
 package com.javisel.aeonspast.common.playerclasses;
 
+import com.javisel.aeonspast.ModBusEventHandler;
 import com.javisel.aeonspast.common.items.emblem.BasicEmblem;
 import com.javisel.aeonspast.common.items.emblem.ClassStatistics;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.RegistryManager;
+import net.minecraftforge.registries.RegistryObject;
 
-public class PlayerGameClass extends  net.minecraftforge.registries.ForgeRegistryEntry<PlayerGameClass> {
+import java.rmi.registry.Registry;
+
+public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistryEntry<PlayerGameClass> {
+
+
+
+
+
 
 
     private final ClassStatistics classStatistics;
 
-    private final BasicEmblem  classEmblem;
+    private final RegistryObject <Item>  classEmblem;
 
-    public PlayerGameClass(ClassStatistics classStatistics, BasicEmblem classEmblem) {
+    public PlayerGameClass(ClassStatistics classStatistics, RegistryObject <Item>  classEmblem) {
 
-        this.classStatistics=classStatistics;
+        this.classStatistics = classStatistics;
+
 
 
         this.classEmblem = classEmblem;
@@ -23,6 +35,16 @@ public class PlayerGameClass extends  net.minecraftforge.registries.ForgeRegistr
     }
 
     public BasicEmblem getClassEmblem() {
-        return classEmblem;
+
+
+
+        return  (BasicEmblem) classEmblem.get();
     }
+
+
+
+
+
+
+
 }

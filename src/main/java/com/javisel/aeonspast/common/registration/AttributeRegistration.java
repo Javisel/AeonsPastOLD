@@ -16,7 +16,7 @@ public class AttributeRegistration {
     public static final RegistryObject<Attribute> HEALTH_REGENERATION = ATTRIBUTES.register("health_regeneration", () -> new RangedAttribute("generic.health_regeneration", 1, 0, 100));
     public static final RegistryObject<Attribute> MAGIC_RESISTANCE = ATTRIBUTES.register("magic_resistance", () -> new RangedAttribute("generic.magic_resistance", 0, 0, 100000));
 
-    public static final RegistryObject<Attribute> BARRIER = ATTRIBUTES.register("barrier", () -> new RangedAttribute("generic.barrier", 0, 0, 100000));
+    public static final RegistryObject<Attribute> HEALTH_SHIELD = ATTRIBUTES.register("health_shield", () -> new RangedAttribute("generic.barrier", 0, 0, 100000));
 
 
     //Offensive
@@ -28,8 +28,8 @@ public class AttributeRegistration {
 
 
     //Utility
-    public static final RegistryObject<Attribute> MAXIMUM_RESOURCE = ATTRIBUTES.register("maximum_resource", () -> new RangedAttribute("generic.maximum_resource", 0, 0, 10000));
+    public static final RegistryObject<Attribute> MAXIMUM_RESOURCE = ATTRIBUTES.register("maximum_resource", () -> new RangedAttribute("generic.maximum_resource", 100, 0, 10000));
     public static final RegistryObject<Attribute> COOLDOWN_REDUCTION = ATTRIBUTES.register("cooldown_reduction", () -> new RangedAttribute("generic.cooldown_reduction", 0, 0, 10000));
-    public static final RegistryObject<Attribute> RESOURCE_REGENERATION_RATE = ATTRIBUTES.register("resource_regeneration_rate", () -> new RangedAttribute("generic.resource_regeneration_rate", 0, 0, 10000));
+    public static final RegistryObject<Attribute> RESOURCE_REGENERATION_RATE = ATTRIBUTES.register("resource_regeneration_rate", () -> new RangedAttribute("generic.resource_regeneration_rate", 0.5, 0, 10000));
 
 }

@@ -5,15 +5,15 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class PlayerLevelUpEvent extends PlayerEvent {
 
-    private int fromLevel;
-    private  int toLevel;
+    private final int fromLevel;
+    private final int toLevel;
 
 
     public PlayerLevelUpEvent(Player player, int fromLevel, int toLevel) {
         super(player);
 
-        this.fromLevel=fromLevel;
-        this.toLevel=toLevel;
+        this.fromLevel = fromLevel;
+        this.toLevel = toLevel;
 
     }
 }

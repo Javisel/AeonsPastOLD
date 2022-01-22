@@ -8,16 +8,22 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class APEntityProvider  implements ICapabilitySerializable<CompoundTag> {
+public class APEntityProvider implements ICapabilitySerializable<CompoundTag> {
 
 
     private final APEntityData apEntityData = new APEntityData();
     private final LazyOptional<IEntityData> apOptional = LazyOptional.of(() -> apEntityData);
 
-    @NotNull
+
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return apOptional.cast();
+
+
+        if (cap == APEntityCapability.ENTITY_DATA_CAP) {
+            return apOptional.cast();
+        } else {
+            return LazyOptional.empty();
+        }
     }
 
 
@@ -38,8 +44,6 @@ public class APEntityProvider  implements ICapabilitySerializable<CompoundTag> {
         }
 
 
-
-
     }
 
     @Override
@@ -51,7 +55,6 @@ public class APEntityProvider  implements ICapabilitySerializable<CompoundTag> {
 
 
         }
-
 
 
     }

@@ -2,7 +2,9 @@ package com.javisel.aeonspast;
 
 
 import com.javisel.aeonspast.common.capabiltiies.APEntityProvider;
+import com.javisel.aeonspast.common.capabiltiies.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.IEntityData;
+import com.javisel.aeonspast.common.combat.PRCombatRules;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.utilities.APUtilities;
@@ -12,19 +14,19 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.Level;
+
 
 @Mod.EventBusSubscriber
 
@@ -43,7 +45,7 @@ public class GameEventHandler {
 
     }
 
-    @SubscribeEvent
+    // @SubscribeEvent
     public static void newDamageCalculations(LivingHurtEvent event) {
 
 
@@ -97,7 +99,8 @@ public class GameEventHandler {
 
     @SubscribeEvent
     public static void serversetup(ServerStartedEvent event) {
-        AeonsPast.LOGGER.log(Level.TRACE, "Disabling Natural Regeneration!");
+
+        System.out.println("SERVER STARTED");
         event.getServer().overworld().getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, event.getServer());
 
 
@@ -110,8 +113,19 @@ public class GameEventHandler {
         if (event.getObject() instanceof LivingEntity) {
 
             APEntityProvider provider = new APEntityProvider();
-            event.addCapability(new ResourceLocation(AeonsPast.MODID,"entitydata"),provider);
-        //    event.addListener(provider::invalidate);
+            event.addCapability(new ResourceLocation(AeonsPast.MODID, "entitydata"), provider);
+
+
+
+            if (event.getObject() instanceof Player) {
+
+
+                APPlayerProvider playerProvider = new APPlayerProvider();
+
+                event.addCapability( new ResourceLocation(AeonsPast.MODID,"playerdata"),playerProvider);
+
+            }
+
 
         }
 
@@ -119,22 +133,39 @@ public class GameEventHandler {
     }
 
 
-
     //Player Regeneration
     @SubscribeEvent
     public static void tick(TickEvent.PlayerTickEvent tickEvent) {
 
 
-        if (tickEvent.side == LogicalSide.SERVER) {
+        if (tickEvent.side.isServer() && tickEvent.phase == TickEvent.Phase.END) {
 
             Player player = tickEvent.player;
 
+            if (player == null) {
+
+                 return;
+
+            }
+            if (player.isDeadOrDying()) {
+
+
+                return;
+            }
+
             IEntityData data = APUtilities.getEntityData(player);
-            if (player.tickCount % 20 == 0) {
+
+
+            data.tick();
+            ;
+            if (data.getTicks() == 20) {
 
                 player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
+                player.getAttribute(AttributeRegistration.HEALTH_SHIELD.get()).addPermanentModifier(new AttributeModifier("stuff", 1, AttributeModifier.Operation.ADDITION));
 
-                data.setMana((float) ((float)  data.getMana() + (player.getAttributeValue(AttributeRegistration.RESOURCE_REGENERATION_RATE.get()) /5)));
+                APUtilities.setEntityMana(player, (float) (data.getMana() + player.getAttributeValue(AttributeRegistration.RESOURCE_REGENERATION_RATE.get())));
+
+
 
             }
 
@@ -145,23 +176,31 @@ public class GameEventHandler {
     }
 
     @SubscribeEvent
-    public static void tickEntity(TickEvent.WorldTickEvent event) {
+    public static void syncPlayerData(PlayerEvent.PlayerLoggedInEvent event) {
 
 
 
+        if (!event.getPlayer().level.isClientSide) {
+
+
+
+            APUtilities.syncTotalPlayerData(event.getPlayer());
+        }
 
 
 
 
     }
+
+
 
 
     @SubscribeEvent
-    public void registerCaps(RegisterCapabilitiesEvent event) {
-
+    public static void tickEntity(TickEvent.WorldTickEvent event) {
 
 
     }
+
 
 
 

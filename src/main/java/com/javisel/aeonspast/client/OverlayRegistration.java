@@ -1,9 +1,11 @@
 package com.javisel.aeonspast.client;
 
-import com.javisel.aeonspast.client.overlays.APHealthBar;
+import com.javisel.aeonspast.client.overlays.APAbilityBar;
+import com.javisel.aeonspast.client.overlays.healthbar.APHealthBar;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.fml.common.Mod;
 
@@ -14,8 +16,9 @@ public class OverlayRegistration {
 
     public static void registerOverlays() {
 
-        Minecraft minecraft = Minecraft.getInstance();
-        OverlayRegistry.registerOverlayBottom("ap_health", new APHealthBar());
+        OverlayRegistry.registerOverlayTop("Health_Bar", new APHealthBar());
+        OverlayRegistry.registerOverlayTop("ability_bar", new APAbilityBar());
+
 
 
     }

@@ -1,20 +1,21 @@
 package com.javisel.aeonspast;
 
-import com.javisel.aeonspast.common.capabiltiies.APEntityCapability;
 import com.javisel.aeonspast.common.capabiltiies.IEntityData;
+import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.common.spell.Spell;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.*;
+import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 
@@ -22,17 +23,12 @@ import java.util.List;
 public class ModBusEventHandler {
 
 
-
-
-
     @SubscribeEvent
     public static void registerNewCapabilties(RegisterCapabilitiesEvent event) {
-
         event.register(IEntityData.class);
+        event.register(IPlayerData.class);
 
     }
-
-
 
 
     @SubscribeEvent
@@ -52,24 +48,24 @@ public class ModBusEventHandler {
 
     }
 
+    public static final ResourceLocation CLASS_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID,"classes");
+    public static final ResourceLocation SPELL_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID,"spells");
 
-    @SubscribeEvent
-    public static void addnewRegistries(RegistryEvent.NewRegistry event)
-
-    {
+     @SubscribeEvent
+    public static void addnewRegistries(RegistryEvent.NewRegistry event) {
 
 
         System.out.println("Adding new registries!");
         RegistryBuilder<PlayerGameClass> registryBuilder = new RegistryBuilder<>();
 
-        registryBuilder.setName(new ResourceLocation(AeonsPast.MODID,"classes")).setMaxID(Integer.MAX_VALUE).setType(PlayerGameClass.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID,"none")).create();
+        registryBuilder.setName(CLASS_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(PlayerGameClass.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
+         RegistryBuilder<Spell> spellRegistryBuilder = new RegistryBuilder<>();
 
+         spellRegistryBuilder.setName(SPELL_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(Spell.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
 
     }
-
-
 
 
 }

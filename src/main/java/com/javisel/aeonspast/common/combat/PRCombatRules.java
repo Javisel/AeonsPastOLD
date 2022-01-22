@@ -1,4 +1,4 @@
-package com.javisel.aeonspast;
+package com.javisel.aeonspast.common.combat;
 
 public class PRCombatRules {
 
@@ -17,6 +17,14 @@ public class PRCombatRules {
 
 
     }
+
+
+    
+
+
+
+
+
 
 
 }

@@ -20,15 +20,10 @@ public class EventFactory {
         MinecraftForge.EVENT_BUS.post(playerLevelUpEvent);
 
 
-        return  playerLevelUpEvent;
+        return playerLevelUpEvent;
 
 
     }
-
-
-
-
-
 
 
 }
