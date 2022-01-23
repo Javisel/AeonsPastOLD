@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.items.basic;
 
-import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.items.BaseItem;
 import com.javisel.aeonspast.common.items.itemproperties.APItemProperties;
 import com.javisel.aeonspast.common.items.itemproperties.APItemRarity;
@@ -19,8 +18,7 @@ public class debuggitem extends BaseItem {
     public void onUseTick(Level p_41428_, LivingEntity livingEntity, ItemStack p_41430_, int p_41431_) {
         super.onUseTick(p_41428_, livingEntity, p_41430_, p_41431_);
 
-        APUtilities.addManaToUnit(livingEntity,-5);
-
+        APUtilities.addManaToUnit(livingEntity, -5);
 
 
     }

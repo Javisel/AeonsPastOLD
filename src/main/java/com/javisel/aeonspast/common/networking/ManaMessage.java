@@ -1,9 +1,7 @@
 package com.javisel.aeonspast.common.networking;
 
 import com.javisel.aeonspast.common.capabiltiies.APEntityCapability;
-import com.javisel.aeonspast.common.capabiltiies.APPlayerProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -22,7 +20,7 @@ public class ManaMessage {
 
 
     public static void encode(ManaMessage pkt, FriendlyByteBuf buf) {
-       buf.writeFloat(mana);
+        buf.writeFloat(mana);
     }
 
     public static ManaMessage decode(FriendlyByteBuf buf) {

@@ -19,9 +19,6 @@ public class APHealthBar implements IIngameOverlay {
 
 
     private final ResourceLocation HEALTH_BAR_TEXTURES = new ResourceLocation(AeonsPast.MODID, "textures/gui/healthbar.png");
-
-    Minecraft minecraft = Minecraft.getInstance();
-    Player player = minecraft.player;
     private final float BAR_WIDTH = 80f;
     private final float BAR_HEIGHT = 10;
     private final float BAR_TEXTURE_WIDTH = 180;
@@ -38,8 +35,8 @@ public class APHealthBar implements IIngameOverlay {
     private final float WITHER_ICON_V = 1;
     private final float WITHER_ICON_WIDTH = 9;
     private final float WITHER_ICON_HEIGHT = 9;
-
-
+    Minecraft minecraft = Minecraft.getInstance();
+    Player player = minecraft.player;
     private float lasthealth;
     private float healthBlinkTime;
 
@@ -58,8 +55,11 @@ public class APHealthBar implements IIngameOverlay {
 
         minecraft = Minecraft.getInstance();
         player = minecraft.player;
-        lasthealth= player.getHealth();
+        lasthealth = player.getHealth();
+        if (player.isCreative()) {
 
+            return;
+        }
         float lastHealthTime = Util.getMillis();
         float healthBlinkTime = gui.getGuiTicks() + 20;
 

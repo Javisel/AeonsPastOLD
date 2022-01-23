@@ -3,9 +3,11 @@ package com.javisel.aeonspast;
 import com.javisel.aeonspast.client.InputHandler;
 import com.javisel.aeonspast.client.OverlayRegistration;
 import com.javisel.aeonspast.client.main.ClientProxy;
+import com.javisel.aeonspast.common.items.APItemGroup;
 import com.javisel.aeonspast.common.networking.PacketHandler;
 import com.javisel.aeonspast.common.registration.*;
 import com.javisel.aeonspast.utilities.StringKeys;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +26,7 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 public class AeonsPast {
     public static final String MODID = "aeonspast";
     public static final Logger LOGGER = LogManager.getLogger();
-
+    public static final CreativeModeTab APTAB = new APItemGroup();
 
     public AeonsPast() {
         GeckoLib.initialize();
@@ -72,11 +74,9 @@ public class AeonsPast {
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.EMBLEM_IDENTIFIER).priority(1).size(1).build());
 
 
-
         //Trinkets - 3 Passives
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.TRINKET_IDENTIFIER).priority(4).size(3).build());
-     //Relic - Ultimate
-
+        //Relic - Ultimate
 
 
         //Amulets ( 2 Actives )
@@ -86,15 +86,6 @@ public class AeonsPast {
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.RELIC_IDENTIFIER).priority(3).size(1).build());
 
     }
-
-
-
-
-
-
-
-
-
 
 
 }

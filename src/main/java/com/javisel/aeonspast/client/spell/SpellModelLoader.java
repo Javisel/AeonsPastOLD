@@ -1,19 +1,15 @@
 package com.javisel.aeonspast.client.spell;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.Map;
 
 public class SpellModelLoader extends SimpleJsonResourceReloadListener {
-
-
 
 
     public SpellModelLoader(Gson p_10768_, String p_10769_) {
@@ -22,12 +18,6 @@ public class SpellModelLoader extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profilerFiller) {
-
-
-
-
-
-
 
 
     }

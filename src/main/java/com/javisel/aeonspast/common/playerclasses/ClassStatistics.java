@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.items.emblem;
+package com.javisel.aeonspast.common.playerclasses;
 
 import com.javisel.aeonspast.common.attributes.APAttributeContainer;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -19,6 +19,10 @@ public class ClassStatistics {
     private final APAttributeContainer MAGIC_POWER;
     private final APAttributeContainer RESOURCE_REGENERATION_RATE;
 
+
+
+
+
     private final ArrayList<APAttributeContainer> attributeContainers;
 
     public ClassStatistics(double movementSpeed, double baseHealth, double healthRegeneration, double armor, double magicRes, double maxResource, double resourceRegenRate, double physicalPower, double magicPower) {
@@ -28,8 +32,8 @@ public class ClassStatistics {
         HEALTH_REGENERATION = new APAttributeContainer(AttributeRegistration.HEALTH_REGENERATION, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", healthRegeneration, AttributeModifier.Operation.ADDITION));
         ARMOR = new APAttributeContainer(Attributes.ARMOR, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", armor, AttributeModifier.Operation.ADDITION));
         MAGIC_RESIST = new APAttributeContainer(AttributeRegistration.MAGIC_RESISTANCE, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", magicRes, AttributeModifier.Operation.ADDITION));
-        MAX_RESOURCE = new APAttributeContainer(AttributeRegistration.MAXIMUM_RESOURCE, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", maxResource, AttributeModifier.Operation.ADDITION));
-        RESOURCE_REGENERATION_RATE = new APAttributeContainer(AttributeRegistration.RESOURCE_REGENERATION_RATE, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", resourceRegenRate, AttributeModifier.Operation.ADDITION));
+        MAX_RESOURCE = new APAttributeContainer(AttributeRegistration.MAXIMUM_MANA, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", maxResource, AttributeModifier.Operation.ADDITION));
+        RESOURCE_REGENERATION_RATE = new APAttributeContainer(AttributeRegistration.MANA_REGENERATION, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", resourceRegenRate, AttributeModifier.Operation.ADDITION));
         PHYSICAL_POWER = new APAttributeContainer(AttributeRegistration.PHYSICAL_POWER, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", physicalPower, AttributeModifier.Operation.ADDITION));
         MAGIC_POWER = new APAttributeContainer(AttributeRegistration.MAGIC_POWER, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", magicPower, AttributeModifier.Operation.ADDITION));
 

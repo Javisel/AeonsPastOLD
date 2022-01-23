@@ -1,59 +1,51 @@
 package com.javisel.aeonspast.client.main;
 
- import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
- import com.javisel.aeonspast.client.spell.SpellRenderer;
- import com.javisel.aeonspast.common.spell.Spell;
- import net.minecraft.client.Minecraft;
- import net.minecraft.client.renderer.texture.TextureAtlas;
- import net.minecraft.resources.ResourceLocation;
+import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
+import com.javisel.aeonspast.client.spell.SpellRenderer;
+import com.javisel.aeonspast.common.spell.Spell;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
- import net.minecraftforge.registries.RegistryManager;
+import net.minecraftforge.registries.RegistryManager;
 
- import java.util.ArrayList;
+import java.util.ArrayList;
 
- import static com.javisel.aeonspast.AeonsPast.MODID;
- import static com.javisel.aeonspast.ModBusEventHandler.SPELL_REGISTRY_NAME;
+import static com.javisel.aeonspast.AeonsPast.MODID;
+import static com.javisel.aeonspast.ModBusEventHandler.SPELL_REGISTRY_NAME;
 
 
-@Mod.EventBusSubscriber @OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber
+@OnlyIn(Dist.CLIENT)
 public class ClientProxy {
 
 
-    public static final ResourceLocation SPELL_TEXTURES_LOCATION = new ResourceLocation(MODID,"textures/atlas/spells.png");
+    public static final ResourceLocation SPELL_TEXTURES_LOCATION = new ResourceLocation(MODID, "textures/atlas/spells.png");
     public static SpellRenderer spellRenderer;
 
     public static SpellAtlasHolder spellAtlasHolder;
 
 
-
-
-
-
-    public static void Init(){
+    public static void Init() {
 
 
         Minecraft minecraft = Minecraft.getInstance();
 
 
-         spellRenderer = new SpellRenderer(minecraft.textureManager,minecraft.getModelManager());
-
+        spellRenderer = new SpellRenderer(minecraft.textureManager, minecraft.getModelManager());
 
 
     }
 
 
-
-
-
     @OnlyIn(Dist.CLIENT)
-    @Mod.EventBusSubscriber(bus= Mod.EventBusSubscriber.Bus.MOD)
-    public static class modBusEvents{
-
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class modBusEvents {
 
 
         @SubscribeEvent
@@ -61,47 +53,20 @@ public class ClientProxy {
 
 
 
-            System.out.println("Textures: " + event.getAtlas().location().toString());
-
-
-
-
-            if (event.getAtlas().location().equals( TextureAtlas.LOCATION_BLOCKS) ){
-                Object[] objects = RegistryManager.ACTIVE.getRegistry(SPELL_REGISTRY_NAME).getValues().toArray();
-
-                ArrayList<ResourceLocation> locations = new ArrayList<>();
-                for (Object o : objects) {
-
-                    Spell spell = (Spell) o;
-
-
-                    for (ResourceLocation spellLocation : spell.getSpellResources()) {
-
-                        event.addSprite(spellLocation);
-
-
-                    }
-
-                }
-
-
-            }
         }
+
         @SubscribeEvent
         public static void reload(RegisterClientReloadListenersEvent event) {
 
 
             Minecraft minecraft = Minecraft.getInstance();
 
-            spellAtlasHolder  = new SpellAtlasHolder(minecraft.getTextureManager() );
+            spellAtlasHolder = new SpellAtlasHolder(minecraft.getTextureManager());
 
-                     event.registerReloadListener(spellAtlasHolder);
-
-
-
-          }
+            event.registerReloadListener(spellAtlasHolder);
 
 
+        }
 
 
     }

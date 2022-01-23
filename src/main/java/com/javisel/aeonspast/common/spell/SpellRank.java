@@ -2,6 +2,7 @@ package com.javisel.aeonspast.common.spell;
 
 public enum SpellRank {
 
+    EMPTY,
     CLASS_SPELL,
     SKILL_BASIC,
     SKILL_ULTIMATE,
@@ -11,9 +12,6 @@ public enum SpellRank {
     RANK_3,
     RANK_4,
     RANK_5;
-
-
-
 
 
 }

@@ -1,10 +1,7 @@
 {
   "replace": false,
   "values": [
-
-    "aeonspast:stormcentre",
-    "aeonspast:bladestorm",
-    "aeonspast:heal"
-
+    "aeonspast:storm_strike_stone",
+    "aeonspast:bladestorm_stone"
   ]
 }

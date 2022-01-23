@@ -1,17 +1,19 @@
-package com.javisel.aeonspast.common.spell;
+package com.javisel.aeonspast.common.spell.spells;
 
+import com.javisel.aeonspast.common.spell.SpellRank;
+import com.javisel.aeonspast.common.spell.SpellStack;
+import com.javisel.aeonspast.common.spell.SpellState;
+import com.javisel.aeonspast.common.spell.ToggleSpell;
 import net.minecraft.world.entity.LivingEntity;
 
-public class LightningPulse extends ToggleSpell {
-    public LightningPulse(int defaultChargeTime, float defaultCost, SpellRank spellRank) {
-        super(defaultChargeTime, defaultCost, spellRank);
+public class StormCentre extends ToggleSpell {
+    public StormCentre() {
+        super(10, 1000, SpellRank.RANK_4);
     }
 
     @Override
     public void cast(LivingEntity entity, SpellStack stack) {
         super.cast(entity, stack);
-
-
 
 
     }

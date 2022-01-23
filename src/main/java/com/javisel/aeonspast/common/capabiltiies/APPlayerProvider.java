@@ -60,8 +60,4 @@ public class APPlayerProvider implements ICapabilitySerializable<CompoundTag> {
     }
 
 
-
-
-
-
 }

@@ -4,10 +4,10 @@ import com.javisel.aeonspast.utilities.StringKeys;
 
 public enum TrinketEnums {
 
-    EMBLEM(StringKeys.EMBLEM_IDENTIFIER,0),
-    TRINKET(StringKeys.TRINKET_IDENTIFIER,1),
-    AMULET(StringKeys.AMULET_IDENTIFIER,2),
-    RELIC(StringKeys.RELIC_IDENTIFIER,3);
+    EMBLEM(StringKeys.EMBLEM_IDENTIFIER, 0),
+    TRINKET(StringKeys.TRINKET_IDENTIFIER, 1),
+    AMULET(StringKeys.AMULET_IDENTIFIER, 2),
+    RELIC(StringKeys.RELIC_IDENTIFIER, 3);
 
 
     private final String identifier;
@@ -16,7 +16,7 @@ public enum TrinketEnums {
     TrinketEnums(String identifier, int id) {
 
         this.identifier = identifier;
-        this.id=id;
+        this.id = id;
 
     }
 
@@ -71,11 +71,6 @@ public enum TrinketEnums {
 
 
     }
-
-
-
-
-
 
 
     public String getIdentifier() {

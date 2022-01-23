@@ -1,7 +1,6 @@
 package com.javisel.aeonspast.utilities;
 
 import com.javisel.aeonspast.AeonsPast;
-import net.minecraft.resources.ResourceLocation;
 
 public class StringKeys {
 
@@ -23,10 +22,10 @@ public class StringKeys {
     public static final String MAX_CHARGES = "max_charges";
 
     public static final String COST = "cost";
-    public static final String EMBLEM_IDENTIFIER = AeonsPast.MODID+".emblem";
-    public static final String RELIC_IDENTIFIER = AeonsPast.MODID+".relic";
-    public static final String AMULET_IDENTIFIER = AeonsPast.MODID+".amulet";
-    public static final String TRINKET_IDENTIFIER = AeonsPast.MODID+".trinket";
+    public static final String EMBLEM_IDENTIFIER = AeonsPast.MODID + ".emblem";
+    public static final String RELIC_IDENTIFIER = AeonsPast.MODID + ".relic";
+    public static final String AMULET_IDENTIFIER = AeonsPast.MODID + ".amulet";
+    public static final String TRINKET_IDENTIFIER = AeonsPast.MODID + ".trinket";
     public static final String CLASSES = "classes";
 
 
@@ -36,4 +35,7 @@ public class StringKeys {
     public static final String EXPERIENCE = "experience";
 
     public static final String ACTIVE_CLASS = "class";
+    public static final String RESOURCE = "resource";
+
+
 }

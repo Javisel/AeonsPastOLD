@@ -24,11 +24,6 @@ import java.util.UUID;
 public class APUtilities {
 
 
-
-
-
-
-
     public static IEntityData getEntityData(LivingEntity entity) {
 
         return entity.getCapability(APEntityCapability.ENTITY_DATA_CAP, null).orElseThrow(NullPointerException::new);
@@ -39,39 +34,28 @@ public class APUtilities {
     public static IPlayerData getPlayerData(Player player) {
 
 
-
-        return  player.getCapability(APPlayerCapability.PLAYER_DATA_CAPABILITY,null).orElseThrow(NullPointerException::new);
+        return player.getCapability(APPlayerCapability.PLAYER_DATA_CAPABILITY, null).orElseThrow(NullPointerException::new);
 
     }
-
-
-
 
 
     public static float experienceForLevel(int level) {
 
-        if (level==0) return 0;
+        if (level == 0) return 0;
 
-        return   (level * 100)  + experienceForLevel(level-1);
+        return (level * 100) + experienceForLevel(level - 1);
 
 
     }
-
-
-
 
 
     public static void addManaToUnit(LivingEntity entity, float mana) {
 
 
-        setEntityMana(entity,getEntityData(entity).getMana() + mana);
-
+        setEntityMana(entity, getEntityData(entity).getMana() + mana);
 
 
     }
-
-
-
 
 
     public static void setEntityMana(LivingEntity entity, float mana) {
@@ -82,18 +66,14 @@ public class APUtilities {
             IEntityData data = getEntityData(entity);
 
 
-            if (data.getMana() + mana <=0) {
+            if (data.getMana() + mana <= 0) {
 
-                mana=0;
-            }
-
-           else  if (data.getMana() == entity.getAttributeValue(AttributeRegistration.MAXIMUM_RESOURCE.get())) {
+                mana = 0;
+            } else if (data.getMana() == entity.getAttributeValue(AttributeRegistration.MAXIMUM_MANA.get())) {
                 return;
-            }
+            } else if (data.getMana() + mana > entity.getAttributeValue(AttributeRegistration.MAXIMUM_MANA.get())) {
 
-           else  if (data.getMana() + mana > entity.getAttributeValue(AttributeRegistration.MAXIMUM_RESOURCE.get())) {
-
-                mana = (float) (entity.getAttributeValue(AttributeRegistration.MAXIMUM_RESOURCE.get()));
+                mana = (float) (entity.getAttributeValue(AttributeRegistration.MAXIMUM_MANA.get()));
 
 
             }
@@ -112,18 +92,14 @@ public class APUtilities {
         }
 
 
-
-
-
-
     }
 
 
-    public  static ItemStack getTrinket(LivingEntity entity, TrinketEnums trinketType, int slot) {
+    public static ItemStack getTrinket(LivingEntity entity, TrinketEnums trinketType, int slot) {
 
         ItemStack result = ItemStack.EMPTY;
 
-        List<SlotResult> slotResult = CuriosApi.getCuriosHelper().findCurios(entity,trinketType.getIdentifier());
+        List<SlotResult> slotResult = CuriosApi.getCuriosHelper().findCurios(entity, trinketType.getIdentifier());
 
 
         if (slotResult.isEmpty()) {
@@ -133,12 +109,9 @@ public class APUtilities {
 
         if (slotResult.size() < slot) {
 
-            System.err.println("Searched for slot "+  slot+ " when only " + slotResult.size() + " are available!");
+            System.err.println("Searched for slot " + slot + " when only " + slotResult.size() + " are available!");
             return result;
         }
-
-
-
 
 
         return slotResult.get(slot).stack();
@@ -148,14 +121,12 @@ public class APUtilities {
     public static void syncTotalPlayerData(Player player) {
 
 
-
-        IEntityData entityData = APUtilities.getEntityData( player);
+        IEntityData entityData = APUtilities.getEntityData(player);
         IPlayerData playerData = APUtilities.getPlayerData(player);
 
-        PlayerCapabiltiiesMessage playerCapabiltiiesMessage = new PlayerCapabiltiiesMessage(entityData.writeNBT(),playerData.writeNBT());
+        PlayerCapabiltiiesMessage playerCapabiltiiesMessage = new PlayerCapabiltiiesMessage(entityData.writeNBT(), playerData.writeNBT());
 
         ServerPlayer serverPlayer = (ServerPlayer) player;
-
 
 
         PacketHandler.INSTANCE.sendTo(playerCapabiltiiesMessage, serverPlayer.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
@@ -164,13 +135,10 @@ public class APUtilities {
     }
 
 
-
     public static boolean removeAttributeModifierIfPresent(LivingEntity entity, Attribute attribute, String uuid) {
 
 
-
-
-        if (entity.getAttribute(attribute).getModifier(UUID.fromString(uuid)) !=null) {
+        if (entity.getAttribute(attribute).getModifier(UUID.fromString(uuid)) != null) {
 
             entity.getAttribute(attribute).removeModifier(UUID.fromString(uuid));
 
@@ -178,15 +146,23 @@ public class APUtilities {
         }
 
 
-
-
-
-return false;
+        return false;
 
     }
 
 
+    public static double getCooldownCoefficient(LivingEntity entity) {
 
+
+        if (entity.getAttributeValue(AttributeRegistration.COOLDOWN_REDUCTION.get()) <= 0) {
+
+            return 1;
+        }
+
+        return 1 - (100 / (100 + entity.getAttributeValue(AttributeRegistration.COOLDOWN_REDUCTION.get())));
+
+
+    }
 
 
 }

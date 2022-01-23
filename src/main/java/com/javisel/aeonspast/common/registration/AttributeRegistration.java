@@ -27,9 +27,24 @@ public class AttributeRegistration {
     public static final RegistryObject<Attribute> PHYSICAL_POWER = ATTRIBUTES.register("physical_power", () -> new RangedAttribute("generic.physical_power", 0, 0, 100));
 
 
-    //Utility
-    public static final RegistryObject<Attribute> MAXIMUM_RESOURCE = ATTRIBUTES.register("maximum_resource", () -> new RangedAttribute("generic.maximum_resource", 100, 0, 10000));
+    //Resources
+    public static final RegistryObject<Attribute> MAXIMUM_MANA = ATTRIBUTES.register("maximum_mana", () -> new RangedAttribute("generic.maximum_mana", 100, 0, 10000));
+     public static final RegistryObject<Attribute> MANA_REGENERATION = ATTRIBUTES.register("mana_regeneration", () -> new RangedAttribute("generic.mana_regeneration", 0.5, 0, 10000));
+
+    public static final RegistryObject<Attribute> MAXIMUM_FOOD = ATTRIBUTES.register("maximum_food", () -> new RangedAttribute("generic.maximum_food", 100, 0, 10000));
+    public static final RegistryObject<Attribute> FOOD_REGENERATION = ATTRIBUTES.register("mana_regeneration", () -> new RangedAttribute("generic.food_regeneration", 0, 0, 10000));
+
+
+
+
+
     public static final RegistryObject<Attribute> COOLDOWN_REDUCTION = ATTRIBUTES.register("cooldown_reduction", () -> new RangedAttribute("generic.cooldown_reduction", 0, 0, 10000));
-    public static final RegistryObject<Attribute> RESOURCE_REGENERATION_RATE = ATTRIBUTES.register("resource_regeneration_rate", () -> new RangedAttribute("generic.resource_regeneration_rate", 0.5, 0, 10000));
+
+
+
+
+
+
+
 
 }

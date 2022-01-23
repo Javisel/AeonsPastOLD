@@ -8,11 +8,12 @@ import net.minecraft.nbt.CompoundTag;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface IPlayerData  {
+public interface IPlayerData {
 
     HashMap<PlayerGameClass, ClassInstance> getClasses();
 
     PlayerGameClass getActiveClass();
+
     void setActiveGameClass(PlayerGameClass activeGameClass);
 
     ClassInstance getOrCreatePlayerClass(PlayerGameClass gameClass);
@@ -22,7 +23,13 @@ public interface IPlayerData  {
     CompoundTag writeNBT();
 
 
+    ClassInstance getActiveClassInstance();
+
     ArrayList<Spell> getActiveSpells();
 
-    ArrayList<Spell> getSpellBar();
+    void addActiveSpell(Spell spell);
+
+    void removeActiveSpell(Spell spell);
+
+    PlayerSpellBar getSpellBar();
 }

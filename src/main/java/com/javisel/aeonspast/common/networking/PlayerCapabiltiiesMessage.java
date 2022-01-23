@@ -10,17 +10,15 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class PlayerCapabiltiiesMessage {
-    
+
     public static CompoundTag entityDataTag;
     public static CompoundTag playerDataTag;
 
 
-
-
     public PlayerCapabiltiiesMessage(CompoundTag entityDataTag, CompoundTag playerDataTag) {
 
-        this.entityDataTag=entityDataTag;
-        this.playerDataTag=playerDataTag;
+        this.entityDataTag = entityDataTag;
+        this.playerDataTag = playerDataTag;
     }
 
 
@@ -30,7 +28,7 @@ public class PlayerCapabiltiiesMessage {
     }
 
     public static PlayerCapabiltiiesMessage decode(FriendlyByteBuf buf) {
-        return new PlayerCapabiltiiesMessage(buf.readNbt(),buf.readNbt());
+        return new PlayerCapabiltiiesMessage(buf.readNbt(), buf.readNbt());
     }
 
 
@@ -43,7 +41,7 @@ public class PlayerCapabiltiiesMessage {
 
                 Minecraft minecraft = Minecraft.getInstance();
                 minecraft.player.getCapability(APEntityCapability.ENTITY_DATA_CAP, null).orElseThrow(NullPointerException::new).readNBT(mes.entityDataTag);
-               minecraft.player.getCapability(APPlayerCapability.PLAYER_DATA_CAPABILITY,null).orElseThrow(NullPointerException::new).readNBT(mes.playerDataTag);
+                minecraft.player.getCapability(APPlayerCapability.PLAYER_DATA_CAPABILITY, null).orElseThrow(NullPointerException::new).readNBT(mes.playerDataTag);
 
             });
 
@@ -51,10 +49,6 @@ public class PlayerCapabiltiiesMessage {
 
         }
     }
-
-
-
-
 
 
 }

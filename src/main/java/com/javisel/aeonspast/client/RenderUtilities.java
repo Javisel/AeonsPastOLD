@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.client;
 
-import com.javisel.aeonspast.client.main.ClientProxy;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
@@ -8,8 +7,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -58,20 +55,16 @@ public class RenderUtilities {
     }
 
 
-
     public static void renderFromAtlas(PoseStack poseStack, TextureAtlasSprite sprite, float width, float height, float x, float y, float z, float u, float v, float textureWidth, float textureHeight) {
 
 
         RenderSystem.setShaderTexture(0, sprite.atlas().location());
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        Gui.blit(poseStack,(int) x, (int) y, 0, (int) width, (int) height,sprite);
-      //  Gui.blit(poseStack, x, y,  textureWidth, textureHeight, sprite);
+
+        Gui.blit(poseStack, (int) x, (int) y, (int) z, (int) width, (int) height, sprite);
 
 
     }
-
-
 
 
 }

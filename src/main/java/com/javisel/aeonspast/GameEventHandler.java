@@ -7,6 +7,7 @@ import com.javisel.aeonspast.common.capabiltiies.IEntityData;
 import com.javisel.aeonspast.common.combat.PRCombatRules;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.APUtilities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,7 +15,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -26,6 +26,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.ArrayList;
 
 
 @Mod.EventBusSubscriber
@@ -116,13 +118,12 @@ public class GameEventHandler {
             event.addCapability(new ResourceLocation(AeonsPast.MODID, "entitydata"), provider);
 
 
-
             if (event.getObject() instanceof Player) {
 
 
                 APPlayerProvider playerProvider = new APPlayerProvider();
 
-                event.addCapability( new ResourceLocation(AeonsPast.MODID,"playerdata"),playerProvider);
+                event.addCapability(new ResourceLocation(AeonsPast.MODID, "playerdata"), playerProvider);
 
             }
 
@@ -138,13 +139,13 @@ public class GameEventHandler {
     public static void tick(TickEvent.PlayerTickEvent tickEvent) {
 
 
-        if (tickEvent.side.isServer() && tickEvent.phase == TickEvent.Phase.END) {
+        if (tickEvent.phase == TickEvent.Phase.END) {
 
             Player player = tickEvent.player;
 
             if (player == null) {
 
-                 return;
+                return;
 
             }
             if (player.isDeadOrDying()) {
@@ -157,14 +158,24 @@ public class GameEventHandler {
 
 
             data.tick();
-            ;
+
+
+            ArrayList<Spell> spells = APUtilities.getPlayerData(player).getActiveSpells();
+
+
+            for (Spell spell : spells) {
+
+                spell.tick(player, data.getSpellStackRaw(spell));
+
+
+            }
+
+
             if (data.getTicks() == 20) {
 
                 player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
-                player.getAttribute(AttributeRegistration.HEALTH_SHIELD.get()).addPermanentModifier(new AttributeModifier("stuff", 1, AttributeModifier.Operation.ADDITION));
 
-                APUtilities.setEntityMana(player, (float) (data.getMana() + player.getAttributeValue(AttributeRegistration.RESOURCE_REGENERATION_RATE.get())));
-
+                APUtilities.setEntityMana(player, (float) (data.getMana() + 9 + player.getAttributeValue(AttributeRegistration.RESOURCE_REGENERATION_RATE.get())));
 
 
             }
@@ -179,20 +190,14 @@ public class GameEventHandler {
     public static void syncPlayerData(PlayerEvent.PlayerLoggedInEvent event) {
 
 
-
         if (!event.getPlayer().level.isClientSide) {
-
 
 
             APUtilities.syncTotalPlayerData(event.getPlayer());
         }
 
 
-
-
     }
-
-
 
 
     @SubscribeEvent
@@ -200,9 +205,6 @@ public class GameEventHandler {
 
 
     }
-
-
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.javisel.aeonspast.common.capabiltiies;
 
 import com.javisel.aeonspast.ModBusEventHandler;
+import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.StringKeys;
@@ -10,28 +11,19 @@ import net.minecraftforge.registries.RegistryManager;
 
 import java.util.HashMap;
 
+import static com.javisel.aeonspast.utilities.StringKeys.RESOURCE;
+
 public class APEntityData implements IEntityData {
 
 
     CompoundTag storedData = new CompoundTag();
-    float mana = 0;
-    int ticks = 0;
+     int ticks = 0;
     float experience = 0;
     int level = 0;
 
     HashMap<Spell, SpellStack> spellStackHashMap;
+    HashMap<Resource, Float> resourceMap;
 
-
-    @Override
-    public float getMana() {
-        return mana;
-    }
-
-    @Override
-    public void setMana(float mana) {
-
-        this.mana = mana;
-    }
 
     @Override
     public CompoundTag getStoredData() {
@@ -42,27 +34,50 @@ public class APEntityData implements IEntityData {
     public CompoundTag writeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.put(StringKeys.STORED_DATA, storedData);
-        tag.putFloat(StringKeys.MANA, mana);
-        tag.putFloat(StringKeys.EXPERIENCE,experience);
-        tag.putInt(StringKeys.LEVEL,level);
+         tag.putFloat(StringKeys.EXPERIENCE, experience);
+        tag.putInt(StringKeys.LEVEL, level);
 
 
-
-        if (spellStackHashMap !=null) {
+        if (spellStackHashMap != null) {
             CompoundTag spelldata = new CompoundTag();
 
 
             for (Spell spell : spellStackHashMap.keySet()) {
 
 
-                spelldata.put(spell.getRegistryName().toString(),spellStackHashMap.get(spell).toNBT());
+                spelldata.put(spell.getRegistryName().toString(), spellStackHashMap.get(spell).toNBT());
 
 
             }
 
-            tag.put(StringKeys.SPELL_DATA,spelldata);
+            tag.put(StringKeys.SPELL_DATA, spelldata);
 
         }
+
+
+        if (resourceMap !=null) {
+
+
+            CompoundTag resourceTag = new CompoundTag();
+            for (Resource resource : resourceMap.keySet()) {
+
+
+                resourceTag.putFloat(resource.getRegistryName().toString(),resourceMap.get(resource));
+
+
+
+
+
+
+            }
+
+
+
+
+            tag.put(RESOURCE,resourceTag);
+        }
+
+
 
 
 
@@ -76,16 +91,15 @@ public class APEntityData implements IEntityData {
         if (tag.contains(StringKeys.STORED_DATA)) {
             storedData = tag.getCompound(StringKeys.STORED_DATA);
         }
-        mana=tag.getFloat(StringKeys.MANA);
-        experience=tag.getFloat(StringKeys.EXPERIENCE);
-        level=tag.getInt(StringKeys.LEVEL);
+         experience = tag.getFloat(StringKeys.EXPERIENCE);
+        level = tag.getInt(StringKeys.LEVEL);
 
 
         if (tag.contains(StringKeys.SPELL_DATA)) {
 
             CompoundTag spelldata = tag.getCompound(StringKeys.SPELL_DATA);
 
-            if (spellStackHashMap== null) {
+            if (spellStackHashMap == null) {
 
 
                 spellStackHashMap = new HashMap<>();
@@ -101,13 +115,38 @@ public class APEntityData implements IEntityData {
                 Spell spell = (Spell) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.SPELL_REGISTRY_NAME).getValue(resourceLocation);
 
 
-
-                spellStackHashMap.put(spell,spellStack);
+                spellStackHashMap.put(spell, spellStack);
 
             }
 
 
         }
+
+        if (tag.contains(RESOURCE)) {
+
+            CompoundTag resourceTag = tag.getCompound(RESOURCE);
+
+            if (resourceMap ==null) {
+                resourceMap = new HashMap<>();
+            }
+            for (String entry : resourceTag.getAllKeys()) {
+
+
+
+                Resource resource = (Resource) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.RESOURCE_REGISTRY_NAME).getValue(new ResourceLocation(entry));
+
+
+
+                resourceMap.put(resource,resourceTag.getFloat(entry));
+
+
+            }
+
+
+
+        }
+
+
 
 
 
@@ -147,15 +186,12 @@ public class APEntityData implements IEntityData {
         }
 
 
-
-
         if (!spellStackHashMap.containsKey(spell)) {
 
             SpellStack spellStack = new SpellStack(spell);
 
-            spellStackHashMap.put(spell,spellStack);
-         }
-
+            spellStackHashMap.put(spell, spellStack);
+        }
 
 
         return spellStackHashMap.get(spell);
@@ -164,7 +200,6 @@ public class APEntityData implements IEntityData {
 
     @Override
     public SpellStack getSpellStackRaw(Spell spell) {
-
 
 
         if (spellStackHashMap == null) {
@@ -182,6 +217,58 @@ public class APEntityData implements IEntityData {
         return null;
 
     }
+
+
+    @Override
+    public Float getResourceAmount(Resource resource) {
+
+
+        if (resourceMap ==null) {
+
+            resourceMap = new HashMap<>();
+
+
+
+        }
+
+        if (!resourceMap.containsKey(resource)) {
+
+            resourceMap.put(resource, (float) resource.getResourceMaxAttribute().get().getDefaultValue());
+
+        }
+
+        return  resourceMap.get(resource);
+
+    }
+
+    @Override
+    public void setResourceAmount(Resource resource, float amount) {
+
+
+
+
+        if (resourceMap ==null) {
+
+            resourceMap = new HashMap<>();
+
+
+
+        }
+
+        if (!resourceMap.containsKey(resource)) {
+
+            resourceMap.put(resource, amount);
+
+            return;
+        }
+
+        resourceMap.replace(resource,amount);
+
+
+
+    }
+
+
 
 
 }

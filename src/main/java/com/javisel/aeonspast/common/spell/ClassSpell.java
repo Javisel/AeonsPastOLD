@@ -10,7 +10,4 @@ public abstract class ClassSpell extends Spell {
     }
 
 
-
-
-
 }

@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.items.emblem;
 
-import com.javisel.aeonspast.common.attributes.APAttributeContainer;
 import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
 import com.javisel.aeonspast.common.enums.TrinketEnums;
 import com.javisel.aeonspast.common.items.TrinketItem;
@@ -12,7 +11,6 @@ import com.javisel.aeonspast.utilities.APUtilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
-import org.lwjgl.system.CallbackI;
 import top.theillusivec4.curios.api.SlotContext;
 
 public class BasicEmblem extends TrinketItem {
@@ -21,8 +19,7 @@ public class BasicEmblem extends TrinketItem {
     final RegistryObject<PlayerGameClass> gameClass;
 
 
-
-    public BasicEmblem(Properties properties, RegistryObject<PlayerGameClass> gameClass,  RegistryObject<Spell>   spell) {
+    public BasicEmblem(Properties properties, RegistryObject<PlayerGameClass> gameClass, RegistryObject<Spell> spell) {
         super(TrinketEnums.EMBLEM, properties.stacksTo(1), new APItemProperties(APItemRarity.EMBLEM), spell);
 
 
@@ -48,15 +45,11 @@ public class BasicEmblem extends TrinketItem {
 
             playerData.setActiveGameClass(gameClass.get());
 
-            playerData.getActiveSpells().add(0,super.getSpell(slotContext.entity(), stack).get());
+            playerData.getActiveSpells().add(super.getSpell(slotContext.entity(), stack).get());
 
-            playerData.getSpellBar().addAll(playerData.getActiveSpells());
 
             APUtilities.syncTotalPlayerData(player);
         }
-
-
-
 
 
     }
@@ -64,8 +57,6 @@ public class BasicEmblem extends TrinketItem {
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-
-
 
 
         super.onUnequip(slotContext, newStack, stack);
@@ -81,11 +72,7 @@ public class BasicEmblem extends TrinketItem {
             playerData.setActiveGameClass(null);
 
 
-
-
         }
-
-
 
 
     }
