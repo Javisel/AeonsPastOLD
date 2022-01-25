@@ -109,13 +109,18 @@ public class SpellRenderer {
 
 
         z++;
-        if (entityData.getResourceAmount(spell.getCostResource(player,spellStack)) < spell.getCost(player, spellStack)) {
 
 
-            RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16, 16, xpos, ypos, z, 60, 9, 16, 16);
+
+        if (spell.getCostResource(player,spellStack) !=null) {
+            if (entityData.getOrCreateResource(spell.getCostResource(player, spellStack)) < spell.getCost(player, spellStack)) {
+
+
+                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16, 16, xpos, ypos, z, 60, 9, 16, 16);
+
+            }
 
         }
-
 
         z++;
 
@@ -209,6 +214,16 @@ public class SpellRenderer {
 
             }
 
+
+            if (spellStack.getCooldown() <=5){
+
+
+                z++;
+                RenderSystem.setShaderColor(1,1,1,1.0f);
+                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f  , xpos, ypos, z, 108, 9, 16, 16);
+
+
+            }
             z++;
             Gui.drawCenteredString(poseStack, gui.getFont(), displaytext, stringxpos, stringypos, z);
 
@@ -221,8 +236,11 @@ public class SpellRenderer {
                 float cdpercent = (float) spellStack.getChargeTime() / (float) spellStack.getSpell().getDefaultChargetime();
 
 
-                float colorcoefficient = spellStack.getCharges() == 0 ? 0.80f : 0.1f;
+                float colorcoefficient = spellStack.getCharges() == 0 ? 0.80f : 0.01f;
                 RenderSystem.setShaderColor(1, 1, 1, colorcoefficient);
+                z++;
+                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f * cdpercent, xpos, ypos + 16 * (1.0f - cdpercent), z, 76, 9, 16, 16 * cdpercent);
+
                 if (spellStack.getCharges() == 0) {
 
                     float stringscale = 1f;
@@ -239,10 +257,19 @@ public class SpellRenderer {
                     poseStack.scale(stringscale, stringscale, 1);
                     Gui.drawCenteredString(poseStack, gui.getFont(), displaytext, stringxpos, stringypos, z);
 
+                    if (spellStack.getChargeTime() <=5){
+
+
+                        z++;
+                        RenderSystem.setShaderColor(1,(float)215/255,0,1.0f);
+                        RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f  , xpos, ypos + 16 , z, 76, 9, 16, 16);
+
+
+                    }
                 }
 
-                z++;
-                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f * cdpercent, xpos, ypos + 16 * (1.0f - cdpercent), z, 76, 9, 16, 16 * cdpercent);
+
+
 
                 poseStack.popPose();
             }

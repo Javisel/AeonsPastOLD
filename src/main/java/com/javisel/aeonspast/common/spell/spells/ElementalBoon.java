@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.spell.spells;
 
+import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.spell.SpellRank;
 import com.javisel.aeonspast.common.spell.ToggleSpell;
 
@@ -9,6 +10,8 @@ public class ElementalBoon extends ToggleSpell {
 
     public ElementalBoon(int defaultChargeTime, float defaultCost, SpellRank spellRank) {
         super(10, 0, SpellRank.SKILL_ULTIMATE);
+        setSpellResource(ResourceRegistration.MANA);
+
     }
 
 

@@ -17,8 +17,8 @@ public class WarriorClassSpell extends ClassSpell implements ICustomUseRequireme
 
 
     public WarriorClassSpell() {
-        super(10, 50, 100, 25);
-        setSpellResource(ResourceRegistration.FOOD);
+        super(2, 300, 10, 25);
+        setSpellResource(ResourceRegistration.MANA);
     }
 
 

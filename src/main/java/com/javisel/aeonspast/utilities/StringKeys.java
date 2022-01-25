@@ -4,8 +4,8 @@ import com.javisel.aeonspast.AeonsPast;
 
 public class StringKeys {
 
-    public static final String START_AMOUNT = "startamount";
-    public static final String END_AMOUNT = "endamount";
+    public static final String START_AMOUNT = "start_amount";
+    public static final String END_AMOUNT = "end_amount";
 
     public static final String SPELL = "spell";
     public static final String SPELL_STATE = "spell_state";
@@ -37,5 +37,17 @@ public class StringKeys {
     public static final String ACTIVE_CLASS = "class";
     public static final String RESOURCE = "resource";
 
+    public static final String MAGICAL = "magical";
+    public static final String PHYSICAL = "physical";
+    public static final String TRUE = "true";
+    public static final String PENALTY = "penalty";
+    public static final String BASE_DAMAGE = "base_damage";
+    public static final String BASE_DAMAGE_LEVEL_SCALING = "base_damage_level_scaling";
+    public static final String ATTRIBUTE = "attribute";
+    public static final String ATTRIBUTE_SCALING = "attribute_scaling";
+    public static  final String DAMAGE_TYPE = "damage_type";
+    public static final String ATTACK_SPEED = "attack_speed";
+    public static final String CRITICAL_DAMAGE = "critical_damage";
+    public static final String DURABILITY = "durability";
 
 }

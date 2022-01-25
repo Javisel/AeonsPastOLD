@@ -4,9 +4,12 @@ package com.javisel.aeonspast;
 import com.javisel.aeonspast.common.capabiltiies.APEntityProvider;
 import com.javisel.aeonspast.common.capabiltiies.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.IEntityData;
-import com.javisel.aeonspast.common.combat.PRCombatRules;
+import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
+import com.javisel.aeonspast.common.combat.APDamageEngine;
+import com.javisel.aeonspast.common.events.APDamageEvent;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.APUtilities;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -34,75 +38,35 @@ import java.util.ArrayList;
 
 public class GameEventHandler {
 
-    @SubscribeEvent
-    public static void newHungerDamage(LivingHurtEvent event) {
-
-        if (event.getSource() == DamageSource.STARVE) {
-
-
-            event.setAmount(event.getAmount() + event.getEntityLiving().getHealth() * 0.15f);
-
-
-        }
-
-    }
 
     // @SubscribeEvent
-    public static void newDamageCalculations(LivingHurtEvent event) {
+    public static void newDamageCalculations(LivingDamageEvent event) {
 
 
-        if (event.getEntityLiving() != null) {
-            event.getSource().bypassArmor();
-            float olddamage = event.getAmount();
-            float newamount = PRCombatRules.getDamagePostMitigations(event.getEntityLiving().getAttribute(Attributes.ARMOR).getValue(), event.getEntityLiving().getAttribute(Attributes.ARMOR_TOUGHNESS).getValue(), olddamage);
+        if (!(event instanceof APDamageEvent)) {
 
-            float mitigated = olddamage - newamount;
-            if (mitigated < 1) mitigated = 0;
-            if (event.getEntityLiving() instanceof ServerPlayer) {
-
-                ServerPlayer player = (ServerPlayer) event.getEntityLiving();
+            event.setCanceled(true);
+             Entity victim = event.getEntity();
 
 
-                player.awardStat(Stats.DAMAGE_RESISTED, (int) (mitigated));
-            }
+             if (event.getSource().getDirectEntity() instanceof Player){
 
-        }
-
-
-    }
+                 Player player = (Player) event.getSource().getDirectEntity();
 
 
-    @SubscribeEvent
-    public static void postDamageEvents(LivingDamageEvent event) {
 
+             }
 
-        if (!event.getSource().isMagic() && !event.getSource().isProjectile() && event.getSource().getDirectEntity() != null) {
-
-            LivingEntity entity = (LivingEntity) event.getSource().getDirectEntity();
-
-            double lifesteal = entity.getAttribute(AttributeRegistration.LIFESTEAL.get()).getValue();
-            lifesteal /= 100;
-
-            double healing = event.getAmount() * lifesteal;
-
-            if (healing > event.getEntityLiving().getHealth()) {
-                healing = event.getEntityLiving().getHealth();
-            }
-            float posteventhealing = EventFactory.onLifesteal(entity, event.getEntityLiving(), (float) healing);
-
-
-            entity.heal(posteventhealing);
 
 
         }
-
-
     }
+
+
 
     @SubscribeEvent
     public static void serversetup(ServerStartedEvent event) {
 
-        System.out.println("SERVER STARTED");
         event.getServer().overworld().getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, event.getServer());
 
 
@@ -155,11 +119,29 @@ public class GameEventHandler {
             }
 
             IEntityData data = APUtilities.getEntityData(player);
-
+            IPlayerData playerData = APUtilities.getPlayerData(player);
 
             data.tick();
 
+            if (playerData.getActiveClass() !=null) {
 
+                Resource resource = playerData.getActiveClass().getCastResource();
+
+                if (resource !=null) {
+
+                    if (player.level.isClientSide) {
+
+                        System.out.println("Client Values: " + data.getResourceAmountRaw(resource) + "/" + player.getAttributeValue(resource.getResourceMaxAttribute().get()));
+                    }
+                    if (!player.level.isClientSide) {
+
+                        System.out.println("Server Values: " + data.getResourceAmountRaw(resource) + "/" + player.getAttributeValue(resource.getResourceMaxAttribute().get()));
+                    }
+                    resource.tick(player);
+
+                }
+
+            }
             ArrayList<Spell> spells = APUtilities.getPlayerData(player).getActiveSpells();
 
 
@@ -175,7 +157,10 @@ public class GameEventHandler {
 
                 player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
 
-                APUtilities.setEntityMana(player, (float) (data.getMana() + 9 + player.getAttributeValue(AttributeRegistration.RESOURCE_REGENERATION_RATE.get())));
+
+
+
+
 
 
             }
@@ -206,5 +191,88 @@ public class GameEventHandler {
 
     }
 
+
+    @SubscribeEvent
+    public static void onDirectHitEvent(LivingDamageEvent event) {
+
+
+        if (event.getEntityLiving() !=null) {
+
+            LivingEntity victim = event.getEntityLiving();
+
+
+            if (event.getSource().getDirectEntity() !=null) {
+
+               Entity direct =  event.getSource().getDirectEntity();
+
+
+               if (direct instanceof LivingEntity) {
+
+
+                   LivingEntity directAttacker = (LivingEntity) direct;
+
+
+
+
+               }
+
+
+
+
+            }
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
+    @SubscribeEvent
+    public static void eventTrigger(LivingEvent event){
+
+
+        if (event.getEntityLiving() instanceof Player) {
+
+            Player player = (Player) event.getEntityLiving();
+
+            if (player.isDeadOrDying()) {
+
+                return;
+            }
+
+            IPlayerData playerData = APUtilities.getPlayerData(player);
+            IEntityData entityData = APUtilities.getEntityData(player);
+
+            for (Spell spell : playerData.getActiveSpells()) {
+
+
+                spell.onEventTrigger(player,entityData.getSpellStackRaw(spell),event);
+
+
+
+
+            }
+
+
+
+
+
+        }
+
+
+
+    }
 
 }

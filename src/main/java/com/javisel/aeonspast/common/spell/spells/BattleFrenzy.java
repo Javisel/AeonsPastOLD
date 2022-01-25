@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.spell.spells;
 
+import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.spell.ICustomUseRequirement;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellRank;
@@ -15,6 +16,8 @@ public class BattleFrenzy extends Spell implements ICustomUseRequirement {
 
     public BattleFrenzy() {
         super(100, 100, SpellRank.SKILL_BASIC);
+        setSpellResource(ResourceRegistration.MANA);
+
     }
 
 

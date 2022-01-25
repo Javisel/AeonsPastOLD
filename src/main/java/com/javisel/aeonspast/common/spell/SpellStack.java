@@ -24,6 +24,7 @@ public final class SpellStack {
         cooldown = 0;
         this.spell = spell;
         spellState = SpellState.OFF;
+        charges = spell.getDefaultMaxCharges();
     }
 
 

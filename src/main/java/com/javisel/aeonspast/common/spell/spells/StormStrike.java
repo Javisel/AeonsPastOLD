@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.spell.spells;
 
+import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.spell.ICustomUseRequirement;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellRank;
@@ -15,6 +16,8 @@ public class StormStrike extends Spell implements ICustomUseRequirement {
 
     public StormStrike() {
         super(1200, 100, SpellRank.SKILL_ULTIMATE);
+        setSpellResource(ResourceRegistration.MANA);
+
     }
 
 

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -85,6 +86,12 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         SpellStack spellStack = data.getOrCreateSpellStack(this);
 
 
+        if (spellStack.getCharges() < getMaxCharges(entity,stack)) {
+
+            spellStack.chargeTime=getChargeTime(entity,stack);
+
+        }
+
         //TODO more efficient sync
 
         if (entity instanceof Player) {
@@ -132,7 +139,12 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public void commitCosts(LivingEntity caster, SpellStack stack) {
 
 
-            APUtilities.addManaToUnit(caster, -1 * getCost(caster, stack));
+
+        if (spellResource!=null) {
+
+            spellResource.get().addResource(caster, -1*getCost(caster,stack),true);
+
+        }
 
 
             SpellStack spellStack = APUtilities.getEntityData(caster).getOrCreateSpellStack(this);
@@ -207,7 +219,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
 
         if (getCostResource(caster,stack) !=null) {
-            if (data.getResourceAmount(getCostResource(caster,stack)) < getCost(caster, stack)) {
+            if (data.getOrCreateResource(getCostResource(caster,stack)) < getCost(caster, stack)) {
 
                 System.out.println("No Mana !");
 
@@ -280,16 +292,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
             if (spellStack.chargeTime == 0) {
 
-                spellStack.charges++;
-
-                if (spellStack.charges < getMaxCharges(caster, stack)) {
-
-
-                    spellStack.chargeTime = getChargeTime(caster, stack);
-
-
-                }
-
+              onFinishCharge(caster,stack);
 
             }
 
@@ -401,7 +404,97 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
 
 
+    public  void onEventTrigger(LivingEntity entity, SpellStack stack, Event event) {
 
 
+
+    }
+
+
+    public void onFinishCharge(LivingEntity entity, SpellStack stack) {
+
+
+        stack.charges++;
+
+        if (stack.charges < getMaxCharges(entity,stack)) {
+
+            stack.chargeTime=getChargeTime(entity,stack);
+
+        }
+
+
+
+
+
+    }
+
+
+
+
+    public void addToCooldown(int amount, SpellStack stack, LivingEntity entity) {
+
+
+        int cooldown = stack.cooldown;
+
+
+
+        if (cooldown + amount < 0) {
+
+            amount = cooldown;
+        }
+
+
+
+        cooldown+=amount;
+
+
+        if (cooldown ==0) {
+
+            onFinishCooldown(entity,stack);
+        }
+
+
+
+
+
+
+
+    }
+
+    public void addToCharge(int amount, LivingEntity entity, SpellStack stack  ) {
+
+
+
+        int charge = stack.chargeTime;
+
+
+        if (stack.charges  == getMaxCharges(entity,stack)) {
+
+            return;
+        }
+
+
+
+
+        if (charge + amount < 0) {
+
+            amount = charge;
+        }
+
+        charge+=amount;
+
+        if (charge==0) {
+
+
+            onFinishCharge(entity,stack);
+        }
+
+
+
+
+
+
+
+    }
 
 }

@@ -38,11 +38,17 @@ public class APAbilityBar implements IIngameOverlay {
 
         Minecraft minecraft = Minecraft.getInstance();
 
+        Player player = minecraft.player;
 
         IEntityData entityData = APUtilities.getEntityData(minecraft.player);
 
         IPlayerData playerData = APUtilities.getPlayerData(minecraft.player);
-        Player player = minecraft.player;
+
+        if (playerData.getActiveClass() ==null) {
+            return;
+        }
+
+
         //Renders the Item Holders
 
         int zpos = -40;
@@ -59,7 +65,7 @@ public class APAbilityBar implements IIngameOverlay {
         zpos++;
 
 
-        Resource resource = playerData.getActiveClass().getCastResource();
+
 
 
         for (Spell spell : spellBarList) {
@@ -79,10 +85,11 @@ public class APAbilityBar implements IIngameOverlay {
 
         }
 
+        Resource resource = playerData.getActiveClass().getCastResource();
 
         if (resource !=null && resource!= ResourceRegistration.FOOD.get()) {
 
-            float manaRatio = (float) (entityData.getResourceAmount(resource) / player.getAttributeValue(resource.getResourceMaxAttribute().get()));
+            float manaRatio = (float) (entityData.getResourceAmountRaw(resource) / player.getAttributeValue(resource.getResourceMaxAttribute().get()));
 
 
             //Mana Bar
@@ -100,7 +107,7 @@ public class APAbilityBar implements IIngameOverlay {
 
             ++zpos;
             mStack.scale(textScaling, textScaling, textScaling);
-            String manaData = ((int) Math.round(entityData.getResourceAmount(resource))) + "/" + (int) player.getAttributeValue(resource.getResourceMaxAttribute().get());
+            String manaData = ((int) Math.round(entityData.getResourceAmountRaw(resource))) + "/" + (int) player.getAttributeValue(resource.getResourceMaxAttribute().get());
             int stringx = 97 / 2;
             int stringy = height - 6;
 

@@ -32,7 +32,7 @@ public class AeonsPast {
         GeckoLib.initialize();
 
         AttributeRegistration.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
-
+        ResourceRegistration.RESOURCES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         SpellRegistration.SPELLS.register(FMLJavaModLoadingContext.get().getModEventBus());
 

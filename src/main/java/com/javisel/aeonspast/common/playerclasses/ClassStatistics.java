@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class ClassStatistics {
 
+    public static final String BASE_STATISTICS = "7284a361-5491-45a7-8b40-0480a894079d";
     private final APAttributeContainer MAX_HEALTH;
     private final APAttributeContainer MOVEMENT_SPEED;
     private final APAttributeContainer HEALTH_REGENERATION;
@@ -17,7 +18,8 @@ public class ClassStatistics {
     private final APAttributeContainer MAX_RESOURCE;
     private final APAttributeContainer PHYSICAL_POWER;
     private final APAttributeContainer MAGIC_POWER;
-    private final APAttributeContainer RESOURCE_REGENERATION_RATE;
+    private final float resourceRegen;
+    private final float maxResource;
 
 
 
@@ -27,15 +29,14 @@ public class ClassStatistics {
 
     public ClassStatistics(double movementSpeed, double baseHealth, double healthRegeneration, double armor, double magicRes, double maxResource, double resourceRegenRate, double physicalPower, double magicPower) {
 
-        MAX_HEALTH = new APAttributeContainer(Attributes.MAX_HEALTH, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", baseHealth, AttributeModifier.Operation.ADDITION));
-        MOVEMENT_SPEED = new APAttributeContainer(Attributes.MOVEMENT_SPEED, new AttributeModifier("6be4d98be-8968-419a-9a31-5ca0683a62c1", movementSpeed, AttributeModifier.Operation.ADDITION));
-        HEALTH_REGENERATION = new APAttributeContainer(AttributeRegistration.HEALTH_REGENERATION, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", healthRegeneration, AttributeModifier.Operation.ADDITION));
-        ARMOR = new APAttributeContainer(Attributes.ARMOR, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", armor, AttributeModifier.Operation.ADDITION));
-        MAGIC_RESIST = new APAttributeContainer(AttributeRegistration.MAGIC_RESISTANCE, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", magicRes, AttributeModifier.Operation.ADDITION));
-        MAX_RESOURCE = new APAttributeContainer(AttributeRegistration.MAXIMUM_MANA, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", maxResource, AttributeModifier.Operation.ADDITION));
-        RESOURCE_REGENERATION_RATE = new APAttributeContainer(AttributeRegistration.MANA_REGENERATION, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", resourceRegenRate, AttributeModifier.Operation.ADDITION));
-        PHYSICAL_POWER = new APAttributeContainer(AttributeRegistration.PHYSICAL_POWER, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", physicalPower, AttributeModifier.Operation.ADDITION));
-        MAGIC_POWER = new APAttributeContainer(AttributeRegistration.MAGIC_POWER, new AttributeModifier("62b2a5fe-ce17-417b-ad5c-85629c1b2efd", magicPower, AttributeModifier.Operation.ADDITION));
+        MAX_HEALTH = new APAttributeContainer(Attributes.MAX_HEALTH, new AttributeModifier(BASE_STATISTICS, baseHealth, AttributeModifier.Operation.ADDITION));
+        MOVEMENT_SPEED = new APAttributeContainer(Attributes.MOVEMENT_SPEED, new AttributeModifier(BASE_STATISTICS, movementSpeed, AttributeModifier.Operation.ADDITION));
+        HEALTH_REGENERATION = new APAttributeContainer(AttributeRegistration.HEALTH_REGENERATION, new AttributeModifier(BASE_STATISTICS, healthRegeneration, AttributeModifier.Operation.ADDITION));
+        ARMOR = new APAttributeContainer(Attributes.ARMOR, new AttributeModifier(BASE_STATISTICS, armor, AttributeModifier.Operation.ADDITION));
+        MAGIC_RESIST = new APAttributeContainer(AttributeRegistration.MAGIC_RESISTANCE, new AttributeModifier(BASE_STATISTICS, magicRes, AttributeModifier.Operation.ADDITION));
+        MAX_RESOURCE = new APAttributeContainer(AttributeRegistration.MAXIMUM_MANA, new AttributeModifier(BASE_STATISTICS, maxResource, AttributeModifier.Operation.ADDITION));
+         PHYSICAL_POWER = new APAttributeContainer(AttributeRegistration.PHYSICAL_POWER, new AttributeModifier(BASE_STATISTICS, physicalPower, AttributeModifier.Operation.ADDITION));
+        MAGIC_POWER = new APAttributeContainer(AttributeRegistration.MAGIC_POWER, new AttributeModifier(BASE_STATISTICS, magicPower, AttributeModifier.Operation.ADDITION));
 
 
         attributeContainers = new ArrayList<>();
@@ -45,7 +46,9 @@ public class ClassStatistics {
         attributeContainers.add(ARMOR);
         attributeContainers.add(MAGIC_RESIST);
         attributeContainers.add(MAX_RESOURCE);
-        attributeContainers.add(RESOURCE_REGENERATION_RATE);
+
+        this.maxResource= (float) maxResource;
+        this.resourceRegen= (float) resourceRegenRate;
 
     }
 
@@ -70,13 +73,30 @@ public class ClassStatistics {
         return MAGIC_RESIST;
     }
 
-    public APAttributeContainer getMAX_RESOURCE() {
-        return MAX_RESOURCE;
-    }
+
 
     public ArrayList<APAttributeContainer> getAttributeContainers() {
         return attributeContainers;
     }
 
 
+    public APAttributeContainer getMAX_RESOURCE() {
+        return MAX_RESOURCE;
+    }
+
+    public APAttributeContainer getPHYSICAL_POWER() {
+        return PHYSICAL_POWER;
+    }
+
+    public APAttributeContainer getMAGIC_POWER() {
+        return MAGIC_POWER;
+    }
+
+    public float getResourceRegen() {
+        return resourceRegen;
+    }
+
+    public float getMaxResource() {
+        return maxResource;
+    }
 }

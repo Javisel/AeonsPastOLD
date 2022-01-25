@@ -12,6 +12,19 @@ public class AttributeRegistration {
 
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, AeonsPast.MODID);
 
+
+    //Six Primary Attributes
+    public static final RegistryObject<Attribute> STRENGTH = ATTRIBUTES.register("strength", () -> new RangedAttribute("generic.strength", 0, 0, 100));
+    public static final RegistryObject<Attribute> CONSTITUTION = ATTRIBUTES.register("constitution", () -> new RangedAttribute("generic.constitution", 0, 0, 100));
+    public static final RegistryObject<Attribute> DEXTERITY = ATTRIBUTES.register("dexterity", () -> new RangedAttribute("generic.dexterity", 0, 0, 100));
+    public static final RegistryObject<Attribute> INTELLIGENCE = ATTRIBUTES.register("intelligence", () -> new RangedAttribute("generic.intelligence", 0, 0, 100));
+    public static final RegistryObject<Attribute> WISDOM = ATTRIBUTES.register("wisdom", () -> new RangedAttribute("generic.wisdom", 0, 0, 100));
+    public static final RegistryObject<Attribute> CHARISMA = ATTRIBUTES.register("charisma", () -> new RangedAttribute("generic.charisma", 0, 0, 100));
+
+
+
+
+
     //Defensive
     public static final RegistryObject<Attribute> HEALTH_REGENERATION = ATTRIBUTES.register("health_regeneration", () -> new RangedAttribute("generic.health_regeneration", 1, 0, 100));
     public static final RegistryObject<Attribute> MAGIC_RESISTANCE = ATTRIBUTES.register("magic_resistance", () -> new RangedAttribute("generic.magic_resistance", 0, 0, 100000));
@@ -28,11 +41,11 @@ public class AttributeRegistration {
 
 
     //Resources
-    public static final RegistryObject<Attribute> MAXIMUM_MANA = ATTRIBUTES.register("maximum_mana", () -> new RangedAttribute("generic.maximum_mana", 100, 0, 10000));
+    public static final RegistryObject<Attribute> MAXIMUM_MANA = ATTRIBUTES.register("maximum_mana", () -> new RangedAttribute("generic.maximum_mana", 100, 0, 10000).setSyncable(true));
      public static final RegistryObject<Attribute> MANA_REGENERATION = ATTRIBUTES.register("mana_regeneration", () -> new RangedAttribute("generic.mana_regeneration", 0.5, 0, 10000));
 
-    public static final RegistryObject<Attribute> MAXIMUM_FOOD = ATTRIBUTES.register("maximum_food", () -> new RangedAttribute("generic.maximum_food", 100, 0, 10000));
-    public static final RegistryObject<Attribute> FOOD_REGENERATION = ATTRIBUTES.register("mana_regeneration", () -> new RangedAttribute("generic.food_regeneration", 0, 0, 10000));
+    public static final RegistryObject<Attribute> MAXIMUM_FOOD = ATTRIBUTES.register("maximum_food", () -> new RangedAttribute("generic.maximum_food", 100, 0, 10000).setSyncable(true));
+    public static final RegistryObject<Attribute> FOOD_REGENERATION = ATTRIBUTES.register("food_regeneration", () -> new RangedAttribute("generic.food_regeneration", 0, 0, 10000));
 
 
 

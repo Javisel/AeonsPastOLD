@@ -25,7 +25,7 @@ public class PacketHandler {
 
     public static void registerMessages() {
 
-        registerMessage(ManaMessage.class, ManaMessage::encode, ManaMessage::decode, ManaMessage.Handler::handle);
+        registerMessage(ResourceMessage.class, ResourceMessage::encode, ResourceMessage::decode, ResourceMessage.Handler::handle);
         registerMessage(PlayerCapabiltiiesMessage.class, PlayerCapabiltiiesMessage::encode, PlayerCapabiltiiesMessage::decode, PlayerCapabiltiiesMessage.Handler::handle);
         registerMessage(AbilityMessage.class, AbilityMessage::encode, AbilityMessage::decode, AbilityMessage.Handler::handle);
 

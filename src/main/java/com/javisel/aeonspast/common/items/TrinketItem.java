@@ -7,6 +7,7 @@ import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
 import com.javisel.aeonspast.common.enums.TrinketEnums;
 import com.javisel.aeonspast.common.items.itemproperties.APItemProperties;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.APUtilities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
@@ -209,4 +211,12 @@ public class TrinketItem extends SpellContainer implements ICurioItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
 
     }
+
+
+    public  void onEventTrigger(LivingEntity entity, ItemStack stack, Event event) {
+
+
+
+    }
+
 }

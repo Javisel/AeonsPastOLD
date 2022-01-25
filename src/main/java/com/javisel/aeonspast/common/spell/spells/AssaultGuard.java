@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.spell.spells;
 
+import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.spell.SpellRank;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.common.spell.SpellState;
@@ -18,6 +19,8 @@ public class AssaultGuard extends ToggleSpell {
 
     public AssaultGuard() {
         super(20, 5, SpellRank.SKILL_BASIC);
+        setSpellResource(ResourceRegistration.MANA);
+
     }
 
 

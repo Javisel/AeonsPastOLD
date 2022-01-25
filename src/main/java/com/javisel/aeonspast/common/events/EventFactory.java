@@ -1,7 +1,9 @@
 package com.javisel.aeonspast.common.events;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 public class EventFactory {
@@ -24,6 +26,25 @@ public class EventFactory {
 
 
     }
+
+
+
+    public static void onDirectHit(LivingEntity attacker, LivingEntity victim, DamageSource source,float amount, ItemStack weapon) {
+
+        DirectHitEvent directHitEvent = new DirectHitEvent(victim,  source,amount,attacker,weapon   );
+
+        MinecraftForge.EVENT_BUS.post(directHitEvent);
+
+
+
+
+    }
+
+
+
+
+
+
 
 
 }

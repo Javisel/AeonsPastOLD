@@ -5,11 +5,13 @@ import com.javisel.aeonspast.common.capabiltiies.APPlayerCapability;
 import com.javisel.aeonspast.common.capabiltiies.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
 import com.javisel.aeonspast.common.enums.TrinketEnums;
-import com.javisel.aeonspast.common.networking.ManaMessage;
+import com.javisel.aeonspast.common.networking.ResourceMessage;
 import com.javisel.aeonspast.common.networking.PacketHandler;
 import com.javisel.aeonspast.common.networking.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.common.resource.Resource;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
@@ -47,53 +49,6 @@ public class APUtilities {
 
 
     }
-
-
-    public static void addManaToUnit(LivingEntity entity, float mana) {
-
-
-        setEntityMana(entity, getEntityData(entity).getMana() + mana);
-
-
-    }
-
-
-    public static void setEntityMana(LivingEntity entity, float mana) {
-
-
-        if (!entity.level.isClientSide) {
-
-            IEntityData data = getEntityData(entity);
-
-
-            if (data.getMana() + mana <= 0) {
-
-                mana = 0;
-            } else if (data.getMana() == entity.getAttributeValue(AttributeRegistration.MAXIMUM_MANA.get())) {
-                return;
-            } else if (data.getMana() + mana > entity.getAttributeValue(AttributeRegistration.MAXIMUM_MANA.get())) {
-
-                mana = (float) (entity.getAttributeValue(AttributeRegistration.MAXIMUM_MANA.get()));
-
-
-            }
-
-
-            data.setMana(mana);
-
-            if (entity instanceof ServerPlayer) {
-
-                ServerPlayer serverPlayer = (ServerPlayer) entity;
-
-                PacketHandler.INSTANCE.sendTo(new ManaMessage(data.getMana()), serverPlayer.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
-
-
-            }
-        }
-
-
-    }
-
 
     public static ItemStack getTrinket(LivingEntity entity, TrinketEnums trinketType, int slot) {
 
@@ -163,6 +118,31 @@ public class APUtilities {
 
 
     }
+
+
+
+
+
+
+
+   public static void syncResourceData(Player player, Resource resource) {
+
+       IEntityData entityData = APUtilities.getEntityData(player);
+
+       ResourceMessage resourceMessage = new ResourceMessage(entityData.getOrCreateResource(resource),resource.getRegistryName());
+
+
+       ServerPlayer serverPlayer = (ServerPlayer) player;
+       PacketHandler.INSTANCE.sendTo(resourceMessage, serverPlayer.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+
+   }
+
+
+
+
+
+
+
 
 
 }

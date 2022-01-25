@@ -5,6 +5,8 @@ import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.HashMap;
+
 public interface IEntityData {
 
 
@@ -22,7 +24,7 @@ public interface IEntityData {
 
     SpellStack getSpellStackRaw(Spell spell);
 
-    Float getResourceAmount(Resource resource);
-
-    void setResourceAmount(Resource resource, float amount);
+    public Float getOrCreateResource(Resource resource);
+    public Float getResourceAmountRaw(Resource resource);
+    HashMap<Resource, Float> getResourceMap();
 }

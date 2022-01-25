@@ -41,14 +41,11 @@ public class BasicEmblem extends TrinketItem {
 
             IPlayerData playerData = APUtilities.getPlayerData(player);
 
-            playerData.getOrCreatePlayerClass(getGameClass().get());
 
-            playerData.setActiveGameClass(gameClass.get());
+            playerData.getActiveSpells().add(super.getSpell(player, stack).get());
+            playerData.getSpellBar().getSpellList().set(0, super.getSpell(player,stack).get());
+            getGameClass().get().activateOnPlayer(player);
 
-            playerData.getActiveSpells().add(super.getSpell(slotContext.entity(), stack).get());
-
-
-            APUtilities.syncTotalPlayerData(player);
         }
 
 
@@ -66,10 +63,9 @@ public class BasicEmblem extends TrinketItem {
 
             Player player = (Player) slotContext.entity();
 
-            IPlayerData playerData = APUtilities.getPlayerData(player);
 
-
-            playerData.setActiveGameClass(null);
+            
+            getGameClass().get().deActivateOnPlayer(player);
 
 
         }

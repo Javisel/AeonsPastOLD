@@ -38,7 +38,6 @@ public class AbilityMessage {
 
             ctx.get().enqueueWork(() -> {
 
-                System.out.println("Beginning work!");
 
                 Player player = ctx.get().getSender();
 

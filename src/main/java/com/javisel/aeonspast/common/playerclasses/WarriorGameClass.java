@@ -7,6 +7,8 @@ public class WarriorGameClass extends PlayerGameClass {
 
 
     public WarriorGameClass() {
-        super(new ClassStatistics(0, 80, 1.5, 30, 15, 100, 2, 2, 2), ResourceRegistration.FOOD, ItemRegistration.WARRIOR_EMBLEM);
+        super(new ClassStatistics(-0.003, 80, 1.5, 30, 15, 326, 2, 0, 0), ResourceRegistration.MANA, ItemRegistration.WARRIOR_EMBLEM);
     }
+
+
 }

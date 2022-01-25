@@ -219,56 +219,52 @@ public class APEntityData implements IEntityData {
     }
 
 
+
     @Override
-    public Float getResourceAmount(Resource resource) {
+    public HashMap<Resource, Float> getResourceMap() {
+
+        return resourceMap;
+    }
 
 
-        if (resourceMap ==null) {
+    @Override
+    public Float getOrCreateResource(Resource resource) {
+
+
+        if (resourceMap==null) {
 
             resourceMap = new HashMap<>();
-
-
-
         }
 
         if (!resourceMap.containsKey(resource)) {
 
             resourceMap.put(resource, (float) resource.getResourceMaxAttribute().get().getDefaultValue());
-
         }
 
-        return  resourceMap.get(resource);
-
+        return resourceMap.get(resource);
     }
 
     @Override
-    public void setResourceAmount(Resource resource, float amount) {
+    public Float getResourceAmountRaw(Resource resource) {
 
 
 
-
-        if (resourceMap ==null) {
-
-            resourceMap = new HashMap<>();
+            if (resourceMap == null) {
+                spellStackHashMap = new HashMap<>();
 
 
+            }
 
-        }
 
-        if (!resourceMap.containsKey(resource)) {
+            if (resourceMap.containsKey(resource)) {
 
-            resourceMap.put(resource, amount);
+                return resourceMap.get(resource);
+            }
 
-            return;
-        }
-
-        resourceMap.replace(resource,amount);
+            return null;
 
 
 
     }
-
-
-
-
 }
+

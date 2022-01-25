@@ -2,6 +2,7 @@ package com.javisel.aeonspast.common.registration;
 
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.items.BasicTrinketStone;
+import com.javisel.aeonspast.common.items.DebugSpellHolder;
 import com.javisel.aeonspast.common.items.LightOfGodStone;
 import com.javisel.aeonspast.common.items.WarriorShoutStone;
 import com.javisel.aeonspast.common.items.emblem.WarriorEmblem;
@@ -24,6 +25,7 @@ public class ItemRegistration {
     public static final RegistryObject<Item> STORM_STRIKE = ITEMS.register("storm_strike_stone", () -> new BasicTrinketStone(SpellRegistration.STORM_STRIKE));
     public static final RegistryObject<Item> BLADESTORM = ITEMS.register("bladestorm_stone", () -> new BasicTrinketStone(SpellRegistration.BLADESTORM));
     public static final RegistryObject<Item> LIGHT_OF_GOD = ITEMS.register("light_of_god_stone", () -> new LightOfGodStone());
+    public static final RegistryObject<Item> DEBUGSPELLITEM = ITEMS.register("debug_spell_item", () -> new DebugSpellHolder());
 
 
 }

@@ -21,6 +21,7 @@ public class SpellRegistration {
     public static final RegistryObject<Spell> STORM_STRIKE = SPELLS.register("storm_strike", () -> new StormStrike());
     public static final RegistryObject<Spell> BLADESTORM = SPELLS.register("bladestorm", () -> new Bladestorm());
     public static final RegistryObject<Spell> LIGHT_OF_GOD = SPELLS.register("light_of_god", () -> new LightOfGod());
+    public static final RegistryObject<Spell> HOP = SPELLS.register("hop", () -> new Hop());
 
 
 }
