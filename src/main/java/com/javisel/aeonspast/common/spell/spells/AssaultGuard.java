@@ -5,7 +5,7 @@ import com.javisel.aeonspast.common.spell.SpellRank;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.common.spell.SpellState;
 import com.javisel.aeonspast.common.spell.ToggleSpell;
-import com.javisel.aeonspast.utilities.APUtilities;
+import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,7 +33,7 @@ public class AssaultGuard extends ToggleSpell {
         if (state == SpellState.OFF) {
 
 
-            APUtilities.removeAttributeModifierIfPresent(entity, Attributes.ATTACK_DAMAGE, ASSAULT_GUARD_BUFF);
+            Utilities.removeAttributeModifierIfPresent(entity, Attributes.ATTACK_DAMAGE, ASSAULT_GUARD_BUFF);
 
             assaultGuardBuff = new AttributeModifier(UUID.fromString("916d2955-8318-45e3-a230-3e74f9af4695"), "assaultguardspellbuff", 20, AttributeModifier.Operation.ADDITION);
 
@@ -46,7 +46,7 @@ public class AssaultGuard extends ToggleSpell {
         if (state == SpellState.ON) {
 
 
-            APUtilities.removeAttributeModifierIfPresent(entity, Attributes.ARMOR, ASSAULT_GUARD_BUFF);
+            Utilities.removeAttributeModifierIfPresent(entity, Attributes.ARMOR, ASSAULT_GUARD_BUFF);
 
             assaultGuardBuff = new AttributeModifier(UUID.fromString("916d2955-8318-45e3-a230-3e74f9af4695"), "assaultguardspellbuff", 30, AttributeModifier.Operation.ADDITION);
 

@@ -8,7 +8,6 @@ import static com.javisel.aeonspast.AeonsPast.MODID;
 public class WeaponHandler {
 
 
-
     public void initWeapon(ItemStack stack) {
 
         CompoundTag tag = stack.hasTag() ? stack.getTag() : new CompoundTag();
@@ -18,26 +17,7 @@ public class WeaponHandler {
         CompoundTag weaponData = new CompoundTag();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
 
 
 }

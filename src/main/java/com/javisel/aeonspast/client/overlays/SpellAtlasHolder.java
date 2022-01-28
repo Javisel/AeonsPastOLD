@@ -45,7 +45,7 @@ public class SpellAtlasHolder extends TextureAtlasHolder {
                 ResourceLocation newlocation = new ResourceLocation(newloc);
 
 
-                 locations.add(newlocation);
+                locations.add(newlocation);
 
             }
 

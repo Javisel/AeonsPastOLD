@@ -2,9 +2,9 @@ package com.javisel.aeonspast.common.items.weapons;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.javisel.aeonspast.common.attributes.APAttributeContainer;
+import com.javisel.aeonspast.common.attributes.AttributeContainer;
 import com.javisel.aeonspast.common.items.BaseItem;
-import com.javisel.aeonspast.common.items.itemproperties.APItemProperties;
+import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -21,10 +21,10 @@ public class BaseWeapon extends BaseItem {
     private final float attackDamage;
     private final float baseattackSpeed;
     protected Multimap<Attribute, AttributeModifier> defaultModifiers;
-    private ArrayList<APAttributeContainer> attributeList;
+    private ArrayList<AttributeContainer> attributeList;
 
-    public BaseWeapon(Item.Properties properties, APItemProperties apItemProperties, float baseAttackDamage, float baseAttackSpeed, @Nullable APAttributeContainer... attributes) {
-        super(properties, apItemProperties);
+    public BaseWeapon(Item.Properties properties, ItemProperty apItemProperties, float baseAttackDamage, float baseAttackSpeed, @Nullable AttributeContainer... attributes) {
+        super(properties);
 
 
         this.attackDamage = baseAttackDamage;
@@ -32,7 +32,7 @@ public class BaseWeapon extends BaseItem {
         if (attributes != null) {
 
             attributeList = new ArrayList<>();
-            for (APAttributeContainer attribute : attributes) {
+            for (AttributeContainer attribute : attributes) {
 
                 attributeList.add(attribute);
 
@@ -49,7 +49,7 @@ public class BaseWeapon extends BaseItem {
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.attackDamage, AttributeModifier.Operation.ADDITION));
             builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", baseattackSpeed, AttributeModifier.Operation.ADDITION));
-            for (APAttributeContainer attribute : attributeList) {
+            for (AttributeContainer attribute : attributeList) {
 
                 builder.put(attribute.getAttribute(), attribute.getModifier());
 

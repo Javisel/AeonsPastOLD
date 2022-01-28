@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.networking;
 
-import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
-import com.javisel.aeonspast.utilities.APUtilities;
+import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
@@ -15,7 +15,7 @@ public class AbilityMessage {
 
     public AbilityMessage(int slot) {
 
-        this.slot = slot;
+        AbilityMessage.slot = slot;
 
 
     }
@@ -42,9 +42,9 @@ public class AbilityMessage {
                 Player player = ctx.get().getSender();
 
 
-                IPlayerData playerData = APUtilities.getPlayerData(player);
+                IPlayerData playerData = Utilities.getPlayerData(player);
 
-                playerData.getSpellBar().getSpellList().get(mes.slot).attemptCast(player, APUtilities.getEntityData(player).getOrCreateSpellStack(playerData.getSpellBar().getSpellList().get(mes.slot)));
+                playerData.getSpellBar().getSpellList().get(slot).attemptCast(player, Utilities.getEntityData(player).getOrCreateSpellStack(playerData.getSpellBar().getSpellList().get(slot)));
 
 
             });

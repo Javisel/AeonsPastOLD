@@ -1,7 +1,9 @@
 package com.javisel.aeonspast;
 
-import com.javisel.aeonspast.common.capabiltiies.IEntityData;
-import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.common.capabiltiies.itemstack.IItemStackData;
+import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
@@ -10,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -26,12 +29,19 @@ public class ModBusEventHandler {
 
     public static final ResourceLocation CLASS_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "classes");
     public static final ResourceLocation SPELL_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "spells");
-    public static final ResourceLocation RESOURCE_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID,"resources");
+    public static final ResourceLocation RESOURCE_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "resources");
+    public static final ResourceLocation ITEM_PROPERTY_NAME = new ResourceLocation(AeonsPast.MODID, "item_property");
+
+
+
+
+
 
     @SubscribeEvent
     public static void registerNewCapabilties(RegisterCapabilitiesEvent event) {
         event.register(IEntityData.class);
         event.register(IPlayerData.class);
+        event.register(IItemStackData.class);
 
     }
 
@@ -56,7 +66,7 @@ public class ModBusEventHandler {
     public static void addnewRegistries(RegistryEvent.NewRegistry event) {
 
 
-         RegistryBuilder<PlayerGameClass> registryBuilder = new RegistryBuilder<>();
+        RegistryBuilder<PlayerGameClass> registryBuilder = new RegistryBuilder<>();
 
         registryBuilder.setName(CLASS_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(PlayerGameClass.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
@@ -67,12 +77,24 @@ public class ModBusEventHandler {
 
         RegistryBuilder<Resource> resourceRegistryBuilder = new RegistryBuilder<>();
 
-        resourceRegistryBuilder.setName(RESOURCE_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(Resource.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID,"none")).create();
+        resourceRegistryBuilder.setName(RESOURCE_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(Resource.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
+
+        RegistryBuilder<ItemProperty> apItemPropertyRegistryBuilder = new RegistryBuilder<>();
+
+        apItemPropertyRegistryBuilder.setName(ITEM_PROPERTY_NAME).setMaxID(Integer.MAX_VALUE).setType(ItemProperty.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
 
 
     }
+
+    @SubscribeEvent
+    public static void textures(TextureStitchEvent.Pre event) {
+
+
+    }
+
+
 
 
 }

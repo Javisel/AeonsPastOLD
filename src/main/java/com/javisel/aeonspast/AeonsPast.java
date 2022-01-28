@@ -3,7 +3,7 @@ package com.javisel.aeonspast;
 import com.javisel.aeonspast.client.InputHandler;
 import com.javisel.aeonspast.client.OverlayRegistration;
 import com.javisel.aeonspast.client.main.ClientProxy;
-import com.javisel.aeonspast.common.items.APItemGroup;
+import com.javisel.aeonspast.common.items.AeonsPastItemGroup;
 import com.javisel.aeonspast.common.networking.PacketHandler;
 import com.javisel.aeonspast.common.registration.*;
 import com.javisel.aeonspast.utilities.StringKeys;
@@ -26,7 +26,7 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 public class AeonsPast {
     public static final String MODID = "aeonspast";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static final CreativeModeTab APTAB = new APItemGroup();
+    public static final CreativeModeTab APTAB = new AeonsPastItemGroup();
 
     public AeonsPast() {
         GeckoLib.initialize();

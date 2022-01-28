@@ -1,8 +1,8 @@
 package com.javisel.aeonspast.common.resource;
 
 import com.javisel.aeonspast.ModBusEventHandler;
-import com.javisel.aeonspast.common.capabiltiies.IEntityData;
-import com.javisel.aeonspast.utilities.APUtilities;
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -10,18 +10,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.RegistryObject;
 
-public  class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<Resource> {
+public class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<Resource> {
 
 
     private final RegistryObject<Attribute> ResourceMaxAttribute;
     private final RegistryObject<Attribute> ResourceRegenAttribute;
-    private  boolean doesRegenerate = true;
+    private boolean doesRegenerate = true;
 
     public Resource(RegistryObject<Attribute> resourceMaxAttribute, RegistryObject<Attribute> resourceRegenAttribute) {
         ResourceMaxAttribute = resourceMaxAttribute;
         ResourceRegenAttribute = resourceRegenAttribute;
     }
 
+    public static Resource getResourceByLocation(ResourceLocation resourceLocation) {
+
+
+        return resourceLocation == null ? null : (Resource) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.RESOURCE_REGISTRY_NAME).getValue(resourceLocation);
+    }
 
     public boolean doesNaturallyRegenerate(LivingEntity entity) {
 
@@ -29,20 +34,19 @@ public  class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<
         return true;
     }
 
-    public Resource setNoRegen(){
+    public Resource setNoRegen() {
 
 
-        doesRegenerate=false;
+        doesRegenerate = false;
         return this;
 
     }
 
     public void setResourceAmount(LivingEntity entity, float amount, boolean sync) {
 
-        IEntityData data = APUtilities.getEntityData(entity);
+        IEntityData data = Utilities.getEntityData(entity);
 
         float old = data.getOrCreateResource(this);
-
 
 
         if (data.getResourceMap().containsKey(this)) {
@@ -52,33 +56,31 @@ public  class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<
         } else {
 
 
-            data.getResourceMap().put(this,amount);
+            data.getResourceMap().put(this, amount);
         }
 
 
-        resourceAmountChange(entity,old,amount);
+        resourceAmountChange(entity, old, amount);
 
         if (entity instanceof Player && sync && !entity.level.isClientSide) {
 
 
-            APUtilities.syncResourceData((Player) entity,this );
+            Utilities.syncResourceData((Player) entity, this);
         }
 
 
     }
 
-
     public void tick(LivingEntity entity) {
 
-        IEntityData data = APUtilities.getEntityData(entity);
+        IEntityData data = Utilities.getEntityData(entity);
 
-        if (data.getTicks()==20) {
+        if (data.getTicks() == 20) {
 
             if (doesNaturallyRegenerate(entity)) {
 
 
-
-                addResource(entity, (float) entity.getAttributeValue(ResourceRegenAttribute.get()) ,false);
+                addResource(entity, (float) entity.getAttributeValue(ResourceRegenAttribute.get()), false);
 
 
             }
@@ -86,10 +88,7 @@ public  class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<
         }
 
 
-
     }
-
-
 
     public void resourceAmountChange(LivingEntity entity, float oldamount, float newamount) {
 
@@ -97,32 +96,29 @@ public  class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<
 
     public void addResource(LivingEntity entity, float amount, boolean sync) {
 
-        IEntityData data = APUtilities.getEntityData(entity);
+        IEntityData data = Utilities.getEntityData(entity);
 
         float old = data.getOrCreateResource(this);
-
 
 
         if (old == entity.getAttribute(ResourceMaxAttribute.get()).getValue()) {
             return;
 
         }
-        if (old + amount <0) {
+        if (old + amount < 0) {
 
-            amount=old;
+            amount = old;
 
 
         }
 
-        if (old+amount > entity.getAttribute(ResourceMaxAttribute.get()).getValue() ) {
+        if (old + amount > entity.getAttribute(ResourceMaxAttribute.get()).getValue()) {
 
             amount = (float) (entity.getAttributeValue(ResourceMaxAttribute.get()) - old);
 
         }
 
-               setResourceAmount(entity, amount+old,sync);
-
-
+        setResourceAmount(entity, amount + old, sync);
 
 
     }
@@ -137,16 +133,6 @@ public  class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<
 
     public boolean doesRegenerate() {
         return doesRegenerate;
-    }
-
-
-
-
-
-    public static Resource getResourceByLocation(ResourceLocation resourceLocation) {
-
-
-        return resourceLocation == null ? null: (Resource) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.RESOURCE_REGISTRY_NAME).getValue(resourceLocation);
     }
 
 }

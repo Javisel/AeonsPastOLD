@@ -2,9 +2,7 @@ package com.javisel.aeonspast.client.main;
 
 import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
 import com.javisel.aeonspast.client.spell.SpellRenderer;
-import com.javisel.aeonspast.common.spell.Spell;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -12,12 +10,8 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryManager;
-
-import java.util.ArrayList;
 
 import static com.javisel.aeonspast.AeonsPast.MODID;
-import static com.javisel.aeonspast.ModBusEventHandler.SPELL_REGISTRY_NAME;
 
 
 @Mod.EventBusSubscriber
@@ -50,7 +44,6 @@ public class ClientProxy {
 
         @SubscribeEvent
         public static void textures(TextureStitchEvent.Pre event) {
-
 
 
         }

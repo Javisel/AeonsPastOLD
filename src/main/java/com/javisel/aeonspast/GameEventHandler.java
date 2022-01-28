@@ -1,31 +1,31 @@
 package com.javisel.aeonspast;
 
 
-import com.javisel.aeonspast.common.capabiltiies.APEntityProvider;
-import com.javisel.aeonspast.common.capabiltiies.APPlayerProvider;
-import com.javisel.aeonspast.common.capabiltiies.IEntityData;
-import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
-import com.javisel.aeonspast.common.combat.APDamageEngine;
-import com.javisel.aeonspast.common.events.APDamageEvent;
-import com.javisel.aeonspast.common.events.EventFactory;
+import com.javisel.aeonspast.common.capabiltiies.entity.EntityProvider;
+import com.javisel.aeonspast.common.capabiltiies.itemstack.ItemStackDataProvider;
+import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.combat.APDamageSource;
+import com.javisel.aeonspast.common.config.ClassDataLoader;
+import com.javisel.aeonspast.common.config.WeaponDataLoader;
+import com.javisel.aeonspast.common.items.weapons.WeaponData;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
-import com.javisel.aeonspast.utilities.APUtilities;
+import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,29 +38,34 @@ import java.util.ArrayList;
 
 public class GameEventHandler {
 
+    public static ClassDataLoader CLASS_STATISTICS_LOADER;
+    public static WeaponDataLoader WEAPON_STATISTICS_LOADER;
 
     // @SubscribeEvent
     public static void newDamageCalculations(LivingDamageEvent event) {
 
 
-        if (!(event instanceof APDamageEvent)) {
+        if (!(event.getSource() instanceof APDamageSource)) {
 
             event.setCanceled(true);
-             Entity victim = event.getEntity();
-
-
-             if (event.getSource().getDirectEntity() instanceof Player){
-
-                 Player player = (Player) event.getSource().getDirectEntity();
-
-
-
-             }
-
 
 
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -78,7 +83,7 @@ public class GameEventHandler {
 
         if (event.getObject() instanceof LivingEntity) {
 
-            APEntityProvider provider = new APEntityProvider();
+            EntityProvider provider = new EntityProvider();
             event.addCapability(new ResourceLocation(AeonsPast.MODID, "entitydata"), provider);
 
 
@@ -98,12 +103,49 @@ public class GameEventHandler {
     }
 
 
+    @SubscribeEvent
+    public static void attachCapabilityStack(AttachCapabilitiesEvent<ItemStack> event) {
+
+
+
+        ItemStack itemStack = event.getObject();
+
+        Item item = itemStack.getItem();
+
+
+
+        ItemStackDataProvider itemStackDataProvider = new ItemStackDataProvider();
+        event.addCapability(new ResourceLocation(AeonsPast.MODID,"itemdata"),itemStackDataProvider);
+
+        WeaponData weaponData = WEAPON_STATISTICS_LOADER.getWeaponData(item.getRegistryName());
+
+
+        if (weaponData!=null) {
+
+
+            weaponData.loadToWeapon(itemStack);
+
+
+        } else {
+
+            System.out.println("NUL Ldata");
+        }
+
+
+
+
+
+
+
+
+    }
+
     //Player Regeneration
     @SubscribeEvent
     public static void tick(TickEvent.PlayerTickEvent tickEvent) {
 
 
-        if (tickEvent.phase == TickEvent.Phase.END) {
+        if (tickEvent.phase == TickEvent.Phase.START) {
 
             Player player = tickEvent.player;
 
@@ -118,31 +160,24 @@ public class GameEventHandler {
                 return;
             }
 
-            IEntityData data = APUtilities.getEntityData(player);
-            IPlayerData playerData = APUtilities.getPlayerData(player);
+            IEntityData data = Utilities.getEntityData(player);
+            IPlayerData playerData = Utilities.getPlayerData(player);
 
             data.tick();
 
-            if (playerData.getActiveClass() !=null) {
+            if (playerData.getActiveClass() != null) {
 
                 Resource resource = playerData.getActiveClass().getCastResource();
 
-                if (resource !=null) {
+                if (resource != null) {
 
-                    if (player.level.isClientSide) {
 
-                        System.out.println("Client Values: " + data.getResourceAmountRaw(resource) + "/" + player.getAttributeValue(resource.getResourceMaxAttribute().get()));
-                    }
-                    if (!player.level.isClientSide) {
-
-                        System.out.println("Server Values: " + data.getResourceAmountRaw(resource) + "/" + player.getAttributeValue(resource.getResourceMaxAttribute().get()));
-                    }
                     resource.tick(player);
 
                 }
 
             }
-            ArrayList<Spell> spells = APUtilities.getPlayerData(player).getActiveSpells();
+            ArrayList<Spell> spells = Utilities.getPlayerData(player).getActiveSpells();
 
 
             for (Spell spell : spells) {
@@ -156,11 +191,6 @@ public class GameEventHandler {
             if (data.getTicks() == 20) {
 
                 player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
-
-
-
-
-
 
 
             }
@@ -178,7 +208,7 @@ public class GameEventHandler {
         if (!event.getPlayer().level.isClientSide) {
 
 
-            APUtilities.syncTotalPlayerData(event.getPlayer());
+            Utilities.syncTotalPlayerData(event.getPlayer());
         }
 
 
@@ -196,51 +226,36 @@ public class GameEventHandler {
     public static void onDirectHitEvent(LivingDamageEvent event) {
 
 
-        if (event.getEntityLiving() !=null) {
+        if (event.getEntityLiving() != null) {
 
             LivingEntity victim = event.getEntityLiving();
 
 
-            if (event.getSource().getDirectEntity() !=null) {
+            if (event.getSource().getDirectEntity() != null) {
 
-               Entity direct =  event.getSource().getDirectEntity();
-
-
-               if (direct instanceof LivingEntity) {
+                Entity direct = event.getSource().getDirectEntity();
 
 
-                   LivingEntity directAttacker = (LivingEntity) direct;
+                if (direct instanceof LivingEntity) {
 
 
+                    LivingEntity directAttacker = (LivingEntity) direct;
 
 
-               }
-
-
+                }
 
 
             }
 
 
-
-
-
-
         }
-
-
-
-
 
 
     }
 
 
-
-
-
     @SubscribeEvent
-    public static void eventTrigger(LivingEvent event){
+    public static void eventTrigger(LivingEvent event) {
 
 
         if (event.getEntityLiving() instanceof Player) {
@@ -252,27 +267,35 @@ public class GameEventHandler {
                 return;
             }
 
-            IPlayerData playerData = APUtilities.getPlayerData(player);
-            IEntityData entityData = APUtilities.getEntityData(player);
+            IPlayerData playerData = Utilities.getPlayerData(player);
+            IEntityData entityData = Utilities.getEntityData(player);
 
             for (Spell spell : playerData.getActiveSpells()) {
 
 
-                spell.onEventTrigger(player,entityData.getSpellStackRaw(spell),event);
-
-
+                spell.onEventTrigger(player, entityData.getSpellStackRaw(spell), event);
 
 
             }
 
 
-
-
-
         }
+
+
+    }
+    @SubscribeEvent
+    public static void reload(AddReloadListenerEvent event) {
+
+
+        WEAPON_STATISTICS_LOADER = new WeaponDataLoader();
+
+
+        CLASS_STATISTICS_LOADER = new ClassDataLoader( );
+
+        event.addListener(CLASS_STATISTICS_LOADER);
+        event.addListener(WEAPON_STATISTICS_LOADER);
 
 
 
     }
-
 }

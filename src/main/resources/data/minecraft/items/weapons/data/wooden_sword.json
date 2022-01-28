@@ -1,0 +1,47 @@
+{
+  "attack_damage": {
+    "min": 10,
+    "max": 30
+  },
+  "attack_speed": {
+    "min": 1.44,
+    "max": 1.76
+  },
+
+  "critical_chance" : {
+    "min": 0,
+    "max" :0
+
+  },
+  "critical_damage": {
+    "min": 2,
+    "max": 2
+  },
+  "durability": {
+    "min": 48,
+    "max": 78
+  },
+  "enchantability": {
+    "min": 15,
+    "max": 15
+  },
+  "range": {
+    "min": 4,
+    "max": 4
+  },
+
+
+  "secondarydata" : [],
+  "properties": [
+
+     "aeonspast:martial",
+    "aeonspast:versatile",
+    "aeonspast:sweep",
+    "aeonspast:kinetic"
+  ],
+  "spells": [
+    "aeonspast:cleave",
+    "aeonspast:uppercut",
+    "aeonspast:double_strike"
+  ]
+}

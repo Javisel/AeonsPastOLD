@@ -2,13 +2,13 @@ package com.javisel.aeonspast.client.spell;
 
 import com.javisel.aeonspast.client.RenderUtilities;
 import com.javisel.aeonspast.client.main.ClientProxy;
-import com.javisel.aeonspast.client.overlays.APAbilityBar;
-import com.javisel.aeonspast.common.capabiltiies.IEntityData;
-import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
+import com.javisel.aeonspast.client.overlays.AbilityBar;
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.spell.ICustomUseRequirement;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
-import com.javisel.aeonspast.utilities.APUtilities;
+import com.javisel.aeonspast.utilities.Utilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -25,7 +25,6 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -81,8 +80,8 @@ public class SpellRenderer {
         Minecraft minecraft = Minecraft.getInstance();
 
         Player player = minecraft.player;
-        IPlayerData playerData = APUtilities.getPlayerData(player);
-        IEntityData entityData = APUtilities.getEntityData(player);
+        IPlayerData playerData = Utilities.getPlayerData(player);
+        IEntityData entityData = Utilities.getEntityData(player);
 
         Spell spell = spellStack.getSpell();
 
@@ -90,7 +89,6 @@ public class SpellRenderer {
 
 
         poseStack.pushPose();
-        ;
 
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
@@ -111,12 +109,11 @@ public class SpellRenderer {
         z++;
 
 
-
-        if (spell.getCostResource(player,spellStack) !=null) {
+        if (spell.getCostResource(player, spellStack) != null) {
             if (entityData.getOrCreateResource(spell.getCostResource(player, spellStack)) < spell.getCost(player, spellStack)) {
 
 
-                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16, 16, xpos, ypos, z, 60, 9, 16, 16);
+                RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16, 16, xpos, ypos, z, 60, 9, 16, 16);
 
             }
 
@@ -132,7 +129,7 @@ public class SpellRenderer {
 
             if (!customUseRequirement.canMeetRequirement(player, spellStack)) {
 
-                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16, 16, xpos, ypos, z, 92, 9, 16, 16);
+                RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16, 16, xpos, ypos, z, 92, 9, 16, 16);
 
             }
 
@@ -144,7 +141,6 @@ public class SpellRenderer {
         if (spell.getCost(player, spellStack) >= 1) {
             String spellCost = Integer.toString((int) spell.getCost(player, spellStack));
             poseStack.pushPose();
-            ;
 
             float stringscale = 0.5f;
             int stringxpos = xpos + 1;
@@ -157,17 +153,15 @@ public class SpellRenderer {
             Gui.drawString(poseStack, gui.getFont(), spellCost, stringxpos, stringypos, z);
 
             poseStack.popPose();
-            ;
 
         }
 
         z++;
 
-        if (spell.getMaxCharges(player, spellStack) > 1 && spellStack.getCharges()!=0) {
+        if (spell.getMaxCharges(player, spellStack) > 1 && spellStack.getCharges() != 0) {
 
 
             poseStack.pushPose();
-            ;
             float stringscale = 0.5f;
 
             String spellCharges = Integer.toString(spellStack.getCharges());
@@ -180,7 +174,6 @@ public class SpellRenderer {
 
             Gui.drawString(poseStack, gui.getFont(), spellCharges, stringxpos, stringypos, z);
             poseStack.popPose();
-            ;
 
 
         }
@@ -210,17 +203,17 @@ public class SpellRenderer {
             poseStack.scale(stringscale, stringscale, 1);
             if (cdpercent > 0) {
 
-                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f * cdpercent, xpos, ypos + 16 * (1.0f - cdpercent), z, 76, 9, 16, 16 * cdpercent);
+                RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f * cdpercent, xpos, ypos + 16 * (1.0f - cdpercent), z, 76, 9, 16, 16 * cdpercent);
 
             }
 
 
-            if (spellStack.getCooldown() <=5){
+            if (spellStack.getCooldown() <= 5) {
 
 
                 z++;
-                RenderSystem.setShaderColor(1,1,1,1.0f);
-                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f  , xpos, ypos, z, 108, 9, 16, 16);
+                RenderSystem.setShaderColor(1, 1, 1, 1.0f);
+                RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f, xpos, ypos, z, 108, 9, 16, 16);
 
 
             }
@@ -239,7 +232,7 @@ public class SpellRenderer {
                 float colorcoefficient = spellStack.getCharges() == 0 ? 0.80f : 0.01f;
                 RenderSystem.setShaderColor(1, 1, 1, colorcoefficient);
                 z++;
-                RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f * cdpercent, xpos, ypos + 16 * (1.0f - cdpercent), z, 76, 9, 16, 16 * cdpercent);
+                RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16f, 1f, xpos, ypos + 16 * (1.0f - cdpercent), z, 76, 9, 16, 1);
 
                 if (spellStack.getCharges() == 0) {
 
@@ -257,18 +250,16 @@ public class SpellRenderer {
                     poseStack.scale(stringscale, stringscale, 1);
                     Gui.drawCenteredString(poseStack, gui.getFont(), displaytext, stringxpos, stringypos, z);
 
-                    if (spellStack.getChargeTime() <=5){
+                    if (spellStack.getChargeTime() <= 2) {
 
 
                         z++;
-                        RenderSystem.setShaderColor(1,(float)215/255,0,1.0f);
-                        RenderUtilities.renderTextureFromSprite(poseStack, APAbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f  , xpos, ypos + 16 , z, 76, 9, 16, 16);
+                        RenderSystem.setShaderColor(1, (float) 215 / 255, 0, 1.0f);
+                        RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f, xpos, ypos + 16, z, 76, 9, 16, 16);
 
 
                     }
                 }
-
-
 
 
                 poseStack.popPose();
@@ -288,11 +279,11 @@ public class SpellRenderer {
 
         for (Direction direction : Direction.values()) {
             random.setSeed(42L);
-            this.renderQuadList(poseStack, vertexConsumer, bakedModel.getQuads((BlockState) null, direction, random), spellStack, x, y);
+            this.renderQuadList(poseStack, vertexConsumer, bakedModel.getQuads(null, direction, random), spellStack, x, y);
         }
 
         random.setSeed(42L);
-        this.renderQuadList(poseStack, vertexConsumer, bakedModel.getQuads((BlockState) null, (Direction) null, random), spellStack, x, y);
+        this.renderQuadList(poseStack, vertexConsumer, bakedModel.getQuads(null, null, random), spellStack, x, y);
     }
 
 

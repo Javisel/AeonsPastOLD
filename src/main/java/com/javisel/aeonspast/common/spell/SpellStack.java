@@ -14,7 +14,6 @@ public final class SpellStack {
     protected int chargeTime = 0;
 
 
-
     protected Spell spell;
     protected CompoundTag spellData;
     protected SpellState spellState;
@@ -62,7 +61,7 @@ public final class SpellStack {
         tag.putInt(CHARGES, charges);
         tag.putInt(COOLDOWN, cooldown);
         tag.putInt(CHARGE_TIMER, chargeTime);
-         tag.putInt(SPELL_STATE, spellState.getId());
+        tag.putInt(SPELL_STATE, spellState.getId());
         if (spellData != null) {
             tag.put(SPELL_DATA, spellData);
         }

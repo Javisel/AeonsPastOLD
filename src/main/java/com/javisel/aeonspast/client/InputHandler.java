@@ -1,11 +1,11 @@
 package com.javisel.aeonspast.client;
 
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
+import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.networking.AbilityMessage;
 import com.javisel.aeonspast.common.networking.PacketHandler;
 import com.javisel.aeonspast.common.spell.Spell;
-import com.javisel.aeonspast.utilities.APUtilities;
+import com.javisel.aeonspast.utilities.Utilities;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -82,7 +82,7 @@ public class InputHandler {
         Player player = minecraft.player;
 
 
-        IPlayerData playerData = APUtilities.getPlayerData(player);
+        IPlayerData playerData = Utilities.getPlayerData(player);
 
 
         if (slot > playerData.getSpellBar().getSpellList().size()) {
@@ -98,7 +98,7 @@ public class InputHandler {
 
             System.out.println("Spell exists!");
 
-            if (spell.attemptCast(player, APUtilities.getEntityData(player).getSpellStackRaw(spell))) {
+            if (spell.attemptCast(player, Utilities.getEntityData(player).getSpellStackRaw(spell))) {
 
                 System.out.println("Passed client check!");
 

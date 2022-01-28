@@ -1,13 +1,13 @@
 package com.javisel.aeonspast.common.items.emblem;
 
-import com.javisel.aeonspast.common.capabiltiies.IPlayerData;
+import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.enums.TrinketEnums;
 import com.javisel.aeonspast.common.items.TrinketItem;
-import com.javisel.aeonspast.common.items.itemproperties.APItemProperties;
-import com.javisel.aeonspast.common.items.itemproperties.APItemRarity;
+import com.javisel.aeonspast.common.items.properties.ItemProperty;
+import com.javisel.aeonspast.common.items.properties.ItemRarity;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.spell.Spell;
-import com.javisel.aeonspast.utilities.APUtilities;
+import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
@@ -19,8 +19,8 @@ public class BasicEmblem extends TrinketItem {
     final RegistryObject<PlayerGameClass> gameClass;
 
 
-    public BasicEmblem(Properties properties, RegistryObject<PlayerGameClass> gameClass, RegistryObject<Spell> spell) {
-        super(TrinketEnums.EMBLEM, properties.stacksTo(1), new APItemProperties(APItemRarity.EMBLEM), spell);
+    public BasicEmblem(  RegistryObject<PlayerGameClass> gameClass, RegistryObject<Spell> spell) {
+        super(TrinketEnums.EMBLEM, new Properties().stacksTo(1).setNoRepair(), spell );
 
 
         this.gameClass = gameClass;
@@ -39,11 +39,11 @@ public class BasicEmblem extends TrinketItem {
 
             Player player = (Player) slotContext.entity();
 
-            IPlayerData playerData = APUtilities.getPlayerData(player);
+            IPlayerData playerData = Utilities.getPlayerData(player);
 
 
             playerData.getActiveSpells().add(super.getSpell(player, stack).get());
-            playerData.getSpellBar().getSpellList().set(0, super.getSpell(player,stack).get());
+            playerData.getSpellBar().getSpellList().set(0, super.getSpell(player, stack).get());
             getGameClass().get().activateOnPlayer(player);
 
         }
@@ -64,7 +64,6 @@ public class BasicEmblem extends TrinketItem {
             Player player = (Player) slotContext.entity();
 
 
-            
             getGameClass().get().deActivateOnPlayer(player);
 
 

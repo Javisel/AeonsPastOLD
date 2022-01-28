@@ -45,9 +45,13 @@ public class StringKeys {
     public static final String BASE_DAMAGE_LEVEL_SCALING = "base_damage_level_scaling";
     public static final String ATTRIBUTE = "attribute";
     public static final String ATTRIBUTE_SCALING = "attribute_scaling";
-    public static  final String DAMAGE_TYPE = "damage_type";
+    public static final String DAMAGE_TYPE = "damage_type";
     public static final String ATTACK_SPEED = "attack_speed";
     public static final String CRITICAL_DAMAGE = "critical_damage";
     public static final String DURABILITY = "durability";
+
+
+    public static final String PROPERTIES = "properties";
+
 
 }

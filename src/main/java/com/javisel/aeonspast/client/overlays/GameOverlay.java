@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.client.overlays;
 
-import com.javisel.aeonspast.client.overlays.healthbar.APHealthBar;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -13,7 +12,6 @@ import net.minecraftforge.fml.common.Mod;
 public class GameOverlay {
 
 
-    static APHealthBar apHealthBar = new APHealthBar();
 
     @SubscribeEvent
     public static void disableOldElements(RenderGameOverlayEvent.PreLayer prerenderGameOverlayEvent) {

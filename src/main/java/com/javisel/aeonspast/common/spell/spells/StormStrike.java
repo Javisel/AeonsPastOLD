@@ -59,11 +59,7 @@ public class StormStrike extends Spell implements ICustomUseRequirement {
 
         if (lasthit != null) {
 
-            if (!lasthit.isDeadOrDying()) {
-
-                return true;
-
-            }
+            return !lasthit.isDeadOrDying();
         }
 
 
