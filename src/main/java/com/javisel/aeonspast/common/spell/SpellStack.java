@@ -129,4 +129,9 @@ public final class SpellStack {
     }
 
 
+    public SpellState getSpellState() {
+
+        return spellState;
+    }
+
 }

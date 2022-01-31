@@ -3,7 +3,7 @@ package com.javisel.aeonspast.client;
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.networking.AbilityMessage;
-import com.javisel.aeonspast.common.networking.PacketHandler;
+import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.Utilities;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -102,7 +102,7 @@ public class InputHandler {
 
                 System.out.println("Passed client check!");
 
-                PacketHandler.INSTANCE.sendTo(new AbilityMessage(slot), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);
+                PacketRegistration.INSTANCE.sendTo(new AbilityMessage(slot), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);
 
 
             }

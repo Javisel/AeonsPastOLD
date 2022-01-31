@@ -26,4 +26,13 @@ public class WeaponProperty extends ItemProperty {
 
 
 
+    public boolean onSwingItem(LivingEntity swinger, ItemStack stack) {
+
+
+        System.out.println("ON SWING!");
+
+        return true;
+    }
+
+
 }

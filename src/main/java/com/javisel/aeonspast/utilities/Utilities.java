@@ -1,13 +1,11 @@
 package com.javisel.aeonspast.utilities;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
-import com.javisel.aeonspast.common.capabiltiies.itemstack.IItemStackData;
-import com.javisel.aeonspast.common.capabiltiies.itemstack.ItemStackDataCapability;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerCapability;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.enums.TrinketEnums;
-import com.javisel.aeonspast.common.networking.PacketHandler;
+import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.networking.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.networking.ResourceMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -24,6 +22,8 @@ import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.List;
 import java.util.UUID;
+
+import static com.javisel.aeonspast.AeonsPast.MODID;
 
 public class Utilities {
 
@@ -86,7 +86,7 @@ public class Utilities {
         ServerPlayer serverPlayer = (ServerPlayer) player;
 
 
-        PacketHandler.INSTANCE.sendTo(playerCapabiltiiesMessage, serverPlayer.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+        PacketRegistration.INSTANCE.sendTo(playerCapabiltiiesMessage, serverPlayer.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 
 
     }
@@ -130,21 +130,9 @@ public class Utilities {
 
 
         ServerPlayer serverPlayer = (ServerPlayer) player;
-        PacketHandler.INSTANCE.sendTo(resourceMessage, serverPlayer.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+        PacketRegistration.INSTANCE.sendTo(resourceMessage, serverPlayer.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 
     }
-
-
-
-
-public static IItemStackData getItemStackData(ItemStack stack) {
-
-
-
-        return  stack.getCapability(ItemStackDataCapability.ITEM_STACK_DATA_CAP,null).orElseThrow(NullPointerException::new);
-}
-
-
 
 
 }

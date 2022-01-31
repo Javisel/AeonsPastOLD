@@ -1,5 +1,9 @@
 package com.javisel.aeonspast.common.combat;
 
+import com.javisel.aeonspast.common.items.ItemEngine;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+
 public class DamageEngine {
 
 
@@ -23,6 +27,45 @@ public class DamageEngine {
 
 
     }
+
+
+
+   public DamageInstance calculateWeaponDamage(LivingEntity attacker, ItemStack weapon) {
+
+
+        ItemEngine.initializeItem(attacker,weapon);
+
+
+
+
+return null;
+
+
+
+
+
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

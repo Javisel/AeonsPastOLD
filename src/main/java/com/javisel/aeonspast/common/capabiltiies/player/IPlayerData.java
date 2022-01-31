@@ -36,4 +36,8 @@ public interface IPlayerData {
     void removeActiveSpell(Spell spell);
 
     PlayerSpellBar getSpellBar();
+
+    void setActiveWeaponSpell(Spell spell);
+
+    Spell getActiveWeaponSpell();
 }

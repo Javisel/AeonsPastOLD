@@ -19,6 +19,8 @@ public class APPlayerData implements IPlayerData {
 
     HashMap<PlayerGameClass, ClassInstance> playerGameClasses = new HashMap<>();
     ArrayList<Spell> activeSpells = new ArrayList<Spell>(4);
+    Spell activeWeaponSpell;
+
 
     PlayerSpellBar spellBar = new PlayerSpellBar();
 
@@ -87,6 +89,12 @@ public class APPlayerData implements IPlayerData {
         int g = 0;
 
 
+        if (activeWeaponSpell!=null) {
+
+            tag.putString(WEAPON_SPELL, activeWeaponSpell.getRegistryName().toString());
+
+        }
+
         tag.put(SPELLS, activeSpellTag);
         tag.put(SPELL_BAR, spellBarTag);
         tag.put(CLASSES, classes);
@@ -145,6 +153,21 @@ public class APPlayerData implements IPlayerData {
 
                 addActiveSpell(thespell);
             }
+
+        }
+
+
+
+        if (compoundTag.contains(WEAPON_SPELL)) {
+
+
+            String key = compoundTag.getString(WEAPON_SPELL);
+
+
+            activeWeaponSpell = Spell.getSpellByResourceLocation(new ResourceLocation(key));
+
+
+
 
         }
 
@@ -228,4 +251,17 @@ public class APPlayerData implements IPlayerData {
     }
 
 
+    @Override
+    public void setActiveWeaponSpell(Spell spell) {
+
+
+
+
+        this.activeWeaponSpell=spell;
+    }
+
+    @Override
+    public Spell getActiveWeaponSpell() {
+        return activeWeaponSpell;
+    }
 }

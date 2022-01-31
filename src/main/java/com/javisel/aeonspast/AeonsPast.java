@@ -4,7 +4,7 @@ import com.javisel.aeonspast.client.InputHandler;
 import com.javisel.aeonspast.client.OverlayRegistration;
 import com.javisel.aeonspast.client.main.ClientProxy;
 import com.javisel.aeonspast.common.items.AeonsPastItemGroup;
-import com.javisel.aeonspast.common.networking.PacketHandler;
+import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.registration.*;
 import com.javisel.aeonspast.utilities.StringKeys;
 import net.minecraft.world.item.CreativeModeTab;
@@ -35,6 +35,7 @@ public class AeonsPast {
         ResourceRegistration.RESOURCES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         SpellRegistration.SPELLS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ItemPropertyRegistration.ITEM_PROPERTIES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         ItemRegistration.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ClassRegistration.PLAYER_GAME_CLASSES.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -56,7 +57,7 @@ public class AeonsPast {
     private void commonSetup(final FMLCommonSetupEvent event) {
 
 
-        PacketHandler.registerMessages();
+        PacketRegistration.registerMessages();
 
     }
 

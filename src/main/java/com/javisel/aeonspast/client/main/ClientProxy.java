@@ -42,11 +42,7 @@ public class ClientProxy {
     public static class modBusEvents {
 
 
-        @SubscribeEvent
-        public static void textures(TextureStitchEvent.Pre event) {
 
-
-        }
 
         @SubscribeEvent
         public static void reload(RegisterClientReloadListenersEvent event) {

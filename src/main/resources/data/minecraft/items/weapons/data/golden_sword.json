@@ -1,11 +1,11 @@
 {
   "attack_damage": {
-    "min": 10,
-    "max": 30
+    "min": 11,
+    "max": 33
   },
   "attack_speed": {
-    "min": 1.44,
-    "max": 1.76
+    "min": 1.45,
+    "max": 1.77
   },
 
   "critical_chance" : {
@@ -18,12 +18,12 @@
     "max": 2
   },
   "durability": {
-    "min": 48,
-    "max": 78
+    "min": 30,
+    "max": 107
   },
   "enchantability": {
-    "min": 15,
-    "max": 15
+    "min": 22,
+    "max": 22
   },
   "range": {
     "min": 4,
@@ -34,7 +34,8 @@
   "secondarydata" : [],
   "properties": [
     "aeonspast:common",
-     "aeonspast:versatile",
+    "aeonspast:gilded_weapon",
+    "aeonspast:versatile",
     "aeonspast:sweeping",
     "aeonspast:kinetic",
     "aeonspast:brutal"

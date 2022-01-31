@@ -2,33 +2,46 @@ package com.javisel.aeonspast;
 
 
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityProvider;
-import com.javisel.aeonspast.common.capabiltiies.itemstack.ItemStackDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.combat.APDamageSource;
+import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.config.ClassDataLoader;
 import com.javisel.aeonspast.common.config.WeaponDataLoader;
+import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.weapons.WeaponData;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.common.spell.SpellStack;
+import com.javisel.aeonspast.common.spell.SpellState;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
@@ -42,7 +55,33 @@ public class GameEventHandler {
     public static WeaponDataLoader WEAPON_STATISTICS_LOADER;
 
     // @SubscribeEvent
-    public static void newDamageCalculations(LivingDamageEvent event) {
+    public static void newDamageCalculations(LivingHurtEvent event) {
+
+
+
+        System.out.println("Source: "  + event.getSource().toString());
+        if (!(event.getSource() instanceof APDamageSource)) {
+
+
+            if (event.getSource() == DamageSource.OUT_OF_WORLD) {
+
+                DamageInstance instance =   DamageInstance.penaltyDamage(event.getAmount() * 5);
+
+
+                event.getEntityLiving().hurt(new APDamageSource(event.getSource().getMsgId(),instance),instance.getAmount()    );
+
+
+            }
+            event.setCanceled(true);
+
+
+        }
+    }
+
+
+    @SubscribeEvent
+    public static void attackEntityEvent(LivingAttackEvent event) {
+
 
 
         if (!(event.getSource() instanceof APDamageSource)) {
@@ -51,9 +90,9 @@ public class GameEventHandler {
 
 
         }
+
+
     }
-
-
 
 
 
@@ -103,42 +142,96 @@ public class GameEventHandler {
     }
 
 
-    @SubscribeEvent
-    public static void attachCapabilityStack(AttachCapabilitiesEvent<ItemStack> event) {
+
+
+ @SubscribeEvent
+ public static void attemptWeaponCast(PlayerInteractEvent.RightClickItem event) {
+
+
+        ItemStack stack = event.getItemStack();
+
+        if (!event.getPlayer().isCrouching()) {
+            return;
+        }
+        if (ItemEngine.isWeapon(event.getItemStack().getItem())) {
+
+            if (ItemEngine.isItemInitialized(stack)) {
+
+
+                Spell spell = ItemEngine.getSpellFromItem(stack);
+                 Player player = event.getPlayer();
+                IPlayerData playerData = Utilities.getPlayerData(player);
+                IEntityData entityData = Utilities.getEntityData(player);
+                Spell attunedWeaponSpell = playerData.getActiveWeaponSpell();
+
+                SpellStack attunedWeaponData = entityData.getSpellStackRaw(attunedWeaponSpell);
+
+
+                boolean cast = true;
+                if (attunedWeaponData==null) {
+
+
+                    playerData.setActiveWeaponSpell(spell);
+                    entityData.getOrCreateSpellStack(spell);
 
 
 
-        ItemStack itemStack = event.getObject();
 
-        Item item = itemStack.getItem();
+                } else {
+
+                    if (spell !=attunedWeaponSpell) {
+
+                        if (attunedWeaponData.getCharges() < 1 || attunedWeaponData.getSpellState()!= SpellState.OFF) {
+
+                            cast=false;
+
+                        }
+
+                    } else {
+                        entityData.getOrCreateSpellStack(spell);
+
+                    }
+
+                }
 
 
 
-        ItemStackDataProvider itemStackDataProvider = new ItemStackDataProvider();
-        event.addCapability(new ResourceLocation(AeonsPast.MODID,"itemdata"),itemStackDataProvider);
+                if (cast) {
 
-        WeaponData weaponData = WEAPON_STATISTICS_LOADER.getWeaponData(item.getRegistryName());
+                    spell.attemptCast(player,entityData.getSpellStackRaw(attunedWeaponSpell));
 
-
-        if (weaponData!=null) {
+                }
 
 
-            weaponData.loadToWeapon(itemStack);
 
 
-        } else {
+            }
 
-            System.out.println("NUL Ldata");
+
+
+
         }
 
 
 
 
 
+ }
 
 
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     //Player Regeneration
     @SubscribeEvent
@@ -298,4 +391,41 @@ public class GameEventHandler {
 
 
     }
+
+
+    @SubscribeEvent
+    public static void awakenWeapon(PlayerInteractEvent.RightClickItem event) {
+
+
+        ItemStack stack = event.getItemStack();
+        if (!event.getItemStack().isEmpty() && event.getSide()== LogicalSide.SERVER) {
+
+
+            if (!ItemEngine.isItemInitialized(event.getItemStack())) {
+
+
+                ItemEngine.initializeItem(event.getPlayer(),stack);
+
+
+
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
 }

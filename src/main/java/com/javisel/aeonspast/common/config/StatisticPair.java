@@ -16,8 +16,6 @@ public class StatisticPair {
         this.min = min;
         this.max = max;
 
-        System.out.println("min:" + min);
-        System.out.println("max: " + max);
     }
 
 
@@ -31,8 +29,7 @@ public class StatisticPair {
         float rng = min + random.nextFloat() * (max - min);
 
 
-        System.out.println("RNG: " + rng);
-        if (luck < 0) {
+         if (luck < 0) {
 
 
             if ( random.nextInt(101)  <=(luck*-1)) {
@@ -93,6 +90,14 @@ public class StatisticPair {
 
 
 
+    public float getAverage() {
+
+
+
+
+
+        return (min + max) /2;
+    }
 
 
 

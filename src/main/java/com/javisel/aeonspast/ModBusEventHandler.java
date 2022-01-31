@@ -1,7 +1,6 @@
 package com.javisel.aeonspast;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
-import com.javisel.aeonspast.common.capabiltiies.itemstack.IItemStackData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
@@ -41,7 +40,6 @@ public class ModBusEventHandler {
     public static void registerNewCapabilties(RegisterCapabilitiesEvent event) {
         event.register(IEntityData.class);
         event.register(IPlayerData.class);
-        event.register(IItemStackData.class);
 
     }
 

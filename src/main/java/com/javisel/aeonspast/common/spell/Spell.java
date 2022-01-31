@@ -469,4 +469,13 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
+    public String getSimpleDescription() {
+
+
+
+        return  getRegistryName().toString() + ".simpledesc";
+    }
+
+
+
 }

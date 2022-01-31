@@ -62,7 +62,7 @@ public class AttributeRegistration {
 
     //Utility
     public static final RegistryObject<Attribute> COOLDOWN_REDUCTION = ATTRIBUTES.register("cooldown_reduction", () -> new RangedAttribute("generic.cooldown_reduction", 0, 0, 10000).setSyncable(true));
-    public static final RegistryObject<Attribute> FORTUNE = ATTRIBUTES.register("fortune", () -> new RangedAttribute("generic.fortune", 0, -100, 10000).setSyncable(true));
+    public static final RegistryObject<Attribute> FORTUNE = ATTRIBUTES.register("fortune", () -> new RangedAttribute("generic.fortune", 100, -100, 100).setSyncable(true));
 
 
     //AI

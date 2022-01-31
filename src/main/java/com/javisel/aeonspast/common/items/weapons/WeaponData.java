@@ -1,20 +1,29 @@
 package com.javisel.aeonspast.common.items.weapons;
 
 import com.google.common.collect.Multimap;
+import com.javisel.aeonspast.GameEventHandler;
+import com.javisel.aeonspast.ModBusEventHandler;
 import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
 import com.javisel.aeonspast.common.config.StatisticPair;
+import com.javisel.aeonspast.common.items.ItemEngine;
+import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.common.registration.SpellRegistration;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryManager;
 import org.antlr.v4.runtime.misc.MultiMap;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,15 +34,17 @@ import static com.javisel.aeonspast.utilities.StringKeys.*;
 public class WeaponData {
 
 
-    private static final String WEAPON_MOD_ID = "d9604102-763b-477c-a3b7-a4ea62647d61";
-    private final String BASE_STATS = "base_stats";
+    public static final String WEAPON_MOD_ID = "d9604102-763b-477c-a3b7-a4ea62647d61";
+
+    public  static final String BASE_STATS = "base_stats";
 
 
 
 
     private final StatisticPair attack_damage;
     private final StatisticPair attack_speed;
-    private final  StatisticPair critical_chance;
+    private StatisticPair dps;
+     private final  StatisticPair critical_chance;
     private  final StatisticPair critical_damage;
     private final StatisticPair durability;
     private final StatisticPair enchantability;
@@ -57,12 +68,13 @@ public class WeaponData {
 
 
 
+
         for (String property : properties) {
 
             this.properties.add(property);
 
 
-        }
+         }
         for (String spell : spells) {
 
             this.spells.add(spell);
@@ -86,27 +98,63 @@ public class WeaponData {
 
     }
 
-    public void loadToWeapon(ItemStack stack) {
+    public void loadToWeapon(@Nullable  LivingEntity entity, ItemStack stack) {
 
 
         if (stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(WEAPON_MOD_ID)) {
             return;
         }
 
+        float luck = 0;
+
+        if (entity!=null) {
+
+         luck= (float) entity.getAttributeValue(AttributeRegistration.FORTUNE.get());
+
+        }
+
+
 
 
         Random random = new Random();
 
-        System.out.println("Loading Stats!");
 
         UUID id = UUID.fromString(WEAPON_MOD_ID);
-        stack.addAttributeModifier(AttributeRegistration.WEAPON_POWER.get(), new AttributeModifier(id,BASE_STATS,attack_damage.roll(0,random), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
-        stack.addAttributeModifier(Attributes.ATTACK_SPEED, new AttributeModifier(id,BASE_STATS,4-attack_speed.roll(0,random), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
-        stack.addAttributeModifier(AttributeRegistration.CRITICAL_CHANCE.get(), new AttributeModifier(id,BASE_STATS,critical_chance.roll(0,random), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
-        stack.addAttributeModifier(AttributeRegistration.CRITICAL_DAMAGE.get(), new AttributeModifier(id,BASE_STATS,critical_damage.roll(0,random), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
-        stack.addAttributeModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(id,BASE_STATS,range.roll(0,random), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
+        stack.addAttributeModifier(AttributeRegistration.WEAPON_POWER.get(), new AttributeModifier(id,BASE_STATS,attack_damage.roll(luck,random), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
+
+        stack.addAttributeModifier(Attributes.ATTACK_SPEED, new AttributeModifier(id,BASE_STATS, (-4+attack_speed.roll(0,random)), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
 
 
+             stack.addAttributeModifier(AttributeRegistration.CRITICAL_CHANCE.get(), new AttributeModifier(id, BASE_STATS, critical_chance.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+
+
+             stack.addAttributeModifier(AttributeRegistration.CRITICAL_DAMAGE.get(), new AttributeModifier(id, BASE_STATS, critical_damage.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+
+
+
+        stack.addAttributeModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(id,BASE_STATS,-5+range.roll(luck,random), AttributeModifier.Operation.ADDITION),EquipmentSlot.MAINHAND);
+
+
+
+
+            for (String property : properties) {
+
+
+                ItemProperty.getPropertyByLocation(new ResourceLocation(property)).applyToItem(stack);
+
+
+            }
+
+
+
+
+            int i = spells.size();
+
+            int choice = random.nextInt(i);
+
+
+
+            ItemEngine.getAeonsPastTag(stack).putString(SPELL, spells.get(choice));
 
 
 
@@ -171,4 +219,24 @@ public class WeaponData {
     public List<String> getSpells() {
         return spells;
     }
+
+   public StatisticPair getDPS() {
+
+
+       float low = getAttack_speed().getmin() * getAttack_damage().getmin();
+       float high = getAttack_speed().getMax() * getAttack_damage().getMax();
+
+
+       if (dps==null) {
+
+           dps = new StatisticPair(low,high);
+       }
+
+       return  dps;
+   }
+
+
+
+
+
 }

@@ -8,6 +8,8 @@ public class StringKeys {
     public static final String END_AMOUNT = "end_amount";
 
     public static final String SPELL = "spell";
+    public static final String WEAPON_SPELL = "weapon_spell";
+
     public static final String SPELL_STATE = "spell_state";
     public static final String SPELLS = "spells";
     public static final String SPELL_BAR = "spell_bar";
@@ -51,7 +53,7 @@ public class StringKeys {
     public static final String DURABILITY = "durability";
 
 
-    public static final String PROPERTIES = "properties";
+    public static final String ITEM_PROPERTIES = "item_properties";
 
 
 }

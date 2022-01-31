@@ -17,7 +17,7 @@ public class ItemRegistration {
     public static final RegistryObject<Item> WARRIOR_EMBLEM = ITEMS.register("warrior_emblem", () -> new BasicEmblem(ClassRegistration.WARRIOR, SpellRegistration.WARRIOR_CLASS_SPELL));
 
 
-    public static final RegistryObject<Item> ASSAULT_GUARD_STONE = ITEMS.register("assault_guard_stone", () -> new BasicSpellStone(TrinketEnums.AMULET, SpellRegistration.ASSAULTGUARD));
+    public static final RegistryObject<Item> ASSAULT_GUARD_STONE = ITEMS.register("assault_guard_stone", () -> new BasicSpellStone(TrinketEnums.AMULET, SpellRegistration.ASSAULT_GUARD));
     public static final RegistryObject<Item> BATTLE_FRENZY = ITEMS.register("battle_frenzy_stone", () -> new BasicSpellStone(TrinketEnums.AMULET, SpellRegistration.BATTLE_FRENZY));
     public static final RegistryObject<Item> WARRIOR_SHOUT = ITEMS.register("warrior_shout_stone", () -> new BasicSpellStone(TrinketEnums.AMULET, SpellRegistration.WARRIOR_SHOUT));
     public static final RegistryObject<Item> STORM_STRIKE = ITEMS.register("storm_strike_stone", () -> new BasicSpellStone(TrinketEnums.AMULET, SpellRegistration.STORM_STRIKE));

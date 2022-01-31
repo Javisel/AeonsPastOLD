@@ -13,6 +13,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.Deserializers;
 
 import java.io.*;
@@ -131,8 +132,30 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
 
     }
 
+    public WeaponData getWeaponData(Item item) {
 
 
+        ResourceLocation location = item.getRegistryName();
+
+        for (ResourceLocation test: weaponStatisticsMap.keySet()) {
+
+
+            if (test.equals(location)) {
+
+
+                return weaponStatisticsMap.get(test);
+            }
+
+
+
+
+        }
+
+
+
+        return null;
+
+    }
 
 
 

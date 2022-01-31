@@ -76,6 +76,18 @@ public class DamageInstance {
 
     }
 
+    public static DamageInstance penaltyDamage(  float amount) {
+
+
+        DamageInstance damageInstance = new DamageInstance(APDamageSubType.PENALTY, amount);
+
+
+return  damageInstance;
+    }
+
+
+
+
     public APDamageSubType getDamageType() {
         return damageType;
     }

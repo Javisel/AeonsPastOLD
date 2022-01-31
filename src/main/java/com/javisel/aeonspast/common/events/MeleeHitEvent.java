@@ -5,14 +5,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 
-public class DirectHitEvent extends LivingDamageEvent {
+public class MeleeHitEvent extends LivingDamageEvent {
 
 
     private final LivingEntity attacker;
     private ItemStack weapon;
 
 
-    public DirectHitEvent(LivingEntity victim, DamageSource source, float amount, LivingEntity attacker, ItemStack weaponIn) {
+    public MeleeHitEvent(LivingEntity victim, DamageSource source, float amount, LivingEntity attacker, ItemStack weaponIn) {
         super(victim, source, amount);
         this.weapon = weaponIn;
         this.attacker = attacker;

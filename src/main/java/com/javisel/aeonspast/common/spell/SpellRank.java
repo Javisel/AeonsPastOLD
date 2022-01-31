@@ -4,6 +4,7 @@ public enum SpellRank {
 
     EMPTY,
     CLASS_SPELL,
+    WEAPON_SPELL,
     SKILL_BASIC,
     SKILL_ULTIMATE,
     RANK_O_CANTRIP,
