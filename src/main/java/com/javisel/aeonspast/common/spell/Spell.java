@@ -3,6 +3,7 @@ package com.javisel.aeonspast.common.spell;
 import com.javisel.aeonspast.ModBusEventHandler;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.registration.SpellRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.utilities.Utilities;
@@ -23,7 +24,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     protected float defaultCost;
     protected int defaultChargetime;
     private SpellRank spellRank;
-    private RegistryObject<Resource> spellResource = null;
+    private RegistryObject<Resource> spellResource = ResourceRegistration.MANA;
 
 
 
@@ -384,7 +385,12 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public Resource getCostResource(LivingEntity entity, SpellStack stack) {
 
 
-        return spellResource.get();
+
+        if (spellResource != null) {
+            return spellResource.get();
+        }
+
+        return null;
 
     }
 

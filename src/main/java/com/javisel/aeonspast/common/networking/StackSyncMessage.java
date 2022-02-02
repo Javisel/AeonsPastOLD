@@ -52,8 +52,7 @@ public class StackSyncMessage {
 
                        ItemEngine.initializeItem(player,stack);
 
-                       System.out.println("item " + stack.getHoverName().getContents() + " is being initied");
-                    }
+                     }
 
 
                 }
@@ -68,7 +67,6 @@ public class StackSyncMessage {
 
                      try {
                          if (menu.getType() != MenuType.CRAFTING) {
-                             System.out.println("CONTAINER: " + menu.getType().getRegistryName().toString());
 
                              for (ItemStack stack : menu.getItems()) {
 

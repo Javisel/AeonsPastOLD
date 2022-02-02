@@ -10,17 +10,18 @@ public class WeaponProperty extends ItemProperty {
 
 
 
+    public boolean onPreHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
+
+        return true;
+    }
+
+
     public void onHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
 
 
     }
 
-    public void onAttackEntity(LivingEntity attacker, LivingEntity livingEntity, DamageInstance damageInstance, ItemStack stack) {
 
-
-
-
-    }
 
 
 

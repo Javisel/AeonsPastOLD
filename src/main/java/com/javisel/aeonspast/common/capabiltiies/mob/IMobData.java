@@ -1,8 +1,12 @@
 package com.javisel.aeonspast.common.capabiltiies.mob;
 
-public class IMobData {
+import com.javisel.aeonspast.common.entities.entitytraits.EntityTrait;
 
-    private float attackTimer;
+import java.util.ArrayList;
 
+public interface IMobData {
+
+     float attackTimer();
+    ArrayList<EntityTrait> getEntityTraits();
 
 }

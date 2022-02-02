@@ -17,13 +17,15 @@ public class DamageInstance {
     public boolean isArea = false;
     public boolean isOverTime = false;
     public boolean canCritical = false;
-    public float procPower = 1;
+    public boolean hasBeenMitigated = false;
+    public double procPower = 1;
+    public double critPower = 1;
     public Object damageDevice;
-    protected DamageSource vanillaDamageSource;
-    protected APDamageSubType damageType;
-    protected float amount;
+    public DamageSource vanillaDamageSource;
+    public APDamageSubType damageType;
+    public double amount;
 
-    public DamageInstance(APDamageSubType damageTypes, float amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
+    public DamageInstance(APDamageSubType damageTypes, double amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
         this.amount = amount;
         this.damageType = damageTypes;
         this.doesProcSpellEffects = doesProcSpellEffects;
@@ -37,7 +39,7 @@ public class DamageInstance {
     }
 
 
-    public DamageInstance(APDamageSubType damageType, float amount) {
+    public DamageInstance(APDamageSubType damageType, double amount) {
         this.damageType = damageType;
         this.amount = amount;
 
@@ -45,13 +47,13 @@ public class DamageInstance {
     }
 
     //Damage applied by "On-Hit" effects to prevent Infinite Looping crashes.
-    public static DamageInstance genericProcDamage(APDamageSubType damageType, float amount) {
+    public static DamageInstance genericProcDamage(APDamageSubType damageType, double amount) {
 
 
         return new DamageInstance(damageType, amount);
     }
 
-    public static DamageInstance genericSpellDamage(Spell device, APDamageSubType subType, float amount, boolean isArea) {
+    public static DamageInstance genericSpellDamage(Spell device, APDamageSubType subType, double amount, boolean isArea) {
 
 
         DamageInstance damageInstance = new DamageInstance(subType, amount);
@@ -63,7 +65,7 @@ public class DamageInstance {
 
     }
 
-    public static DamageInstance genericWeaponDamage(ItemStack device, APDamageSubType subType, float amount, boolean isArea, boolean isCritical) {
+    public static DamageInstance genericWeaponDamage(ItemStack device, APDamageSubType subType, double amount, boolean isArea, boolean isCritical) {
 
 
         DamageInstance damageInstance = new DamageInstance(subType, amount);
@@ -76,7 +78,7 @@ public class DamageInstance {
 
     }
 
-    public static DamageInstance penaltyDamage(  float amount) {
+    public static DamageInstance penaltyDamage(  double amount) {
 
 
         DamageInstance damageInstance = new DamageInstance(APDamageSubType.PENALTY, amount);
@@ -96,7 +98,7 @@ return  damageInstance;
         return vanillaDamageSource;
     }
 
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -128,7 +130,7 @@ return  damageInstance;
         return isArea;
     }
 
-    public float getProcPower() {
+    public double getProcPower() {
         return procPower;
     }
 

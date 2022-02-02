@@ -55,5 +55,6 @@ public class StringKeys {
 
     public static final String ITEM_PROPERTIES = "item_properties";
 
+    public static final String ENTITY_TRAITS = "entity_traits";
 
 }

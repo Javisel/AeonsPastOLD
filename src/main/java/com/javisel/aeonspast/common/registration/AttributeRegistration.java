@@ -30,6 +30,12 @@ public class AttributeRegistration {
 
     public static final RegistryObject<Attribute> MAGIC_RESISTANCE = ATTRIBUTES.register("magic_resistance", () -> new RangedAttribute("generic.magic_resistance", 0, 0, 100000).setSyncable(true));
     public static final RegistryObject<Attribute> DAMAGE_INTAKE = ATTRIBUTES.register("damage_intake", () -> new RangedAttribute("generic.damage_intake", 1, -200, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> PHYSICAL_MITIGATIONS = ATTRIBUTES.register("physical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, 0, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> MAGICAL_MITIGATIONS = ATTRIBUTES.register("magical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, 0, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> HEALING_INTAKE = ATTRIBUTES.register("healing_intake", () -> new RangedAttribute("generic.healing_intake", 1, 0, 100).setSyncable(true));
+
+
+
     public static final RegistryObject<Attribute> TENACITY = ATTRIBUTES.register("tenacity", () -> new RangedAttribute("generic.tenacity", 1, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> VITALITY = ATTRIBUTES.register("vitality", () -> new RangedAttribute("generic.vitality", 1, 0, 100).setSyncable(true));
 
@@ -42,7 +48,7 @@ public class AttributeRegistration {
 
 
     public static final RegistryObject<Attribute> WEAPON_POWER = ATTRIBUTES.register("weapon_power", () -> new RangedAttribute("generic.weapon_power", 0, 0, 100).setSyncable(true));
-    public static final RegistryObject<Attribute> WEAPON_LIFESTEAL = ATTRIBUTES.register("weapon_lifesteal", () -> new RangedAttribute("generic.weapon_power", 0, 0, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> WEAPON_LIFESTEAL = ATTRIBUTES.register("weapon_lifesteal", () -> new RangedAttribute("generic.weapon_lifesteal", 15, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> SPELL_POWER = ATTRIBUTES.register("spell_power", () -> new RangedAttribute("generic.spell_power", 0, 0, 1000).setSyncable(true));
     public static final RegistryObject<Attribute> PHYSICAL_POWER = ATTRIBUTES.register("physical_power", () -> new RangedAttribute("generic.physical_power", 0, 0, 1000).setSyncable(true));
     public static final RegistryObject<Attribute> MELEE_POWER = ATTRIBUTES.register("melee_power", () -> new RangedAttribute("generic.melee_power", 0, 0, 1000).setSyncable(true));
@@ -66,7 +72,8 @@ public class AttributeRegistration {
 
 
     //AI
-    public static final RegistryObject<Attribute> PRESCENCE = ATTRIBUTES.register("prescence", () -> new RangedAttribute("generic.cooldown_reduction", 1, 0, 10000).setSyncable(true));
+    public static final RegistryObject<Attribute> PRESCENCE = ATTRIBUTES.register("prescence", () -> new RangedAttribute("generic.prescence", 1, 0, 10000).setSyncable(true));
+    public static final RegistryObject<Attribute> EXPERIENCE = ATTRIBUTES.register("experience", () -> new RangedAttribute("generic.experience", 1, 0, 10000).setSyncable(true));
 
 
 }

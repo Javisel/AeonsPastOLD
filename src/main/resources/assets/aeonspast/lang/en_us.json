@@ -20,6 +20,7 @@
   "generic.weapon_power": "Weapon Power",
   "aeonspast:weapon_power" : "Weapon Power",
   "generic.critical_damage": "Critical Damage",
+  "generic.critical_chance": "Critical Chance",
   "aeonspast:dps" : "DPS",
   "aeonspast:common" : "Common",
   "aeonspast:rare" : "Rare",

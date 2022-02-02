@@ -22,6 +22,7 @@ public interface IEntityData {
 
     void tick();
 
+    int getLevel();
     SpellStack getSpellStackRaw(Spell spell);
 
     Float getOrCreateResource(Resource resource);

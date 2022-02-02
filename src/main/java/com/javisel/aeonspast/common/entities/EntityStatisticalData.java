@@ -1,0 +1,113 @@
+package com.javisel.aeonspast.common.entities;
+
+import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.utilities.Utilities;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+
+import java.util.List;
+import java.util.UUID;
+
+public class EntityStatisticalData {
+
+
+    public static final UUID  BASE_STAT_ID = UUID.fromString("c05b0654-01f1-43a4-a3a5-47b6fc08a479");
+    public static final UUID  LEVEL_STAT_ID = UUID.fromString("f591249f-7637-4fcb-98b7-064722ce3b2a");
+
+    private final String BASE_STRING = "base_stats";
+    private final String LEVEL_STRING = "level_stats";
+
+
+
+
+    private final double attack_damage;
+    private final double attack_damage_scaling;
+    private final double attack_speed;
+    private final double attack_speed_scaling;
+    private final double physical_power;
+    private final double physical_power_scaling;
+    private final double magical_power;
+    private final double magical_power_scaling;
+    private final double health;
+    private final double health_scaling;
+    private final double health_regeneration;
+    private final double health_regeneration_scaling;
+    private final double armor;
+    private final double armor_scaling;
+    private final double magic_resist;
+    private final double magic_resist_scaling;
+    private final double movement_speed;
+    private final double movement_speed_scaling;
+    private final double base_experience;
+    private final double experience_scaling;
+    private final List<String> entity_traits;
+
+
+    public EntityStatisticalData(double attack_damage, double attack_damage_scaling, double attack_speed, double attack_speed_scaling, double physical_power, double physical_power_scaling, double magical_power, double magical_power_scaling, double health, double health_scaling, double health_regeneration, double health_regeneration_scaling, double armor, double armor_scaling, double magic_resist, double magic_resist_scaling, double movement_speed, double movement_speed_scaling, double base_experience, double experience_scaling, List<String> entity_traits) {
+        this.attack_damage = attack_damage;
+        this.attack_damage_scaling = attack_damage_scaling;
+        this.attack_speed = attack_speed;
+        this.attack_speed_scaling = attack_speed_scaling;
+        this.physical_power = physical_power;
+        this.physical_power_scaling = physical_power_scaling;
+        this.magical_power = magical_power;
+        this.magical_power_scaling = magical_power_scaling;
+        this.health = health;
+        this.health_scaling = health_scaling;
+        this.health_regeneration = health_regeneration;
+        this.health_regeneration_scaling = health_regeneration_scaling;
+        this.armor = armor;
+        this.armor_scaling = armor_scaling;
+        this.magic_resist = magic_resist;
+        this.magic_resist_scaling = magic_resist_scaling;
+        this.movement_speed = movement_speed;
+        this.movement_speed_scaling = movement_speed_scaling;
+        this.base_experience = base_experience;
+        this.experience_scaling = experience_scaling;
+        this.entity_traits = entity_traits;
+    }
+
+    public void loadtoEntity(LivingEntity entity) {
+
+
+    addAttributeToEntity(entity,Attributes.ATTACK_DAMAGE,attack_damage,attack_damage_scaling);
+        addAttributeToEntity(entity,Attributes.ATTACK_SPEED,attack_speed,attack_speed_scaling);
+        addAttributeToEntity(entity, AttributeRegistration.PHYSICAL_POWER.get(), physical_power,physical_power_scaling);
+        addAttributeToEntity(entity, AttributeRegistration.SPELL_POWER.get(), magical_power,magical_power_scaling);
+        addAttributeToEntity(entity, Attributes.MAX_HEALTH, health,health_scaling);
+        addAttributeToEntity(entity, AttributeRegistration.HEALTH_REGENERATION.get(), health_regeneration,health_regeneration);
+        addAttributeToEntity(entity, AttributeRegistration.ARMOR.get(), armor,armor_scaling);
+        addAttributeToEntity(entity, AttributeRegistration.MAGIC_RESISTANCE.get(), magic_resist,magic_resist_scaling);
+        addAttributeToEntity(entity, Attributes.MOVEMENT_SPEED, movement_speed,movement_speed_scaling);
+        addAttributeToEntity(entity, AttributeRegistration.EXPERIENCE.get(), base_experience,experience_scaling);
+
+
+
+
+
+
+
+
+    }
+
+
+    public void addAttributeToEntity(LivingEntity entity, Attribute attribute, double baseValue, double scaleValue) {
+
+
+        entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(BASE_STAT_ID,BASE_STRING,baseValue, AttributeModifier.Operation.ADDITION));
+
+
+
+        int level = Utilities.getEntityData(entity).getLevel();
+        entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(LEVEL_STAT_ID,LEVEL_STRING,scaleValue*(level-1), AttributeModifier.Operation.ADDITION));
+
+
+
+
+
+    }
+
+
+}

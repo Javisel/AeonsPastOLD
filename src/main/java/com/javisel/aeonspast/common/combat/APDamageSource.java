@@ -1,19 +1,18 @@
 package com.javisel.aeonspast.common.combat;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
-public class APDamageSource extends net.minecraft.world.damagesource.DamageSource {
-
-
-    private DamageInstance instance;
-    public APDamageSource(String p_19333_, DamageInstance damageInstance) {
-        super(p_19333_);
-        this.instance=damageInstance;
-    }
+public interface APDamageSource   {
 
 
-    public DamageInstance getInstance( ) {
 
-        return  instance;
-    }
+
+
+
+    public DamageInstance getInstance( ) ;
+
+
+
 }

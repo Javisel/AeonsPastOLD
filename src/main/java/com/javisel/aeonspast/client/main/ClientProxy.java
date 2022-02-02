@@ -14,9 +14,10 @@ import net.minecraftforge.fml.common.Mod;
 import static com.javisel.aeonspast.AeonsPast.MODID;
 
 
-@Mod.EventBusSubscriber
-@OnlyIn(Dist.CLIENT)
-public class ClientProxy {
+ @OnlyIn(Dist.CLIENT)
+ @Mod.EventBusSubscriber (Dist.CLIENT)
+
+ public class ClientProxy {
 
 
     public static final ResourceLocation SPELL_TEXTURES_LOCATION = new ResourceLocation(MODID, "textures/atlas/spells.png");

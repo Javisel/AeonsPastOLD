@@ -18,6 +18,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.ISlotType;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -255,6 +257,42 @@ public static ArrayList<ItemProperty> getItemProperties(ItemStack stack) {
 
 
     }
+
+
+
+    public static ArrayList<ItemStack> getAllAppicableItems(LivingEntity entity) {
+
+
+        ArrayList<ItemStack> result = new ArrayList<>();
+
+
+
+        for (ItemStack stack : entity.getAllSlots()) {
+
+
+            result.add(stack);
+        }
+
+
+
+//TODO Curios Link
+
+
+
+
+
+
+
+
+
+
+        return result;
+
+
+    }
+
+
+
 
 
 

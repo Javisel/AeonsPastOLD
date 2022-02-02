@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.events;
 
+import com.javisel.aeonspast.common.combat.APEntityDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -39,9 +40,18 @@ public class EventFactory {
     }
 
 
-    public static boolean onMeleeHit(LivingEntity attacker, LivingEntity victim, DamageSource source, float amount, ItemStack weapon) {
+    public static  boolean onMeleePreHit(LivingEntity attacker, LivingEntity victim, ItemStack weapon) {
 
-        MeleeHitEvent directHitEvent = new MeleeHitEvent(victim, source, amount, attacker, weapon);
+
+        MeleePreHitEvent preHitEvent = new MeleePreHitEvent(attacker,victim,weapon);
+
+        return  MinecraftForge.EVENT_BUS.post(preHitEvent);
+
+    }
+
+    public static boolean onMeleeHit(LivingEntity attacker, LivingEntity victim, APEntityDamageSource source, ItemStack weapon) {
+
+        MeleeHitEvent directHitEvent = new MeleeHitEvent(victim, source, attacker, weapon);
 
       return  MinecraftForge.EVENT_BUS.post(directHitEvent);
 

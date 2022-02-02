@@ -2,6 +2,7 @@ package com.javisel.aeonspast;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.entities.entitytraits.EntityTrait;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -29,7 +30,8 @@ public class ModBusEventHandler {
     public static final ResourceLocation CLASS_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "classes");
     public static final ResourceLocation SPELL_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "spells");
     public static final ResourceLocation RESOURCE_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "resources");
-    public static final ResourceLocation ITEM_PROPERTY_NAME = new ResourceLocation(AeonsPast.MODID, "item_property");
+    public static final ResourceLocation ITEM_PROPERTY_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "item_property");
+    public static final ResourceLocation ENTITY_TRAIT_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "entity_trait");
 
 
 
@@ -80,7 +82,12 @@ public class ModBusEventHandler {
 
         RegistryBuilder<ItemProperty> apItemPropertyRegistryBuilder = new RegistryBuilder<>();
 
-        apItemPropertyRegistryBuilder.setName(ITEM_PROPERTY_NAME).setMaxID(Integer.MAX_VALUE).setType(ItemProperty.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
+        apItemPropertyRegistryBuilder.setName(ITEM_PROPERTY_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(ItemProperty.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
+
+
+        RegistryBuilder<EntityTrait> EntityTraitBuilder = new RegistryBuilder<>();
+
+        EntityTraitBuilder.setName(ENTITY_TRAIT_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(EntityTrait.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
 
 
