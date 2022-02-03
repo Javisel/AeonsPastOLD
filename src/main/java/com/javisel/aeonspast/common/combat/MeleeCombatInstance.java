@@ -34,15 +34,12 @@ public class MeleeCombatInstance {
     public void attemptCombat() {
         
 
-        System.out.println("Combat Start");
-        if (onMeleePreHit()) {
-            System.out.println("Melee Success!");
-            onMeleeHit();
+         if (onMeleePreHit()) {
+             onMeleeHit();
             
         }
         else {
-            System.out.println("Melee Failed!");
-        }
+         }
         
     }
     
@@ -115,7 +112,7 @@ public class MeleeCombatInstance {
     public void onMeleeHit() {
 
 
-        SoundEvent event = SoundEvents.PLAYER_ATTACK_WEAK;
+        SoundEvent event = SoundEvents.PLAYER_ATTACK_STRONG;
 
 
         if (CombatEngine.attemptCriticalHit(attacker)) {
@@ -138,27 +135,37 @@ public class MeleeCombatInstance {
 
 
 
+        System.out.println("Pre: " + victim.getHealth() + "/" + victim.getMaxHealth());
         victim.hurt(damageSource, (float) damageSource.getInstance().getAmount());
+        System.out.println("Post: " + victim.getHealth() + "/" + victim.getMaxHealth());
 
 
 
 
-        if (instance.amount / postMigitationsAmount <=0.5) {
+        if (postMigitationsAmount / victim.getMaxHealth() <=0.20) {
             event=SoundEvents.PLAYER_ATTACK_WEAK;
         }
 
 
-        level.playSound(null,victim,event, SoundSource.HOSTILE,1,1);
+       SoundSource soundSource;
 
-        instance.amount=postMigitationsAmount;
+        if (attacker instanceof Player) {
+            soundSource=SoundSource.PLAYERS;
+        }
+
+        else {
+           soundSource= SoundSource.HOSTILE;
+        }
+        level.playSound(null,victim,event,  soundSource,1,1);
+
+         instance.amount=postMigitationsAmount;
         instance.hasBeenMitigated=true;
 
 
 
         EventFactory.onMeleeHit(attacker, victim,  damageSource,  weapon) ;
 
-            System.out.println("Melee Hit Post!");
-            DamageInstance weaponInstance = DamageEngine.calculateWeaponDamage(attacker, weapon, true);
+             DamageInstance weaponInstance = DamageEngine.calculateWeaponDamage(attacker, weapon, true);
 
 
             ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
@@ -179,7 +186,6 @@ public class MeleeCombatInstance {
                     for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
 
 
-                        System.out.println("Property: " + property.getRegistryName().toString());
                         property.onHitEntity(attacker, victim, weaponInstance, weapon);
 
 

@@ -21,6 +21,8 @@
   "aeonspast:weapon_power" : "Weapon Power",
   "generic.critical_damage": "Critical Damage",
   "generic.critical_chance": "Critical Chance",
+  "aeonspast:sword.desc" : "Highly versatile melee weapons with consistent damage and a wide variety of special effects.",
+  "aeonspast:axe.desc" : "Potent melee weapons with extremely high damage and one-shot potential.",
   "aeonspast:dps" : "DPS",
   "aeonspast:common" : "Common",
   "aeonspast:rare" : "Rare",

@@ -1,10 +1,10 @@
 package com.javisel.aeonspast;
 
 
-import com.javisel.aeonspast.common.capabiltiies.entity.EntityData;
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityProvider;
-import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
+import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.combat.*;
 import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
@@ -23,13 +23,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -56,31 +60,30 @@ public class GameEventHandler {
     public static void newEnvironmentalDamage(LivingHurtEvent event) {
 
 
-
-         if (!(event.getSource() instanceof APDamageSource)) {
+        if (!(event.getSource() instanceof APDamageSource)) {
 
 
             if (event.getSource() == DamageSource.OUT_OF_WORLD) {
 
-                DamageInstance instance =   DamageInstance.penaltyDamage(event.getAmount() * 15);
+                DamageInstance instance = DamageInstance.penaltyDamage(event.getAmount() * 15);
 
 
-                event.getEntityLiving().hurt(new EnvironmentalDamageSource(event.getSource().getMsgId(),instance), (float) instance.getAmount());
+                event.getEntityLiving().hurt(new EnvironmentalDamageSource(event.getSource().getMsgId(), instance), (float) instance.getAmount());
 
 
             }
 
 
-             if (event.getSource() == DamageSource.FALL) {
+            if (event.getSource() == DamageSource.FALL) {
 
-                 DamageInstance instance =   DamageInstance.penaltyDamage(event.getAmount() * 15);
+                DamageInstance instance = DamageInstance.penaltyDamage(event.getAmount() * 15);
 
-                 instance.damageType= APDamageSubType.TRUE;
+                instance.damageType = APDamageSubType.TRUE;
 
-                 event.getEntityLiving().hurt(new EnvironmentalDamageSource(event.getSource().getMsgId(),instance), (float) instance.getAmount());
+                event.getEntityLiving().hurt(new EnvironmentalDamageSource(event.getSource().getMsgId(), instance), (float) instance.getAmount());
 
 
-             }
+            }
             event.setCanceled(true);
 
 
@@ -98,38 +101,25 @@ public class GameEventHandler {
             if (!damageSource.getInstance().hasBeenMitigated) {
 
                 DamageInstance instance = damageSource.getInstance();
-                instance.amount= DamageEngine.getMitigatedDamage(event.getEntityLiving(), instance);
+                instance.amount = DamageEngine.getMitigatedDamage(event.getEntityLiving(), instance);
 
 
-                instance.hasBeenMitigated=true;
-
-
-
-
+                instance.hasBeenMitigated = true;
 
 
             }
 
 
-        }
-
-        else {
+        } else {
             event.setCanceled(true);
         }
-
-
 
 
     }
 
 
-
-
-
-
     @SubscribeEvent
     public static void attackEntityEvent(LivingAttackEvent event) {
-
 
 
         if (!(event.getSource() instanceof APDamageSource)) {
@@ -137,41 +127,22 @@ public class GameEventHandler {
             event.setCanceled(true);
 
 
-
-
             LivingEntity attacker = (LivingEntity) event.getSource().getEntity();
 
 
-            if (attacker!=null) {
-
-                System.out.println("Attacker is not null");
+            if (attacker != null) {
 
 
-                        MeleeCombatInstance meleeCombatInstance = new MeleeCombatInstance(attacker,event.getEntityLiving(),attacker.getMainHandItem());
-
-
+                MeleeCombatInstance meleeCombatInstance = new MeleeCombatInstance(attacker, event.getEntityLiving(), attacker.getMainHandItem());
 
 
             }
-
 
 
         }
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @SubscribeEvent
@@ -201,6 +172,13 @@ public class GameEventHandler {
 
             }
 
+            if (event.getObject() instanceof Mob && !(event.getObject() instanceof Player)) {
+
+                MobDataProvider mobDataProvider = new MobDataProvider();
+                event.addCapability(new ResourceLocation(AeonsPast.MODID, "mobdata"), mobDataProvider);
+
+            }
+
 
         }
 
@@ -208,10 +186,8 @@ public class GameEventHandler {
     }
 
 
-
-
- @SubscribeEvent
- public static void attemptWeaponCast(PlayerInteractEvent.RightClickItem event) {
+    @SubscribeEvent
+    public static void attemptWeaponCast(PlayerInteractEvent.RightClickItem event) {
 
 
         ItemStack stack = event.getItemStack();
@@ -225,7 +201,7 @@ public class GameEventHandler {
 
 
                 Spell spell = ItemEngine.getSpellFromItem(stack);
-                 Player player = event.getPlayer();
+                Player player = event.getPlayer();
                 IPlayerData playerData = Utilities.getPlayerData(player);
                 IEntityData entityData = Utilities.getEntityData(player);
                 Spell attunedWeaponSpell = playerData.getActiveWeaponSpell();
@@ -234,22 +210,20 @@ public class GameEventHandler {
 
 
                 boolean cast = true;
-                if (attunedWeaponData==null) {
+                if (attunedWeaponData == null) {
 
 
                     playerData.setActiveWeaponSpell(spell);
                     entityData.getOrCreateSpellStack(spell);
 
 
-
-
                 } else {
 
-                    if (spell !=attunedWeaponSpell) {
+                    if (spell != attunedWeaponSpell) {
 
-                        if (attunedWeaponData.getCharges() < 1 || attunedWeaponData.getSpellState()!= SpellState.OFF) {
+                        if (attunedWeaponData.getCharges() < 1 || attunedWeaponData.getSpellState() != SpellState.OFF) {
 
-                            cast=false;
+                            cast = false;
 
                         }
 
@@ -261,43 +235,21 @@ public class GameEventHandler {
                 }
 
 
-
                 if (cast) {
                     entityData.getOrCreateSpellStack(spell);
-
-                    spell.attemptCast(player,entityData.getSpellStackRaw(attunedWeaponSpell));
+                    Utilities.syncTotalPlayerData(player);
+                    spell.attemptCast(player, entityData.getSpellStackRaw(attunedWeaponSpell));
 
                 }
-
-
 
 
             }
 
 
-
-
         }
 
 
-
-
-
- }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     //Player Regeneration
@@ -376,14 +328,6 @@ public class GameEventHandler {
 
 
     @SubscribeEvent
-    public static void tickEntity(TickEvent.WorldTickEvent event) {
-
-
-    }
-
-
-
-    @SubscribeEvent
     public static void eventTrigger(LivingEvent event) {
 
 
@@ -412,6 +356,7 @@ public class GameEventHandler {
 
 
     }
+
     @SubscribeEvent
     public static void reload(AddReloadListenerEvent event) {
 
@@ -419,13 +364,12 @@ public class GameEventHandler {
         WEAPON_STATISTICS_LOADER = new WeaponDataLoader();
 
 
-        CLASS_STATISTICS_LOADER = new ClassDataLoader( );
+        CLASS_STATISTICS_LOADER = new ClassDataLoader();
 
         ENTITY_DATA_LOADER = new EntityDataLoader();
         event.addListener(CLASS_STATISTICS_LOADER);
         event.addListener(WEAPON_STATISTICS_LOADER);
         event.addListener(ENTITY_DATA_LOADER);
-
 
 
     }
@@ -436,26 +380,19 @@ public class GameEventHandler {
 
 
         ItemStack stack = event.getItemStack();
-        if (!event.getItemStack().isEmpty() && event.getSide()== LogicalSide.SERVER) {
+        if (!event.getItemStack().isEmpty() && event.getSide() == LogicalSide.SERVER) {
 
 
             if (!ItemEngine.isItemInitialized(event.getItemStack())) {
 
 
-                ItemEngine.initializeItem(event.getPlayer(),stack);
-
+                ItemEngine.initializeItem(event.getPlayer(), stack);
 
 
             }
 
 
-
-
         }
-
-
-
-
 
 
     }
@@ -465,7 +402,7 @@ public class GameEventHandler {
     public static void newEntityData(EntityJoinWorldEvent event) {
 
 
-        if (ENTITY_DATA_LOADER.getEntityData(event.getEntity()) !=null) {
+        if (ENTITY_DATA_LOADER.getEntityData(event.getEntity()) != null) {
 
             EntityStatisticalData data = ENTITY_DATA_LOADER.getEntityData(event.getEntity());
 
@@ -476,11 +413,38 @@ public class GameEventHandler {
         }
 
 
+        if (event.getEntity() instanceof AbstractHurtingProjectile) {
+
+            AbstractHurtingProjectile hurtingProjectile = (AbstractHurtingProjectile) event.getEntity();
+
+
+        }
+
 
     }
 
 
+    @SubscribeEvent
+    public static void newProjectileDamageEvent(ProjectileImpactEvent event) {
 
+        Projectile projectile = event.getProjectile();
+
+        if (projectile.getOwner() != null) {
+
+            Entity owner = projectile.getOwner();
+
+            if (owner instanceof LivingEntity) {
+
+                LivingEntity livingEntity = (LivingEntity) owner;
+
+
+            }
+
+
+        }
+
+
+    }
 
 
 }

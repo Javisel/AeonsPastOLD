@@ -22,6 +22,7 @@ public class Kinetic  extends WeaponProperty {
             victim.push((double)(-Mth.sin(attacker.getYRot() * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(Mth.cos(attacker.getYRot() * ((float)Math.PI / 180F)) * (float)i * 0.5F));
         }
 
+        System.out.println("BACK OFF!");
         attacker.setDeltaMovement(attacker.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
         attacker.setSprinting(false);
     }

@@ -35,8 +35,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> resourceList, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
 
 
-        System.out.println("Applying Weapon Loader!");
-        ImmutableMap.Builder<ResourceLocation, WeaponData> builder = ImmutableMap.builder();
+         ImmutableMap.Builder<ResourceLocation, WeaponData> builder = ImmutableMap.builder();
 
         ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "items/directory/weapon_data_files.json");
         ArrayList<ResourceLocation> finalLocations = new ArrayList<ResourceLocation>();
@@ -46,8 +45,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
             for (Resource resource : resourceManager.getResources(resourceLocation)) {
 
 
-                System.out.println("Resource: " + resource.getSourceName());
-                InputStream stream = resource.getInputStream();
+                 InputStream stream = resource.getInputStream();
 
 
                 Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));

@@ -1,4 +1,7 @@
 {
+
+  "item_type": "sword",
+
   "attack_damage": {
     "min": 11,
     "max": 33

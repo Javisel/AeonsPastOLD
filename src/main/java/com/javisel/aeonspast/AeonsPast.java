@@ -41,6 +41,7 @@ public class AeonsPast {
         ClassRegistration.PLAYER_GAME_CLASSES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         EffectRegistration.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        EntityTraitRegistration.ENTITY_TRAITS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
 
         // Register the setup method for modloading

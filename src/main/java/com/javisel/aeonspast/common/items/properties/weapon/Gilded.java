@@ -30,6 +30,7 @@ public class Gilded extends WeaponProperty {
 
 
 
+            System.out.println("On-hit, baby!");
 
             DamageSource source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob",proc,attacker);
 

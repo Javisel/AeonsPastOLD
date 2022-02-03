@@ -102,6 +102,12 @@ public class HealthBar implements IIngameOverlay {
 
         String healthdata = (int) (currentHealth) + "/" + (int) (maxHealth);
 
+
+
+
+
+
+
         if (player.getAttributeValue(AttributeRegistration.HEALTH_SHIELD.get()) > 0) {
 
             healthdata = (int) (currentHealth) + " + " + (int) player.getAttributeValue(AttributeRegistration.HEALTH_SHIELD.get()) + "/" + (int) (maxHealth);

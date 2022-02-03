@@ -1,6 +1,8 @@
 package com.javisel.aeonspast.utilities;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
+import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
+import com.javisel.aeonspast.common.capabiltiies.mob.MobDataCapability;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerCapability;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
@@ -13,6 +15,7 @@ import com.javisel.aeonspast.common.resource.Resource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +45,12 @@ public class Utilities {
 
     }
 
+    public static IMobData getMobData(Mob mob) {
 
+
+        return mob.getCapability(MobDataCapability.MOB_DATA_CAP, null).orElseThrow(NullPointerException::new);
+
+    }
     public static float experienceForLevel(int level) {
 
         if (level == 0) return 0;
@@ -77,6 +85,9 @@ public class Utilities {
 
     public static void syncTotalPlayerData(Player player) {
 
+        if (player.level.isClientSide) {
+            return;
+        }
 
         IEntityData entityData = Utilities.getEntityData(player);
         IPlayerData playerData = Utilities.getPlayerData(player);

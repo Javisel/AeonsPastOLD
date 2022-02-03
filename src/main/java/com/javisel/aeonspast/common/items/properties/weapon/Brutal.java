@@ -21,6 +21,7 @@ public class Brutal extends WeaponProperty {
 
             if (doesproc) {
 
+                System.out.println("Does Proc Boost!!");
                 damageInstance.amount*=1.15;
 
             }

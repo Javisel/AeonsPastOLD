@@ -172,6 +172,10 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     public boolean attemptCast(LivingEntity caster, SpellStack stack) {
 
+
+        if (stack==null) {
+            Utilities.getEntityData(caster).getOrCreateSpellStack(this);
+        }
         if (canCast(caster, stack)) {
 
             commitCosts(caster, stack);
@@ -203,14 +207,14 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         IEntityData data = Utilities.getEntityData(caster);
 
 
+
+
         if (stack.isCoolingDown()) {
 
-            System.out.println("Cooling Down!");
-            return false;
+             return false;
         }
 
         if (stack.getCharges() < 1) {
-            System.out.println("No charges !");
 
             return false;
         }
@@ -219,7 +223,6 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         if (getCostResource(caster, stack) != null) {
             if (data.getOrCreateResource(getCostResource(caster, stack)) < getCost(caster, stack)) {
 
-                System.out.println("No Mana !");
 
                 return false;
             }
@@ -227,7 +230,6 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         }
 
         if (this instanceof ICustomUseRequirement) {
-            System.out.println("Can't pass custom use requirement!!");
 
             ICustomUseRequirement checkRequirementItem = (ICustomUseRequirement) this;
 

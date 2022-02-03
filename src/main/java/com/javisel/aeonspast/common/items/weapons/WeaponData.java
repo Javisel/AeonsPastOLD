@@ -6,6 +6,7 @@ import com.javisel.aeonspast.ModBusEventHandler;
 import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
 import com.javisel.aeonspast.common.config.StatisticPair;
 import com.javisel.aeonspast.common.items.ItemEngine;
+import com.javisel.aeonspast.common.items.ItemType;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.registration.SpellRegistration;
@@ -41,6 +42,7 @@ public class WeaponData {
 
 
 
+    private final ItemType itemType;
     private final StatisticPair attack_damage;
     private final StatisticPair attack_speed;
     private StatisticPair dps;
@@ -56,7 +58,9 @@ public class WeaponData {
     private final List<String> spells = new ArrayList<>();
 
 
-    public WeaponData(StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair enchantability, StatisticPair range, SecondaryData secondaryData, List<String> properties, List<String>  spells ) {
+    public WeaponData(ItemType item_type,StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair enchantability, StatisticPair range, SecondaryData secondaryData, List<String> properties, List<String>  spells ) {
+        this.itemType=item_type;
+
         this.attack_damage = attack_damage;
         this.attack_speed = attack_speed;
         this.critical_chance = critical_chance;
@@ -65,7 +69,6 @@ public class WeaponData {
         this.enchantability = enchantability;
         this.range = range;
         this.secondaryData = secondaryData;
-
 
 
 

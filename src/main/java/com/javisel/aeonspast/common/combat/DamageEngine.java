@@ -49,7 +49,9 @@ public class DamageEngine {
 
     public static double getMitigatedDamage(LivingEntity victim, DamageInstance instance) {
 
-        double baseamount = instance.getAmount();
+
+         double baseamount = instance.getAmount();
+
         double armor = 0;
         double  damageMod = 0;
         damageMod+= victim.getAttributeValue(AttributeRegistration.DAMAGE_INTAKE.get());

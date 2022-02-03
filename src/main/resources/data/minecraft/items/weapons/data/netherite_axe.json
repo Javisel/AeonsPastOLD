@@ -1,4 +1,7 @@
 {
+
+  "item_type": "axe",
+
   "attack_damage": {
     "min": 8.8,
     "max": 117

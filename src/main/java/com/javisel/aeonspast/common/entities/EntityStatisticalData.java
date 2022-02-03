@@ -1,8 +1,12 @@
 package com.javisel.aeonspast.common.entities;
 
+import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
+import com.javisel.aeonspast.common.entities.entitytraits.EntityTrait;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.utilities.Utilities;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -72,11 +76,23 @@ public class EntityStatisticalData {
     public void loadtoEntity(LivingEntity entity) {
 
 
-    addAttributeToEntity(entity,Attributes.ATTACK_DAMAGE,attack_damage,attack_damage_scaling);
+        if (entity.getAttribute(AttributeRegistration.WEAPON_POWER.get()).getModifier(BASE_STAT_ID) !=null) {
+
+            return;
+        }
+
+        System.out.println("Editing Entity:" + entity.getName().getContents());
+     addAttributeToEntity(entity,AttributeRegistration.WEAPON_POWER.get(),attack_damage,attack_damage_scaling);
+
         addAttributeToEntity(entity,Attributes.ATTACK_SPEED,attack_speed,attack_speed_scaling);
         addAttributeToEntity(entity, AttributeRegistration.PHYSICAL_POWER.get(), physical_power,physical_power_scaling);
         addAttributeToEntity(entity, AttributeRegistration.SPELL_POWER.get(), magical_power,magical_power_scaling);
+        System.out.println("Pre Edit Health:" + entity.getMaxHealth());
+
         addAttributeToEntity(entity, Attributes.MAX_HEALTH, health,health_scaling);
+        System.out.println("Post Edit Health:" + entity.getMaxHealth());
+
+        entity.heal(entity.getMaxHealth());
         addAttributeToEntity(entity, AttributeRegistration.HEALTH_REGENERATION.get(), health_regeneration,health_regeneration);
         addAttributeToEntity(entity, AttributeRegistration.ARMOR.get(), armor,armor_scaling);
         addAttributeToEntity(entity, AttributeRegistration.MAGIC_RESISTANCE.get(), magic_resist,magic_resist_scaling);
@@ -85,7 +101,20 @@ public class EntityStatisticalData {
 
 
 
+         IMobData mobData = Utilities.getMobData((Mob) entity);
 
+        for (String key : entity_traits) {
+
+
+            EntityTrait trait = EntityTrait.getTraitByLocation(new ResourceLocation(key));
+
+            mobData.getEntityTraits().add(trait);
+
+
+
+
+
+        }
 
 
 
@@ -94,6 +123,8 @@ public class EntityStatisticalData {
 
 
     public void addAttributeToEntity(LivingEntity entity, Attribute attribute, double baseValue, double scaleValue) {
+
+
 
 
         entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(BASE_STAT_ID,BASE_STRING,baseValue, AttributeModifier.Operation.ADDITION));

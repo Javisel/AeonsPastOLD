@@ -1,4 +1,7 @@
+
+
 {
+  "item_type": "spear",
   "attack_damage": {
     "min": 7.5,
     "max": 22.5

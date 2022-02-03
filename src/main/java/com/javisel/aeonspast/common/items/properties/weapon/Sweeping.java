@@ -27,6 +27,7 @@ public class Sweeping extends WeaponProperty {
 
         double bonusPhysicalDamage = damageInstance.amount * sweepScaling;
 
+        System.out.println("SWEEP!");
 
         for(LivingEntity livingentity : attacker.level.getEntitiesOfClass(LivingEntity.class,  victim.getBoundingBox().inflate(1,0.25,1))) {
             if (livingentity != attacker && livingentity != victim && !attacker.isAlliedTo(livingentity) && (!(livingentity instanceof ArmorStand) || !((ArmorStand)livingentity).isMarker()) && attacker.distanceToSqr(livingentity) < 9.0D) {

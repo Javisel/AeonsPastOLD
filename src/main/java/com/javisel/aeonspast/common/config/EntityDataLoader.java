@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class EntityDataLoader extends SimpleJsonResourceReloadListener {
     private static final Gson GSON_INSTANCE = Deserializers.createFunctionSerializer().create();
-    private static final String folder = "items/weapons/data";
+    private static final String folder = "entities/data";
     private   Map<ResourceLocation, EntityStatisticalData> entityStatisticsMap = ImmutableMap.of();
 
     public EntityDataLoader() {
@@ -46,8 +46,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
             for (Resource resource : resourceManager.getResources(resourceLocation)) {
 
 
-                System.out.println("Resource: " + resource.getSourceName());
-                InputStream stream = resource.getInputStream();
+                 InputStream stream = resource.getInputStream();
 
 
                 Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
@@ -66,8 +65,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
 
                 finalLocations.forEach(location -> {
 
-                    System.out.println("Location: " + location.toString());
-                    try {
+                     try {
                         EntityStatisticalData stats = getEntityProperties(location, resourceList.get(location));
                         if (stats != null)
                             builder.put(location, stats);
