@@ -5,7 +5,11 @@
     "minecraft:zombie",
     "minecraft:skeleton",
     "minecraft:creeper",
-    "minecraft:pig"
+    "minecraft:spider",
+    "minecraft:pig",
+    "minecraft:sheep",
+    "minecraft:cow"
+
 
 
 

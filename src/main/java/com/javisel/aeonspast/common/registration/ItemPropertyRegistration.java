@@ -13,7 +13,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class ItemPropertyRegistration {
 
 
-
     public static final DeferredRegister<ItemProperty> ITEM_PROPERTIES = DeferredRegister.create(ItemProperty.class, AeonsPast.MODID);
 
 
@@ -32,7 +31,6 @@ public class ItemPropertyRegistration {
     public static final RegistryObject<ItemProperty> VERSATILE = ITEM_PROPERTIES.register("versatile", () -> new Versatile());
     public static final RegistryObject<ItemProperty> BRUTAL = ITEM_PROPERTIES.register("brutal", () -> new Brutal());
     public static final RegistryObject<ItemProperty> KINETIC = ITEM_PROPERTIES.register("kinetic", () -> new Kinetic());
-
 
 
 }

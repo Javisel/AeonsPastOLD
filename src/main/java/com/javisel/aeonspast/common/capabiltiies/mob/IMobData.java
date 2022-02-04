@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public interface IMobData {
 
-     float attackTimer();
+    float attackTimer();
+
     ArrayList<EntityTrait> getEntityTraits();
 
 }

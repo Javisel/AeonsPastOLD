@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import com.javisel.aeonspast.common.attributes.AttributeContainer;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.enums.TrinketEnums;
-import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +34,7 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
     private RegistryObject<Spell> spell;
 
 
-    public TrinketItem(TrinketEnums type, Item.Properties properties,  RegistryObject<Spell> spell, @Nullable AttributeContainer... attributeContainers) {
+    public TrinketItem(TrinketEnums type, Item.Properties properties, RegistryObject<Spell> spell, @Nullable AttributeContainer... attributeContainers) {
         super(properties);
 
 
@@ -53,7 +52,8 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
         }
 
     }
-    public TrinketItem(TrinketEnums type, Item.Properties properties, RegistryObject<Spell> spell ) {
+
+    public TrinketItem(TrinketEnums type, Item.Properties properties, RegistryObject<Spell> spell) {
         super(properties);
 
 
@@ -64,7 +64,7 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
 
     }
 
-    public TrinketItem(TrinketEnums type,Item.Properties itemProperties) {
+    public TrinketItem(TrinketEnums type, Item.Properties itemProperties) {
         super(itemProperties);
 
 

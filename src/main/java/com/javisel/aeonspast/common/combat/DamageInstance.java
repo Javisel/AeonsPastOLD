@@ -1,7 +1,6 @@
 package com.javisel.aeonspast.common.combat;
 
 import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
-import com.javisel.aeonspast.common.spell.Spell;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
 
@@ -10,23 +9,25 @@ public class DamageInstance {
 
     public boolean doesProcSpellEffects = false;
     public boolean doesProcWeaponHitEffects = false;
-    public boolean doesProcTrinketEffects = false;
-    public boolean doesProcInventoryItemEffects = false;
+    public boolean doesProcTrinketEffects = true;
+    public boolean doesProcInventoryItemEffects = true;
     public boolean isCritical = false;
     public boolean isSpecial = false;
     public boolean isArea = false;
     public boolean isOverTime = false;
     public boolean canCritical = false;
-    public boolean hasBeenMitigated = false;
+    public boolean isMitigated = false;
+    public boolean isMelee = false;
     public double procPower = 1;
     public double critPower = 1;
     public Object damageDevice;
     public DamageSource vanillaDamageSource;
     public APDamageSubType damageType;
-    public double amount;
-
+    public double preMitigationsAmount;
+    public double postMitigationsAmount = 0;
+    public boolean cancel = false;
     public DamageInstance(APDamageSubType damageTypes, double amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
-        this.amount = amount;
+        this.preMitigationsAmount = amount;
         this.damageType = damageTypes;
         this.doesProcSpellEffects = doesProcSpellEffects;
         this.doesProcWeaponHitEffects = doesProcWeaponHitEffects;
@@ -38,34 +39,24 @@ public class DamageInstance {
         this.procPower = procPower;
     }
 
+    //Damage applied by "On-Hit" effects to prevent Infinite Looping crashes.
 
     public DamageInstance(APDamageSubType damageType, double amount) {
         this.damageType = damageType;
-        this.amount = amount;
-
-
-    }
-
-    //Damage applied by "On-Hit" effects to prevent Infinite Looping crashes.
-    public static DamageInstance genericProcDamage(APDamageSubType damageType, double amount) {
-
-
-        return new DamageInstance(damageType, amount);
-    }
-
-    public static DamageInstance genericSpellDamage(Spell device, APDamageSubType subType, double amount, boolean isArea) {
-
-
-        DamageInstance damageInstance = new DamageInstance(subType, amount);
-        damageInstance.doesProcSpellEffects = true;
-        damageInstance.procPower = 1;
-        damageInstance.isArea = isArea;
-        damageInstance.damageDevice = device;
-        return damageInstance;
+        this.preMitigationsAmount = amount;
+        this.doesProcWeaponHitEffects=false;
+        this.doesProcInventoryItemEffects=false;
+        this.doesProcSpellEffects=false;
+        this.doesProcTrinketEffects=false;
+        System.out.println("Damage Type: " + damageType.getUnlocalizedName());
+        System.out.println("Amount: " + amount);
 
     }
 
-    public static DamageInstance genericWeaponDamage(ItemStack device, APDamageSubType subType, double amount, boolean isArea, boolean isCritical) {
+
+    //Damage applied by Weapons.
+
+    public DamageInstance(ItemStack device, APDamageSubType subType, double amount, boolean isArea, boolean isCritical, boolean isMelee) {
 
 
         DamageInstance damageInstance = new DamageInstance(subType, amount);
@@ -74,17 +65,8 @@ public class DamageInstance {
         damageInstance.isArea = isArea;
         damageInstance.isCritical = isCritical;
         damageInstance.damageDevice = device;
-        return damageInstance;
+        damageInstance.isMelee = isMelee;
 
-    }
-
-    public static DamageInstance penaltyDamage(  double amount) {
-
-
-        DamageInstance damageInstance = new DamageInstance(APDamageSubType.PENALTY, amount);
-
-
-return  damageInstance;
     }
 
 
@@ -98,8 +80,8 @@ return  damageInstance;
         return vanillaDamageSource;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getPreMitigationsAmount() {
+        return preMitigationsAmount;
     }
 
     public boolean isDoesProcSpellEffects() {
@@ -134,5 +116,10 @@ return  damageInstance;
         return procPower;
     }
 
+    public void setMitigateDamage(float amount) {
+
+        postMitigationsAmount = amount;
+        isMitigated = true;
+    }
 
 }

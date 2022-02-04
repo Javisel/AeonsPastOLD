@@ -8,20 +8,23 @@ import com.javisel.aeonspast.utilities.StringKeys;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryManager;
+import org.lwjgl.system.CallbackI;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.javisel.aeonspast.utilities.StringKeys.RESOURCE;
+import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class EntityData implements IEntityData {
 
 
     CompoundTag storedData = new CompoundTag();
     int ticks = 0;
-     int level = 0;
+    int level = 0;
 
     HashMap<Spell, SpellStack> spellStackHashMap;
     HashMap<Resource, Float> resourceMap;
+    ArrayList<Spell> activeSpells;
 
 
     @Override
@@ -33,8 +36,25 @@ public class EntityData implements IEntityData {
     public CompoundTag writeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.put(StringKeys.STORED_DATA, storedData);
-         tag.putInt(StringKeys.LEVEL, level);
+        tag.putInt(StringKeys.LEVEL, level);
 
+
+        if (activeSpells != null) {
+            CompoundTag activeSpellTag = new CompoundTag();
+            int i = 0;
+            for (Spell spell : activeSpells) {
+
+
+                String input = spell == null ? EMPTY : spell.getRegistryName().toString();
+
+
+                activeSpellTag.putString(String.valueOf(i), input);
+
+                i++;
+
+            }
+            tag.put(SPELLS, activeSpellTag);
+        }
 
         if (spellStackHashMap != null) {
             CompoundTag spelldata = new CompoundTag();
@@ -80,7 +100,7 @@ public class EntityData implements IEntityData {
         if (tag.contains(StringKeys.STORED_DATA)) {
             storedData = tag.getCompound(StringKeys.STORED_DATA);
         }
-         level = tag.getInt(StringKeys.LEVEL);
+        level = tag.getInt(StringKeys.LEVEL);
 
 
         if (tag.contains(StringKeys.SPELL_DATA)) {
@@ -128,6 +148,33 @@ public class EntityData implements IEntityData {
 
             }
 
+
+        }
+
+
+        if (tag.contains(SPELLS)) {
+            activeSpells = new ArrayList<>(4);
+
+            CompoundTag activeSpellTag = tag.getCompound(SPELLS);
+            if (!activeSpellTag.isEmpty()) {
+
+                for (String key : activeSpellTag.getAllKeys()) {
+                    int stuff = Integer.parseInt(key);
+
+
+                    String spell = activeSpellTag.getString(key);
+
+                    Spell thespell = Spell.getDefaultSpell();
+                    if (!spell.equalsIgnoreCase(EMPTY)) {
+
+                        thespell = Spell.getSpellByResourceLocation(new ResourceLocation(spell));
+
+                    }
+
+                    addActiveSpell(thespell);
+                }
+
+            }
 
         }
 
@@ -248,5 +295,46 @@ public class EntityData implements IEntityData {
     public int getLevel() {
         return level;
     }
+
+
+    @Override
+    public ArrayList<Spell> getActiveSpells() {
+
+
+        return activeSpells;
+    }
+
+
+    @Override
+    public void addActiveSpell(Spell spell) {
+
+
+        if (activeSpells==null) {
+            activeSpells = new ArrayList<>();
+        }
+        for (Spell index : activeSpells) {
+
+
+            if (index == spell) {
+                return;
+            }
+
+        }
+
+        activeSpells.add(spell);
+
+
+    }
+
+
+    @Override
+    public void removeActiveSpell(Spell spell) {
+
+
+        activeSpells.removeIf(index -> index == spell);
+
+
+    }
+
 }
 

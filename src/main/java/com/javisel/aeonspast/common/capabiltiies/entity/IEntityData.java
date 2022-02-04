@@ -5,6 +5,7 @@ import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface IEntityData {
@@ -23,6 +24,7 @@ public interface IEntityData {
     void tick();
 
     int getLevel();
+
     SpellStack getSpellStackRaw(Spell spell);
 
     Float getOrCreateResource(Resource resource);
@@ -30,4 +32,10 @@ public interface IEntityData {
     Float getResourceAmountRaw(Resource resource);
 
     HashMap<Resource, Float> getResourceMap();
+
+    ArrayList<Spell> getActiveSpells();
+
+    void addActiveSpell(Spell spell);
+
+    void removeActiveSpell(Spell spell);
 }

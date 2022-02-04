@@ -71,7 +71,6 @@ public class ToolTipHandler {
                 tooltips.add(Either.left(translatableComponent));
 
 
-
             }
 
 
@@ -137,41 +136,46 @@ public class ToolTipHandler {
 
 
         tooltips.add(Either.left(propertycomponent));
- 
-        
-        double power = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.WEAPON_POWER.get(),stack,EquipmentSlot.MAINHAND);;
+
+
+        double power = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.WEAPON_POWER.get(), stack, EquipmentSlot.MAINHAND);
+        ;
         double dps = power;
-        
-      tooltips.add(  Either.left(getAttributeComponent(AttributeRegistration.WEAPON_POWER.get(),stack,weaponData.getAttack_damage(),power,EquipmentSlot.MAINHAND)));
 
-        double attack_speed = 4+ItemEngine.getItemFlatAttributeValue(Attributes.ATTACK_SPEED,stack,EquipmentSlot.MAINHAND);;
-          dps *= attack_speed; 
- 
+        tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.WEAPON_POWER.get(), stack, weaponData.getAttack_damage(), power, EquipmentSlot.MAINHAND)));
 
-    tooltips.add((Either.left(    getAttributeComponent(Attributes.ATTACK_SPEED,stack,weaponData.getAttack_speed(), attack_speed, EquipmentSlot.MAINHAND))));
-        double crit_chance = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get(), stack,EquipmentSlot.MAINHAND);;
+        double attack_speed = 4 + ItemEngine.getItemFlatAttributeValue(Attributes.ATTACK_SPEED, stack, EquipmentSlot.MAINHAND);
+        ;
+        dps *= attack_speed;
 
 
-        if (crit_chance!=0) {
-        tooltips.add(Either.left(   getAttributeComponent(AttributeRegistration.CRITICAL_CHANCE.get(), stack,weaponData.getCritical_chance(), crit_chance, EquipmentSlot.MAINHAND)));
+        tooltips.add((Either.left(getAttributeComponent(Attributes.ATTACK_SPEED, stack, weaponData.getAttack_speed(), attack_speed, EquipmentSlot.MAINHAND))));
+        double crit_chance = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get(), stack, EquipmentSlot.MAINHAND);
+        ;
 
 
-        }
-
-        double crit_damage = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get(), stack,EquipmentSlot.MAINHAND);;
-
-
-        if (crit_damage!=2) {
-
-          tooltips.add(Either.left(  getAttributeComponent(AttributeRegistration.CRITICAL_DAMAGE.get(), stack,weaponData.getCritical_damage(), crit_damage, EquipmentSlot.MAINHAND)));
+        if (crit_chance != 0) {
+            tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.CRITICAL_CHANCE.get(), stack, weaponData.getCritical_chance(), crit_chance, EquipmentSlot.MAINHAND)));
 
 
         }
 
+        double crit_damage = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get(), stack, EquipmentSlot.MAINHAND);
+        ;
 
-        double range = 5+ItemEngine.getItemFlatAttributeValue(ForgeMod.REACH_DISTANCE.get(),stack,EquipmentSlot.MAINHAND);;
 
-      tooltips .add(Either.left( getAttributeComponent(ForgeMod.REACH_DISTANCE.get(),stack,weaponData.getRange(), range, EquipmentSlot.MAINHAND)));
+        if (crit_damage != 2) {
+
+            tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.CRITICAL_DAMAGE.get(), stack, weaponData.getCritical_damage(), crit_damage, EquipmentSlot.MAINHAND)));
+
+
+        }
+
+
+        double range = 5 + ItemEngine.getItemFlatAttributeValue(ForgeMod.REACH_DISTANCE.get(), stack, EquipmentSlot.MAINHAND);
+        ;
+
+        tooltips.add(Either.left(getAttributeComponent(ForgeMod.REACH_DISTANCE.get(), stack, weaponData.getRange(), range, EquipmentSlot.MAINHAND)));
 
 
         Component component = getVariableStringComponent("aeonspast:dps");
@@ -195,7 +199,6 @@ public class ToolTipHandler {
         }
 
     }
-
 
 
     public static MutableComponent applyColourFormattings(double min, double max, double value, Component component) {
@@ -283,10 +286,8 @@ public class ToolTipHandler {
         return component;
     }
 
-    public  static Component getAttributeComponent(Attribute attribute, ItemStack stack, StatisticPair pair, double value, EquipmentSlot slot) {
+    public static Component getAttributeComponent(Attribute attribute, ItemStack stack, StatisticPair pair, double value, EquipmentSlot slot) {
 
-
- 
 
         Component component = getVariableStringComponent(attribute.getDescriptionId());
 

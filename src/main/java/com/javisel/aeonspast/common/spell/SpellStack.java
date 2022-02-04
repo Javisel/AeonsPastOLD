@@ -109,13 +109,6 @@ public final class SpellStack {
 
     }
 
-    public void setSpellState(SpellState state) {
-
-
-        this.spellState = state;
-    }
-
-
     public boolean isCoolingDown() {
 
 
@@ -128,10 +121,15 @@ public final class SpellStack {
         return chargeTime > 0;
     }
 
-
     public SpellState getSpellState() {
 
         return spellState;
+    }
+
+    public void setSpellState(SpellState state) {
+
+
+        this.spellState = state;
     }
 
 }

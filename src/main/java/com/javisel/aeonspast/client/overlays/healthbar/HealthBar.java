@@ -4,10 +4,15 @@ import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.client.RenderUtilities;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,6 +24,7 @@ public class HealthBar implements IIngameOverlay {
 
 
     private final ResourceLocation HEALTH_BAR_TEXTURES = new ResourceLocation(AeonsPast.MODID, "textures/gui/healthbar.png");
+
     private final float BAR_WIDTH = 80f;
     private final float BAR_HEIGHT = 10;
     private final float BAR_TEXTURE_WIDTH = 180;
@@ -103,11 +109,6 @@ public class HealthBar implements IIngameOverlay {
         String healthdata = (int) (currentHealth) + "/" + (int) (maxHealth);
 
 
-
-
-
-
-
         if (player.getAttributeValue(AttributeRegistration.HEALTH_SHIELD.get()) > 0) {
 
             healthdata = (int) (currentHealth) + " + " + (int) player.getAttributeValue(AttributeRegistration.HEALTH_SHIELD.get()) + "/" + (int) (maxHealth);
@@ -124,6 +125,7 @@ public class HealthBar implements IIngameOverlay {
 
 
         Gui.drawCenteredString(mStack, gui.getFont(), healthdata, stringx, stringy, -1);
+
 
 
         mStack.popPose();

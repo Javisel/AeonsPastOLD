@@ -1,13 +1,9 @@
 package com.javisel.aeonspast.common.events;
 
-import jdk.jfr.Event;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-import java.awt.*;
 import java.awt.event.ItemEvent;
 
 public class SwingItemEvent extends LivingEvent {
@@ -18,7 +14,7 @@ public class SwingItemEvent extends LivingEvent {
 
     public SwingItemEvent(LivingEntity entity, ItemStack stack) {
         super(entity);
-        this.stack=stack;
+        this.stack = stack;
     }
 
 
@@ -43,10 +39,6 @@ public class SwingItemEvent extends LivingEvent {
      * @see #getID()
      * @see #getStateChange()
      */
-
-
-
-
 
 
 }

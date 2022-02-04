@@ -24,7 +24,7 @@ import java.util.Map;
 public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
     private static final Gson GSON_INSTANCE = Deserializers.createFunctionSerializer().create();
     private static final String folder = "items/weapons/data";
-    private   Map<ResourceLocation, WeaponData> weaponStatisticsMap = ImmutableMap.of();
+    private Map<ResourceLocation, WeaponData> weaponStatisticsMap = ImmutableMap.of();
 
     public WeaponDataLoader() {
         super(GSON_INSTANCE, folder);
@@ -35,7 +35,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> resourceList, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
 
 
-         ImmutableMap.Builder<ResourceLocation, WeaponData> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<ResourceLocation, WeaponData> builder = ImmutableMap.builder();
 
         ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "items/directory/weapon_data_files.json");
         ArrayList<ResourceLocation> finalLocations = new ArrayList<ResourceLocation>();
@@ -45,7 +45,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
             for (Resource resource : resourceManager.getResources(resourceLocation)) {
 
 
-                 InputStream stream = resource.getInputStream();
+                InputStream stream = resource.getInputStream();
 
 
                 Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
@@ -64,7 +64,6 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
 
                 finalLocations.forEach(location -> {
 
-                    System.out.println("Location: " + location.toString());
                     try {
                         WeaponData stats = getWeaponProperties(location, resourceList.get(location));
                         if (stats != null)
@@ -79,7 +78,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        weaponStatisticsMap=builder.build();
+        weaponStatisticsMap = builder.build();
 
     }
 
@@ -110,7 +109,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
     public WeaponData getWeaponData(ResourceLocation location) {
 
 
-        for (ResourceLocation test: weaponStatisticsMap.keySet()) {
+        for (ResourceLocation test : weaponStatisticsMap.keySet()) {
 
 
             if (test.equals(location)) {
@@ -120,10 +119,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
             }
 
 
-
-
         }
-
 
 
         return null;
@@ -135,7 +131,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
 
         ResourceLocation location = item.getRegistryName();
 
-        for (ResourceLocation test: weaponStatisticsMap.keySet()) {
+        for (ResourceLocation test : weaponStatisticsMap.keySet()) {
 
 
             if (test.equals(location)) {
@@ -145,16 +141,12 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
             }
 
 
-
-
         }
-
 
 
         return null;
 
     }
-
 
 
 }

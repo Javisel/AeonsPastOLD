@@ -1,25 +1,23 @@
 package com.javisel.aeonspast.common.particle.particletypes;
 
+import com.javisel.aeonspast.common.particle.particleoptions.WorldTextOptions;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
-import com.javisel.aeonspast.common.particle.particleoptions.WorldTextOptions;
 
-public class WorldTextType  extends ParticleType implements WorldTextOptions{
+public class WorldTextType extends ParticleType implements WorldTextOptions {
 
 
     private MutableComponent component;
-
 
 
     public WorldTextType(boolean overrideLimiter, ParticleOptions.Deserializer deserializer) {
         super(overrideLimiter, deserializer);
 
     }
-
 
 
     @Override

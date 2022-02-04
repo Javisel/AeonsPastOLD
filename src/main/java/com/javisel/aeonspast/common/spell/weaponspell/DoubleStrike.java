@@ -5,9 +5,9 @@ import com.javisel.aeonspast.common.spell.SpellRank;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.world.entity.LivingEntity;
 
-public class DoubleStrike  extends Spell {
-    public DoubleStrike( ) {
-        super(60,25, SpellRank.WEAPON_SPELL);
+public class DoubleStrike extends Spell {
+    public DoubleStrike() {
+        super(60, 25, SpellRank.WEAPON_SPELL);
     }
 
     @Override

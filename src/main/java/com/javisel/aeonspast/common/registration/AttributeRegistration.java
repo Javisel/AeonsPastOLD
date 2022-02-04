@@ -23,6 +23,7 @@ public class AttributeRegistration {
 
 
     //Defensive
+    //  public static final RegistryObject<Attribute> HEALTH = ATTRIBUTES.register("health", () -> new RangedAttribute("generic.health", 0, 0, 20000).setSyncable(true));
     public static final RegistryObject<Attribute> HEALTH_REGENERATION = ATTRIBUTES.register("health_regeneration", () -> new RangedAttribute("generic.health_regeneration", 1, 0, 100).setSyncable(true));
 
     public static final RegistryObject<Attribute> ARMOR = ATTRIBUTES.register("armor", () -> new RangedAttribute("generic.armor", 0, 0, 100000).setSyncable(true));
@@ -33,7 +34,6 @@ public class AttributeRegistration {
     public static final RegistryObject<Attribute> PHYSICAL_MITIGATIONS = ATTRIBUTES.register("physical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> MAGICAL_MITIGATIONS = ATTRIBUTES.register("magical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> HEALING_INTAKE = ATTRIBUTES.register("healing_intake", () -> new RangedAttribute("generic.healing_intake", 1, 0, 100).setSyncable(true));
-
 
 
     public static final RegistryObject<Attribute> TENACITY = ATTRIBUTES.register("tenacity", () -> new RangedAttribute("generic.tenacity", 1, 0, 100).setSyncable(true));
@@ -59,7 +59,7 @@ public class AttributeRegistration {
 
 
     //Resources
-    public static final RegistryObject<Attribute> MAXIMUM_MANA = ATTRIBUTES.register("maximum_mana", () -> new RangedAttribute("generic.maximum_mana", 100, 0, 10000) .setSyncable(true));
+    public static final RegistryObject<Attribute> MAXIMUM_MANA = ATTRIBUTES.register("maximum_mana", () -> new RangedAttribute("generic.maximum_mana", 100, 0, 10000).setSyncable(true));
     public static final RegistryObject<Attribute> MANA_REGENERATION = ATTRIBUTES.register("mana_regeneration", () -> new RangedAttribute("generic.mana_regeneration", 0.5, 0, 10000).setSyncable(true));
 
     public static final RegistryObject<Attribute> MAXIMUM_FOOD = ATTRIBUTES.register("maximum_food", () -> new RangedAttribute("generic.maximum_food", 100, 0, 10000).setSyncable(true).setSyncable(true));
@@ -68,7 +68,7 @@ public class AttributeRegistration {
 
     //Utility
     public static final RegistryObject<Attribute> COOLDOWN_REDUCTION = ATTRIBUTES.register("cooldown_reduction", () -> new RangedAttribute("generic.cooldown_reduction", 0, 0, 10000).setSyncable(true));
-    public static final RegistryObject<Attribute> FORTUNE = ATTRIBUTES.register("fortune", () -> new RangedAttribute("generic.fortune", 100, -100, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> FORTUNE = ATTRIBUTES.register("fortune", () -> new RangedAttribute("generic.fortune", 0, -100, 100).setSyncable(true));
 
 
     //AI

@@ -6,8 +6,8 @@ import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.world.entity.LivingEntity;
 
 public class Uppercut extends Spell {
-    public Uppercut( ) {
-        super(60,25, SpellRank.WEAPON_SPELL);
+    public Uppercut() {
+        super(60, 25, SpellRank.WEAPON_SPELL);
     }
 
     @Override

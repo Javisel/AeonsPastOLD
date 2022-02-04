@@ -5,21 +5,60 @@ import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class CombatEngine {
 
+
+    public static boolean attemptCriticalHit(LivingEntity critter) {
+
+        Random random = critter.getRandom();
+
+
+        float chance = random.nextFloat(101);
+
+
+        return chance <= critter.getAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get());
+
+
+    }
+
+    public static void onCrit(LivingEntity attacker, LivingEntity victim, DamageInstance criticalInstance) {
+
+
+        criticalInstance.preMitigationsAmount = DamageEngine.applyCriticalInstance(attacker, criticalInstance);
+        criticalInstance.isCritical = true;
+
+
+    }
+
+    public static void applyWeaponLifesteal(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
+
+        double amount = instance.getPreMitigationsAmount() * (attacker.getAttributeValue(AttributeRegistration.WEAPON_LIFESTEAL.get()) / 100);
+        amount *= attacker.getAttributeValue(AttributeRegistration.HEALING_INTAKE.get());
+        amount = EventFactory.onLifesteal(attacker, victim, (float) amount);
+
+        if (instance.isArea) {
+
+            amount *= 0.33;
+
+
+        }
+
+
+        if (amount > 0) {
+
+
+            attacker.heal((float) amount);
+        }
+
+
+    }
 
     public void swingWeapon(LivingEntity attacker, ItemStack stack) {
 
@@ -57,29 +96,6 @@ public class CombatEngine {
 
     }
 
-
-
-
-
-
-
-    public static boolean attemptCriticalHit(LivingEntity critter) {
-
-        Random random = critter.getRandom();
-
-
-        float chance =  random.nextFloat(101);
-
-
-        return  chance <= critter.getAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get());
-
-
-
-
-
-    }
-
-
     public boolean onDamageSet(APDamageSource apDamagesource, LivingEntity victim) {
 
 
@@ -96,66 +112,20 @@ public class CombatEngine {
 
     }
 
-
-    public static void onCrit(LivingEntity attacker, LivingEntity victim, DamageInstance criticalInstance) {
-
-
-
-        criticalInstance.amount=DamageEngine.getCriticalDamageBonus(attacker,criticalInstance);
-        criticalInstance.isCritical=true;
-
-
-
-
-
-    }
-
-
     public void fireWeapon(LivingEntity attacker, ItemStack stack) {
 
 
     }
-
 
     public void onProjectileHit(LivingEntity attacker, LivingEntity victim, Projectile projectile) {
 
 
     }
 
-
     public void attackEntity(LivingEntity attacker, LivingEntity victim, ItemStack weapon) {
 
 
     }
-
-
-    public  static void applyLifesteal(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
-
-        double amount = instance.getAmount() * attacker.getAttributeValue(AttributeRegistration.WEAPON_LIFESTEAL.get());
-        amount*=attacker.getAttributeValue(AttributeRegistration.HEALING_INTAKE.get());
-        amount=EventFactory.onLifesteal(attacker,victim, (float) amount);
-
-        if (instance.isArea) {
-
-            amount*=0.33;
-
-
-        }
-
-
-
-
-        if (amount>0) {
-
-
-            attacker.heal((float) amount);
-        }
-
-
-    }
-
-
-
 
 
 }

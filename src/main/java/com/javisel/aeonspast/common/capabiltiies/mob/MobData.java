@@ -13,11 +13,6 @@ public class MobData implements IMobData {
     ArrayList<EntityTrait> traits = new ArrayList<>();
 
 
-
-
-
-
-
     @Override
     public float attackTimer() {
         return 0;
@@ -31,7 +26,7 @@ public class MobData implements IMobData {
     public void fromNBT(CompoundTag tag) {
 
 
-        if (tag.contains(ENTITY_TRAITS)){
+        if (tag.contains(ENTITY_TRAITS)) {
 
 
             CompoundTag traittag = tag.getCompound(ENTITY_TRAITS);
@@ -43,20 +38,17 @@ public class MobData implements IMobData {
                 EntityTrait trait = EntityTrait.getTraitByLocation(new ResourceLocation(key));
 
 
-                if (trait!=null) {
+                if (trait != null) {
 
                     traits.add(trait);
 
                 }
 
 
-
-
             }
 
 
         }
-
 
 
     }
@@ -76,22 +68,18 @@ public class MobData implements IMobData {
             for (EntityTrait trait : getEntityTraits()) {
 
 
-                entityTag.putString(trait.getRegistryName().toString(),"");
+                entityTag.putString(trait.getRegistryName().toString(), "");
 
 
             }
 
-            tag.put(ENTITY_TRAITS,entityTag);
+            tag.put(ENTITY_TRAITS, entityTag);
 
         }
 
 
-
-
-
-        return  tag;
+        return tag;
     }
-
 
 
 }

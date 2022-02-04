@@ -14,13 +14,13 @@ public class DamageEngine {
         if (armor < 0) {
 
 
-            mitigations =  (2 - (armor / (100 + armor)));
+            mitigations = (2 - (armor / (100 + armor)));
         } else if (armor == 0) {
             return damage;
         } else if (armor > 0) {
 
 
-            mitigations =   (armor / (100 + armor));
+            mitigations = (armor / (100 + armor));
         }
 
 
@@ -37,12 +37,14 @@ public class DamageEngine {
         double physicalPower = attacker.getAttributeValue(AttributeRegistration.PHYSICAL_POWER.get());
         double rangeBonus = isMelee ? attacker.getAttributeValue(AttributeRegistration.MELEE_POWER.get()) : attacker.getAttributeValue(AttributeRegistration.RANGED_POWER.get());
 
-        double total = (baseDamage + physicalPower) * (1 + rangeBonus);
+        double total = (baseDamage + physicalPower) * (1 + rangeBonus/100);
 
         total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
 
+        System.out.println("Total: " + total);
+        DamageInstance instance = new DamageInstance(weapon, APDamageSubType.PHYSICAL, total, false, false, isMelee);;
 
-        return DamageInstance.genericWeaponDamage(weapon, APDamageSubType.PHYSICAL, total, false, false);
+         return instance;
 
 
     }
@@ -50,68 +52,63 @@ public class DamageEngine {
     public static double getMitigatedDamage(LivingEntity victim, DamageInstance instance) {
 
 
-         double baseamount = instance.getAmount();
+        double baseamount = instance.getPreMitigationsAmount();
 
+
+        if (instance.getDamageType() == null) {
+             return baseamount;
+
+        }
+        System.err.println("Base Amount: " + baseamount);
         double armor = 0;
-        double  damageMod = 0;
-        damageMod+= victim.getAttributeValue(AttributeRegistration.DAMAGE_INTAKE.get());
-        if (instance.getDamageType()==APDamageSubType.PHYSICAL) {
+        double damageMod = 1;
+        damageMod += victim.getAttributeValue(AttributeRegistration.DAMAGE_INTAKE.get()) / 100;
+        if (instance.getDamageType() == APDamageSubType.PHYSICAL) {
 
 
             armor = victim.getAttribute(AttributeRegistration.ARMOR.get()).getValue();
-            armor *= 1 +victim.getAttribute(AttributeRegistration.ARMOR_TOUGHNESS.get()).getValue();
+            armor *= 1 + victim.getAttribute(AttributeRegistration.ARMOR_TOUGHNESS.get()).getValue();
 
 
-            damageMod-= victim.getAttributeValue(AttributeRegistration.PHYSICAL_MITIGATIONS.get());
-
+            damageMod -= victim.getAttributeValue(AttributeRegistration.PHYSICAL_MITIGATIONS.get()) / 100;
 
 
         }
 
-        if (instance.getDamageType()==APDamageSubType.MAGIC) {
+        if (instance.getDamageType() == APDamageSubType.MAGIC) {
 
 
             armor = victim.getAttribute(AttributeRegistration.MAGIC_RESISTANCE.get()).getValue();
 
-            damageMod-= victim.getAttributeValue(AttributeRegistration.MAGICAL_MITIGATIONS.get());
-
+            damageMod -= victim.getAttributeValue(AttributeRegistration.MAGICAL_MITIGATIONS.get()) / 100;
         }
 
 
-        baseamount=getDamagePostMitigations(armor,baseamount);
+        baseamount = getDamagePostMitigations(armor, baseamount);
 
-        baseamount*=damageMod;
-
-
+        baseamount *= damageMod;
 
 
-
-return  baseamount;
-
+        System.out.println("New Amount: " + baseamount);
+        return baseamount;
 
 
     }
 
 
-    public static double getCriticalDamageBonus(LivingEntity entity, DamageInstance instance) {
+    public static double applyCriticalInstance(LivingEntity entity, DamageInstance instance) {
 
         double critDamage = entity.getAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get());
 
-         double base =instance.getAmount();
+        double base = instance.getPreMitigationsAmount();
 
-         base*=critDamage;
+        base *= critDamage;
 
-         base*=instance.critPower;
-
-
+        base *= instance.critPower;
 
 
         return base;
     }
-
-
-
-
 
 
 }

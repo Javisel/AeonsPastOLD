@@ -51,13 +51,21 @@ public class ClassData {
         this.resource_regeneration_scaling = resource_regeneration_scaling;
         this.movement_speed = movement_speed;
         this.movement_speed_scaling = movement_speed_scaling;
-        
+
 
         this.spells.addAll(spells);
         this.weapon_types.addAll(weapon_types);
 
 
-     }
+    }
+
+    public static String getBaseStatistics() {
+        return BASE_STATISTICS;
+    }
+
+    public static String getLevelBonusStatistics() {
+        return LEVEL_BONUS_STATISTICS;
+    }
 
     public ArrayList<AttributeContainer> getAttributeModifiers(Resource resource) {
 
@@ -92,14 +100,6 @@ public class ClassData {
 
 
         return attributeContainers;
-    }
-
-    public static String getBaseStatistics() {
-        return BASE_STATISTICS;
-    }
-
-    public static String getLevelBonusStatistics() {
-        return LEVEL_BONUS_STATISTICS;
     }
 
     public double getMax_health() {
@@ -167,38 +167,37 @@ public class ClassData {
     }
 
 
-    public boolean hasSpell(Spell spell){
+    public boolean hasSpell(Spell spell) {
         ResourceLocation location = spell.getRegistryName();
 
         for (String resource : spells) {
 
             if (resource.equals(location.toString())) {
 
-                return  true;
+                return true;
             }
 
 
         }
 
-        return  false;
+        return false;
     }
 
 
-
-    public boolean hasWeaponType(String weaponType){
+    public boolean hasWeaponType(String weaponType) {
         ResourceLocation location = new ResourceLocation(weaponType);
 
         for (String resource : weapon_types) {
 
             if (resource.equals(location.toString())) {
 
-                return  true;
+                return true;
             }
 
 
         }
 
-        return  false;
+        return false;
     }
 
 }

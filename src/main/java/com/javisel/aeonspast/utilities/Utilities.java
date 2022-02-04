@@ -1,18 +1,17 @@
 package com.javisel.aeonspast.utilities;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataCapability;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerCapability;
-import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.enums.TrinketEnums;
-import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.networking.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.networking.ResourceMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -25,8 +24,6 @@ import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.List;
 import java.util.UUID;
-
-import static com.javisel.aeonspast.AeonsPast.MODID;
 
 public class Utilities {
 
@@ -51,6 +48,7 @@ public class Utilities {
         return mob.getCapability(MobDataCapability.MOB_DATA_CAP, null).orElseThrow(NullPointerException::new);
 
     }
+
     public static float experienceForLevel(int level) {
 
         if (level == 0) return 0;

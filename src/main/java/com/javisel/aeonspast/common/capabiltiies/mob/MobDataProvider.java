@@ -1,8 +1,5 @@
 package com.javisel.aeonspast.common.capabiltiies.mob;
 
-import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
-import com.javisel.aeonspast.common.capabiltiies.entity.EntityData;
-import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
@@ -11,7 +8,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class  MobDataProvider implements ICapabilitySerializable<CompoundTag> {
+public class MobDataProvider implements ICapabilitySerializable<CompoundTag> {
 
 
     private final MobData entityData = new MobData();

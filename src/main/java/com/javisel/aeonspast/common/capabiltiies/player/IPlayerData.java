@@ -1,20 +1,15 @@
 package com.javisel.aeonspast.common.capabiltiies.player;
 
-import com.javisel.aeonspast.common.capabiltiies.player.PlayerSpellBar;
 import com.javisel.aeonspast.common.playerclasses.ClassInstance;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.spell.Spell;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface IPlayerData {
 
     HashMap<PlayerGameClass, ClassInstance> getClasses();
-
-
-
 
     PlayerGameClass getActiveClass();
 
@@ -29,15 +24,10 @@ public interface IPlayerData {
 
     ClassInstance getActiveClassInstance();
 
-    ArrayList<Spell> getActiveSpells();
-
-    void addActiveSpell(Spell spell);
-
-    void removeActiveSpell(Spell spell);
 
     PlayerSpellBar getSpellBar();
 
-    void setActiveWeaponSpell(Spell spell);
-
     Spell getActiveWeaponSpell();
+
+    void setActiveWeaponSpell(Spell spell);
 }

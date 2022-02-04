@@ -1,16 +1,19 @@
 package com.javisel.aeonspast.client.overlays;
 
+import com.javisel.aeonspast.client.main.ClientProxy;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class GameOverlay {
-
+public class RenderOverride {
 
 
     @SubscribeEvent
@@ -40,6 +43,20 @@ public class GameOverlay {
 
 
     }
+
+
+    @SubscribeEvent
+    public static void renderEntityOverride(RenderLivingEvent.Post entityViewRenderEvent) {
+
+
+        ClientProxy.inWorldRenderer.addEntityToRenderQue(entityViewRenderEvent.getEntity());
+         ClientProxy.inWorldRenderer.renderBar(        entityViewRenderEvent.getPoseStack(), Minecraft.getInstance().gameRenderer.getMainCamera());
+
+
+
+     }
+
+
 
 
 }

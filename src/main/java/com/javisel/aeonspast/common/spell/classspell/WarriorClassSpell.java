@@ -24,7 +24,6 @@ import static com.javisel.aeonspast.GameEventHandler.WEAPON_STATISTICS_LOADER;
 public class WarriorClassSpell extends ClassSpell implements ICustomUseRequirement {
 
 
-
     public WarriorClassSpell() {
         super(2, 300, 10, 25);
         setSpellResource(ResourceRegistration.MANA);
@@ -35,36 +34,24 @@ public class WarriorClassSpell extends ClassSpell implements ICustomUseRequireme
     public void cast(LivingEntity entity, SpellStack stack) {
 
 
+        Map<ResourceLocation, ClassData> CLASS_STATISTICS_LOADER = GameEventHandler.CLASS_STATISTICS_LOADER.getClassStatisticsMap();
 
 
-          Map<ResourceLocation, ClassData> CLASS_STATISTICS_LOADER = GameEventHandler.CLASS_STATISTICS_LOADER.getClassStatisticsMap();
+        System.out.println("PRINT!");
+        for (ResourceLocation location : CLASS_STATISTICS_LOADER.keySet()) {
 
 
-          System.out.println("PRINT!");
-          for (ResourceLocation location :CLASS_STATISTICS_LOADER.keySet()) {
+            for (AttributeContainer modifier : CLASS_STATISTICS_LOADER.get(location).getAttributeModifiers(ResourceRegistration.MANA.get())) {
 
 
-             for (AttributeContainer modifier : CLASS_STATISTICS_LOADER.get(location).getAttributeModifiers(ResourceRegistration.MANA.get()) ) {
+                System.out.println("Mod: " + modifier.getAttribute().getRegistryName().toString() + " Value: " + modifier.getModifier().getAmount());
+            }
 
 
-
-                 System.out.println("Mod: " + modifier.getAttribute().getRegistryName().toString() + " Value: " + modifier.getModifier().getAmount());
-             }
+        }
 
 
-          }
-
-
-          System.out.println("Weapon Attack Damage: " + WEAPON_STATISTICS_LOADER.getWeaponStatisticsMap().get(new ResourceLocation("aeonspast:wooden_sword")).getAttack_damage().getMax() );
-
-
-
-
-
-
-
-
-
+        System.out.println("Weapon Attack Damage: " + WEAPON_STATISTICS_LOADER.getWeaponStatisticsMap().get(new ResourceLocation("aeonspast:wooden_sword")).getAttack_damage().getMax());
 
 
         Level level = entity.getLevel();
@@ -98,7 +85,6 @@ public class WarriorClassSpell extends ClassSpell implements ICustomUseRequireme
 
 
         }
-
 
 
     }

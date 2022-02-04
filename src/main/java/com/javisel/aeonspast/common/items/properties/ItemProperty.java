@@ -18,45 +18,59 @@ public class ItemProperty extends net.minecraftforge.registries.ForgeRegistryEnt
 
 
 
-
-
-    public void applyToItem( ItemStack stack) {
-
-
-        ItemEngine.getPropertyTag(stack).putString(this.getRegistryName().toString(),"");
-
-
-
-
-
-    }
-
-
     public static ItemProperty getPropertyByLocation(ResourceLocation resourceLocation) {
 
 
-        return resourceLocation == null ? null: (ItemProperty) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.ITEM_PROPERTY_REGISTRY_NAME).getValue(resourceLocation);
+        return resourceLocation == null ? null : (ItemProperty) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.ITEM_PROPERTY_REGISTRY_NAME).getValue(resourceLocation);
+    }
+
+    public void applyToItem(ItemStack stack) {
+
+
+        ItemEngine.getPropertyTag(stack).putString(this.getRegistryName().toString(), "");
+
+
+    }
+
+    public boolean onPreHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+        return  true;
+
     }
 
 
 
+    public boolean onPreHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack ) {
 
-    public boolean onPreHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
+        return  true;
+
+    }
+
+
+    public boolean onHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance) {
+
+     return  true;
+
+    }
+
+
+    public boolean onHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
+
+        return  true;
+    }
+    public boolean postHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+
 
         return true;
-    }
-
-
-    public void onHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
-
 
     }
+    public boolean postHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
+
+        return  true;
 
 
 
 
-
-
+    }
 
     public boolean onSwingItem(LivingEntity swinger, ItemStack stack) {
 
@@ -65,7 +79,6 @@ public class ItemProperty extends net.minecraftforge.registries.ForgeRegistryEnt
 
         return true;
     }
-
 
 
 }

@@ -8,6 +8,7 @@ import com.javisel.aeonspast.common.registration.SpellRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -95,17 +96,14 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
         //TODO more efficient sync
 
-        if (entity instanceof Player) {
 
-            Player player = (Player) entity;
+        IEntityData entityData = Utilities.getEntityData(entity);
 
-            IPlayerData playerData = Utilities.getPlayerData(player);
-
-            playerData.addActiveSpell(this);
+        entityData.addActiveSpell(this);
 
 
-            Utilities.syncTotalPlayerData(player);
-
+        if (entity instanceof ServerPlayer) {
+            Utilities.syncTotalPlayerData((Player) entity);
 
         }
 
@@ -121,19 +119,21 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public void onSpellUnEquipped(LivingEntity entity, SpellStack stack) {
 
 
-        if (entity instanceof Player) {
-
-            Player player = (Player) entity;
-
-            IPlayerData playerData = Utilities.getPlayerData(player);
-
-            playerData.removeActiveSpell(this);
 
 
-            Utilities.syncTotalPlayerData(player);
 
+
+            IEntityData entityData = Utilities.getEntityData(entity);
+
+        entityData.removeActiveSpell(this);
+
+
+        if (entity instanceof ServerPlayer) {
+            Utilities.syncTotalPlayerData((Player) entity);
 
         }
+
+
 
     }
 
@@ -173,7 +173,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public boolean attemptCast(LivingEntity caster, SpellStack stack) {
 
 
-        if (stack==null) {
+        if (stack == null) {
             Utilities.getEntityData(caster).getOrCreateSpellStack(this);
         }
         if (canCast(caster, stack)) {
@@ -207,11 +207,14 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         IEntityData data = Utilities.getEntityData(caster);
 
 
+        if (stack == null) {
 
+            stack = data.getOrCreateSpellStack(this);
+        }
 
         if (stack.isCoolingDown()) {
 
-             return false;
+            return false;
         }
 
         if (stack.getCharges() < 1) {
@@ -387,7 +390,6 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public Resource getCostResource(LivingEntity entity, SpellStack stack) {
 
 
-
         if (spellResource != null) {
             return spellResource.get();
         }
@@ -405,10 +407,10 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     }
 
 
-    public void onEventTrigger(LivingEntity entity, SpellStack stack, Event event) {
 
 
-    }
+
+
 
 
     public void onFinishCharge(LivingEntity entity, SpellStack stack) {
@@ -480,10 +482,8 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public String getSimpleDescription() {
 
 
-
-        return  getRegistryName().toString() + ".simpledesc";
+        return getRegistryName().toString() + ".simpledesc";
     }
-
 
 
 }

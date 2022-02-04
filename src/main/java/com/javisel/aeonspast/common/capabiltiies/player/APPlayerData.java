@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.javisel.aeonspast.utilities.StringKeys.*;
@@ -18,7 +17,6 @@ public class APPlayerData implements IPlayerData {
 
 
     HashMap<PlayerGameClass, ClassInstance> playerGameClasses = new HashMap<>();
-    ArrayList<Spell> activeSpells = new ArrayList<Spell>(4);
     Spell activeWeaponSpell;
 
 
@@ -74,22 +72,7 @@ public class APPlayerData implements IPlayerData {
         }
 
 
-        int i = 0;
-        for (Spell spell : activeSpells) {
-
-
-            String input = spell == null ? EMPTY : spell.getRegistryName().toString();
-
-
-            activeSpellTag.putString(String.valueOf(i), input);
-
-            i++;
-
-        }
-        int g = 0;
-
-
-        if (activeWeaponSpell!=null) {
+        if (activeWeaponSpell != null) {
 
             tag.putString(WEAPON_SPELL, activeWeaponSpell.getRegistryName().toString());
 
@@ -131,31 +114,6 @@ public class APPlayerData implements IPlayerData {
 
 
         }
-        activeSpells.clear();
-
-        activeSpells = new ArrayList<>(4);
-
-
-        if (!activeSpellTag.isEmpty()) {
-
-            for (String key : activeSpellTag.getAllKeys()) {
-                int stuff = Integer.parseInt(key);
-
-
-                String spell = activeSpellTag.getString(key);
-
-                Spell thespell = Spell.getDefaultSpell();
-                if (!spell.equalsIgnoreCase(EMPTY)) {
-
-                    thespell = Spell.getSpellByResourceLocation(new ResourceLocation(spell));
-
-                }
-
-                addActiveSpell(thespell);
-            }
-
-        }
-
 
 
         if (compoundTag.contains(WEAPON_SPELL)) {
@@ -165,8 +123,6 @@ public class APPlayerData implements IPlayerData {
 
 
             activeWeaponSpell = Spell.getSpellByResourceLocation(new ResourceLocation(key));
-
-
 
 
         }
@@ -209,59 +165,20 @@ public class APPlayerData implements IPlayerData {
 
 
     @Override
-    public ArrayList<Spell> getActiveSpells() {
-
-        activeSpells.ensureCapacity(5);
-
-        return activeSpells;
-    }
-
-    @Override
-    public void addActiveSpell(Spell spell) {
-
-
-        for (Spell index : activeSpells) {
-
-
-            if (index == spell) {
-                return;
-            }
-
-        }
-
-        activeSpells.add(spell);
-
-
-    }
-
-    @Override
-    public void removeActiveSpell(Spell spell) {
-
-
-        activeSpells.removeIf(index -> index == spell);
-
-
-    }
-
-
-    @Override
     public PlayerSpellBar getSpellBar() {
 
         return spellBar;
     }
 
+    @Override
+    public Spell getActiveWeaponSpell() {
+        return activeWeaponSpell;
+    }
 
     @Override
     public void setActiveWeaponSpell(Spell spell) {
 
 
-
-
-        this.activeWeaponSpell=spell;
-    }
-
-    @Override
-    public Spell getActiveWeaponSpell() {
-        return activeWeaponSpell;
+        this.activeWeaponSpell = spell;
     }
 }

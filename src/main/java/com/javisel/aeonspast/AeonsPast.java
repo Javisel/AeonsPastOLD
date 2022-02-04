@@ -4,7 +4,6 @@ import com.javisel.aeonspast.client.InputHandler;
 import com.javisel.aeonspast.client.OverlayRegistration;
 import com.javisel.aeonspast.client.main.ClientProxy;
 import com.javisel.aeonspast.common.items.AeonsPastItemGroup;
-import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.registration.*;
 import com.javisel.aeonspast.utilities.StringKeys;
 import net.minecraft.world.item.CreativeModeTab;

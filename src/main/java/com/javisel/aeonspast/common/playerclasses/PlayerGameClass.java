@@ -14,16 +14,11 @@ import net.minecraftforge.registries.RegistryObject;
 public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistryEntry<PlayerGameClass> {
 
 
-
-
     private final RegistryObject<Resource> castResource;
     private final RegistryObject<Item> classEmblem;
 
 
-
-
-
-    public PlayerGameClass(  RegistryObject<Resource> getCastResource, RegistryObject<Item> classEmblem) {
+    public PlayerGameClass(RegistryObject<Resource> getCastResource, RegistryObject<Item> classEmblem) {
 
 
         this.castResource = getCastResource;
@@ -49,7 +44,6 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
 
         for (AttributeContainer container : getClassData().getAttributeModifiers(castResource.get())) {
-
 
 
             if (player.getAttribute(container.getAttribute()).hasModifier(container.getModifier())) {
@@ -107,16 +101,11 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
     public boolean canPlayerEquipSpell(Player player, Spell spell) {
 
 
-
-
-
         return getClassData().hasSpell(spell);
 
     }
+
     public boolean canWieldWeapon(Player player, String weaponType) {
-
-
-
 
 
         return getClassData().hasWeaponType(weaponType);

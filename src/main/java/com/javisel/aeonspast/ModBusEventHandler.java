@@ -14,6 +14,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -34,10 +35,6 @@ public class ModBusEventHandler {
     public static final ResourceLocation RESOURCE_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "resources");
     public static final ResourceLocation ITEM_PROPERTY_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "item_property");
     public static final ResourceLocation ENTITY_TRAIT_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "entity_trait");
-
-
-
-
 
 
     @SubscribeEvent
@@ -64,6 +61,15 @@ public class ModBusEventHandler {
 
             }
         }
+
+    }
+
+    @SubscribeEvent
+    public static void newHealth(RegistryEvent.Register<Attribute> e) {
+
+
+        e.getRegistry().register(new RangedAttribute("attribute.name.generic.max_health", 0, 0, 20000).setRegistryName("minecraft:max_health"));
+
 
     }
 
@@ -95,7 +101,6 @@ public class ModBusEventHandler {
         EntityTraitBuilder.setName(ENTITY_TRAIT_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(EntityTrait.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
 
-
     }
 
     @SubscribeEvent
@@ -103,8 +108,6 @@ public class ModBusEventHandler {
 
 
     }
-
-
 
 
 }

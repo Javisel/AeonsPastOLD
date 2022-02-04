@@ -1,7 +1,6 @@
 package com.javisel.aeonspast.common.attributes;
 
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
@@ -38,9 +37,6 @@ public class AttributeContainer {
     public Attribute getAttribute() {
         return attribute;
     }
-
-
-
 
 
 }

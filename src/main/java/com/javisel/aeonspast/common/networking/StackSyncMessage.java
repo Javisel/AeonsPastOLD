@@ -1,13 +1,11 @@
 package com.javisel.aeonspast.common.networking;
 
-import com.javisel.aeonspast.GameEventHandler;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
@@ -40,7 +38,7 @@ public class StackSyncMessage {
             ctx.get().enqueueWork(() -> {
 
 
-                 Player player = ctx.get().getSender();
+                Player player = ctx.get().getSender();
 
 
                 IPlayerData playerData = Utilities.getPlayerData(player);
@@ -50,9 +48,9 @@ public class StackSyncMessage {
 
                     if (!stack.isEmpty()) {
 
-                       ItemEngine.initializeItem(player,stack);
+                        ItemEngine.initializeItem(player, stack);
 
-                     }
+                    }
 
 
                 }
@@ -61,39 +59,31 @@ public class StackSyncMessage {
                 AbstractContainerMenu menu = player.containerMenu;
 
 
+                try {
+                    if (menu.getType() != MenuType.CRAFTING) {
+
+                        for (ItemStack stack : menu.getItems()) {
+
+                            if (!stack.isEmpty()) {
+
+                                ItemEngine.initializeItem(player, stack);
+                            }
 
 
+                        }
+                    }
+                } catch (UnsupportedOperationException e) {
 
 
-                     try {
-                         if (menu.getType() != MenuType.CRAFTING) {
-
-                             for (ItemStack stack : menu.getItems()) {
-
-                                 if (!stack.isEmpty()) {
-
-                                     ItemEngine.initializeItem(player,stack);
-                                 }
-
-
-                             }
-                         }
-                     }
-                     catch (UnsupportedOperationException e){
-
-
-                     }
-
-
-
+                }
 
 
             });
 
-                ctx.get().setPacketHandled(true);
+            ctx.get().setPacketHandled(true);
 
-            }
         }
-
-
     }
+
+
+}

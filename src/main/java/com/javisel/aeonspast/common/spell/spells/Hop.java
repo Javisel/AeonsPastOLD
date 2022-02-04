@@ -37,6 +37,8 @@ public class Hop extends Spell {
     }
 
 
+
+    /*
     @Override
     public void onEventTrigger(LivingEntity entity, SpellStack stack, Event event) {
         super.onEventTrigger(entity, stack, event);
@@ -97,5 +99,7 @@ public class Hop extends Spell {
 
     }
 
+
+    */
 
 }

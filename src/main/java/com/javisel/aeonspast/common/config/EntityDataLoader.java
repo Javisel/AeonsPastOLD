@@ -24,7 +24,7 @@ import java.util.Map;
 public class EntityDataLoader extends SimpleJsonResourceReloadListener {
     private static final Gson GSON_INSTANCE = Deserializers.createFunctionSerializer().create();
     private static final String folder = "entities/data";
-    private   Map<ResourceLocation, EntityStatisticalData> entityStatisticsMap = ImmutableMap.of();
+    private Map<ResourceLocation, EntityStatisticalData> entityStatisticsMap = ImmutableMap.of();
 
     public EntityDataLoader() {
         super(GSON_INSTANCE, folder);
@@ -46,7 +46,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
             for (Resource resource : resourceManager.getResources(resourceLocation)) {
 
 
-                 InputStream stream = resource.getInputStream();
+                InputStream stream = resource.getInputStream();
 
 
                 Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
@@ -65,7 +65,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
 
                 finalLocations.forEach(location -> {
 
-                     try {
+                    try {
                         EntityStatisticalData stats = getEntityProperties(location, resourceList.get(location));
                         if (stats != null)
                             builder.put(location, stats);
@@ -79,7 +79,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        entityStatisticsMap =builder.build();
+        entityStatisticsMap = builder.build();
 
     }
 
@@ -110,7 +110,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
     public EntityStatisticalData getEntityData(ResourceLocation location) {
 
 
-        for (ResourceLocation test: entityStatisticsMap.keySet()) {
+        for (ResourceLocation test : entityStatisticsMap.keySet()) {
 
 
             if (test.equals(location)) {
@@ -120,10 +120,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
             }
 
 
-
-
         }
-
 
 
         return null;
@@ -135,7 +132,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
 
         ResourceLocation location = entity.getType().getRegistryName();
 
-        for (ResourceLocation test: entityStatisticsMap.keySet()) {
+        for (ResourceLocation test : entityStatisticsMap.keySet()) {
 
 
             if (test.equals(location)) {
@@ -145,16 +142,12 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
             }
 
 
-
-
         }
-
 
 
         return null;
 
     }
-
 
 
 }

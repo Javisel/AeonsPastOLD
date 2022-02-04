@@ -25,10 +25,10 @@ public class PlayerCapabiltiiesMessage {
 
 
     public static void encode(PlayerCapabiltiiesMessage pkt, FriendlyByteBuf buf) {
-        buf.writeNbt(pkt.entityDataTag);
-        buf.writeNbt(pkt.playerDataTag);
+        buf.writeNbt(entityDataTag);
+        buf.writeNbt(playerDataTag);
 
-        AeonsPast.LOGGER.log(Level.TRACE,"Expensive Operation, syncing total capabiltiies!");
+        AeonsPast.LOGGER.log(Level.TRACE, "Expensive Operation, syncing total capabiltiies!");
     }
 
     public static PlayerCapabiltiiesMessage decode(FriendlyByteBuf buf) {

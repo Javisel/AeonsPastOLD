@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.client.main;
 
+import com.javisel.aeonspast.client.InWorldRenderer;
 import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
 import com.javisel.aeonspast.client.spell.SpellRenderer;
 import net.minecraft.client.Minecraft;
@@ -7,24 +8,23 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static com.javisel.aeonspast.AeonsPast.MODID;
 
 
- @OnlyIn(Dist.CLIENT)
- @Mod.EventBusSubscriber (Dist.CLIENT)
+@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(Dist.CLIENT)
 
- public class ClientProxy {
+public class ClientProxy {
 
 
     public static final ResourceLocation SPELL_TEXTURES_LOCATION = new ResourceLocation(MODID, "textures/atlas/spells.png");
     public static SpellRenderer spellRenderer;
 
     public static SpellAtlasHolder spellAtlasHolder;
-
+    public static InWorldRenderer inWorldRenderer = new InWorldRenderer();
 
     public static void Init() {
 
@@ -43,8 +43,6 @@ import static com.javisel.aeonspast.AeonsPast.MODID;
     public static class modBusEvents {
 
 
-
-
         @SubscribeEvent
         public static void reload(RegisterClientReloadListenersEvent event) {
 
@@ -60,5 +58,11 @@ import static com.javisel.aeonspast.AeonsPast.MODID;
 
 
     }
+
+
+
+
+
+
 
 }

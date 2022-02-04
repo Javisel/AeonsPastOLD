@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.capabiltiies.mob;
 
-import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityProvider;

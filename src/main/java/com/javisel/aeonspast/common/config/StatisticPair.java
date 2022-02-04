@@ -1,8 +1,5 @@
 package com.javisel.aeonspast.common.config;
 
-import com.javisel.aeonspast.common.registration.AttributeRegistration;
-import net.minecraft.world.entity.LivingEntity;
-
 import java.util.Random;
 
 public class StatisticPair {
@@ -22,19 +19,15 @@ public class StatisticPair {
     public float roll(float luck, Random random) {
 
 
-
-
-
-
         float rng = min + random.nextFloat() * (max - min);
 
 
-         if (luck < 0) {
+        if (luck < 0) {
 
 
-            if ( random.nextInt(101)  <=(luck*-1)) {
+            if (random.nextInt(101) <= (luck * -1)) {
 
-                float newroll = min + random.nextFloat() * (max-min);
+                float newroll = min + random.nextFloat() * (max - min);
 
                 if (newroll < rng) {
 
@@ -42,22 +35,15 @@ public class StatisticPair {
                 }
 
 
-
             }
 
 
+        } else if (luck > 0) {
 
 
+            if (random.nextInt(101) <= luck) {
 
-        }
-
-        else if (luck > 0) {
-
-
-
-            if ( random.nextInt(101)  <=luck) {
-
-                float newroll = min + random.nextFloat() * (max-min);
+                float newroll = min + random.nextFloat() * (max - min);
 
                 if (newroll > rng) {
 
@@ -65,14 +51,9 @@ public class StatisticPair {
                 }
 
 
-
             }
 
         }
-
-
-
-
 
 
         return rng;
@@ -87,22 +68,11 @@ public class StatisticPair {
     }
 
 
-
-
-
     public float getAverage() {
 
 
-
-
-
-        return (min + max) /2;
+        return (min + max) / 2;
     }
-
-
-
-
-
 
 
 }

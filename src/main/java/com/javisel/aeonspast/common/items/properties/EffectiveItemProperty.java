@@ -6,10 +6,6 @@ import net.minecraft.world.item.ItemStack;
 public class EffectiveItemProperty extends ItemProperty {
 
 
-
-
-
-
     public void tickProperty(LivingEntity entity, ItemStack stack) {
 
 
