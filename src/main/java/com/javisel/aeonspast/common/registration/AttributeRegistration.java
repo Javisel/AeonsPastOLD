@@ -31,8 +31,8 @@ public class AttributeRegistration {
 
     public static final RegistryObject<Attribute> MAGIC_RESISTANCE = ATTRIBUTES.register("magic_resistance", () -> new RangedAttribute("generic.magic_resistance", 0, 0, 100000).setSyncable(true));
     public static final RegistryObject<Attribute> DAMAGE_INTAKE = ATTRIBUTES.register("damage_intake", () -> new RangedAttribute("generic.damage_intake", 1, -200, 100).setSyncable(true));
-    public static final RegistryObject<Attribute> PHYSICAL_MITIGATIONS = ATTRIBUTES.register("physical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, 0, 100).setSyncable(true));
-    public static final RegistryObject<Attribute> MAGICAL_MITIGATIONS = ATTRIBUTES.register("magical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, 0, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> PHYSICAL_MITIGATIONS = ATTRIBUTES.register("physical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, -100, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> MAGICAL_MITIGATIONS = ATTRIBUTES.register("magical_mitigations", () -> new RangedAttribute("generic.physical_mitigations", 0, -100, 100).setSyncable(true));
     public static final RegistryObject<Attribute> HEALING_INTAKE = ATTRIBUTES.register("healing_intake", () -> new RangedAttribute("generic.healing_intake", 1, 0, 100).setSyncable(true));
 
 

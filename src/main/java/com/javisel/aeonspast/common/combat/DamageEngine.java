@@ -14,13 +14,13 @@ public class DamageEngine {
         if (armor < 0) {
 
 
-            mitigations = (2 - (armor / (100 + armor)));
+            mitigations = (2 - (100 / (100 + armor)));
         } else if (armor == 0) {
             return damage;
         } else if (armor > 0) {
 
 
-            mitigations = (armor / (100 + armor));
+            mitigations = (100 / (100 + armor));
         }
 
 
@@ -41,8 +41,7 @@ public class DamageEngine {
 
         total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
 
-        System.out.println("Total: " + total);
-        DamageInstance instance = new DamageInstance(weapon, APDamageSubType.PHYSICAL, total, false, false, isMelee);;
+       DamageInstance instance = new DamageInstance(weapon, APDamageSubType.PHYSICAL, total, false, false, isMelee);;
 
          return instance;
 
@@ -54,16 +53,12 @@ public class DamageEngine {
 
         double baseamount = instance.getPreMitigationsAmount();
 
-
-        if (instance.getDamageType() == null) {
-             return baseamount;
-
-        }
-        System.err.println("Base Amount: " + baseamount);
+        System.out.println("Base Amount: " + baseamount);
+        System.out.println("Type: " + instance.getDamage_type().getUnlocalizedName());
         double armor = 0;
         double damageMod = 1;
         damageMod += victim.getAttributeValue(AttributeRegistration.DAMAGE_INTAKE.get()) / 100;
-        if (instance.getDamageType() == APDamageSubType.PHYSICAL) {
+        if (instance.getDamage_type() == APDamageSubType.PHYSICAL) {
 
 
             armor = victim.getAttribute(AttributeRegistration.ARMOR.get()).getValue();
@@ -73,9 +68,9 @@ public class DamageEngine {
             damageMod -= victim.getAttributeValue(AttributeRegistration.PHYSICAL_MITIGATIONS.get()) / 100;
 
 
-        }
+         }
 
-        if (instance.getDamageType() == APDamageSubType.MAGIC) {
+        if (instance.getDamage_type() == APDamageSubType.MAGIC) {
 
 
             armor = victim.getAttribute(AttributeRegistration.MAGIC_RESISTANCE.get()).getValue();
@@ -83,6 +78,8 @@ public class DamageEngine {
             damageMod -= victim.getAttributeValue(AttributeRegistration.MAGICAL_MITIGATIONS.get()) / 100;
         }
 
+        System.out.println("Armor: " + armor);
+        System.out.println("Mod: " + damageMod);
 
         baseamount = getDamagePostMitigations(armor, baseamount);
 

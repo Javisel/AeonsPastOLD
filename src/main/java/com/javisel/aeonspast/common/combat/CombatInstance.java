@@ -21,7 +21,6 @@ public class CombatInstance {
         this.attacker = attacker;
         this.victim = victim;
         DamageInstance instance = DamageEngine.calculateWeaponDamage(attacker, weapon, true);
-        System.out.println("Instance Calculated: " + instance.getDamageType().getUnlocalizedName() +  " with " + instance.getPreMitigationsAmount());
 
         source = new APDirectEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, attacker);
 
@@ -31,34 +30,11 @@ public class CombatInstance {
         }
     }
 
-    /*
-
-    public CombatInstance(LivingEntity attacker, LivingEntity victim, APDamageSource source) {
-        this.attacker = attacker;
-        this.victim = victim;
-        this.source=source;
-
-    }
-
-
-     */
 
     public boolean onPreHit() {
 
 
-        System.out.println("Pre-hit check");
-        if (source == null) {
-            System.out.println("SOURCE IS NULL");
-        } else {
 
-
-            if (source.instance == null) {
-
-                System.err.println("The source instance is null!");
-            } else {
-                System.out.println("Hit Damage: " + source.instance.getPreMitigationsAmount() + " of type: " );
-            }
-        }
 
         if (EventFactory.onDamagePreHit(attacker, victim, source.instance)) {
 
@@ -130,18 +106,6 @@ public class CombatInstance {
     public boolean onHit() {
 
 
-        if (source == null) {
-            System.out.println("SOURCE IS NULL");
-        } else {
-
-
-            if (source.instance == null) {
-
-                System.err.println("The source instance is null!");
-            } else {
-                System.out.println("Hit Damage: " + source.instance.getPreMitigationsAmount() + " of type: " );
-            }
-        }
 
         if (EventFactory.onDamageHit(attacker, victim, source)) {
 
@@ -159,7 +123,7 @@ public class CombatInstance {
             for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
 
 
-                /*
+
                 if (!property.onHitEntityInHand(attacker, victim, source.instance, weapon)) {
 
                     return false;
@@ -167,7 +131,7 @@ public class CombatInstance {
 
 
 
-                 */
+
             }
 
         }

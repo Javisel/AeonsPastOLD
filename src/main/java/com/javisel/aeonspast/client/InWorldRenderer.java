@@ -88,10 +88,11 @@ public class InWorldRenderer {
              stack.scale(-scale, -scale, scale);
             float health = entity.getHealth()/entity.getMaxHealth();
             RenderUtilities.renderTextureFromSprite(stack,IN_WORLD_BAR_TEXTURES, width * 100,4,0,0,-1,0,0,180,4);
-            RenderUtilities.renderTextureFromSprite(stack,IN_WORLD_BAR_TEXTURES,( width * 100 )*health,2,0,1,-1,1,4,178*health,2);
+            RenderUtilities.renderTextureFromSprite(stack,IN_WORLD_BAR_TEXTURES,( width * 100 )*health,2,1,1,-1,1,4,177*health,2);
 
             String healthString = Math.round(entity.getHealth()) + "/" + entity.getMaxHealth();
-           // Gui.drawCenteredString(stack,minecraft.font,healthString,1,1,2);
+         Gui.drawString(stack,minecraft.font,healthString,0,-1,0);
+
             stack.popPose();
 
 

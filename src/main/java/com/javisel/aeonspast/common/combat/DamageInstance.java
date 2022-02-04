@@ -22,13 +22,13 @@ public class DamageInstance {
     public double critPower = 1;
     public Object damageDevice;
     public DamageSource vanillaDamageSource;
-    public APDamageSubType damageType;
+    public APDamageSubType damage_type;
     public double preMitigationsAmount;
     public double postMitigationsAmount = 0;
     public boolean cancel = false;
     public DamageInstance(APDamageSubType damageTypes, double amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
         this.preMitigationsAmount = amount;
-        this.damageType = damageTypes;
+        this.damage_type = damageTypes;
         this.doesProcSpellEffects = doesProcSpellEffects;
         this.doesProcWeaponHitEffects = doesProcWeaponHitEffects;
         this.doesProcTrinketEffects = doesProcTrinketEffects;
@@ -42,14 +42,12 @@ public class DamageInstance {
     //Damage applied by "On-Hit" effects to prevent Infinite Looping crashes.
 
     public DamageInstance(APDamageSubType damageType, double amount) {
-        this.damageType = damageType;
+        this.damage_type = damageType;
         this.preMitigationsAmount = amount;
         this.doesProcWeaponHitEffects=false;
         this.doesProcInventoryItemEffects=false;
         this.doesProcSpellEffects=false;
         this.doesProcTrinketEffects=false;
-        System.out.println("Damage Type: " + damageType.getUnlocalizedName());
-        System.out.println("Amount: " + amount);
 
     }
 
@@ -59,21 +57,23 @@ public class DamageInstance {
     public DamageInstance(ItemStack device, APDamageSubType subType, double amount, boolean isArea, boolean isCritical, boolean isMelee) {
 
 
-        DamageInstance damageInstance = new DamageInstance(subType, amount);
-        damageInstance.doesProcWeaponHitEffects = true;
-        damageInstance.procPower = 1;
-        damageInstance.isArea = isArea;
-        damageInstance.isCritical = isCritical;
-        damageInstance.damageDevice = device;
-        damageInstance.isMelee = isMelee;
+
+        this.damage_type=subType;
+        this.preMitigationsAmount =amount;
+        doesProcWeaponHitEffects = true;
+        procPower = 1;
+        this.isArea = isArea;
+        this.isCritical = isCritical;
+        damageDevice = device;
+       this.isMelee = isMelee;
 
     }
 
 
 
 
-    public APDamageSubType getDamageType() {
-        return damageType;
+    public APDamageSubType getDamage_type() {
+        return damage_type;
     }
 
     public DamageSource getVanillaDamageSource() {

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Slime;
 
 import java.util.List;
 import java.util.UUID;
@@ -108,10 +109,25 @@ public class EntityStatisticalData {
         }
 
 
+
+
+
+
+
     }
 
 
     public void addAttributeToEntity(LivingEntity entity, Attribute attribute, double baseValue, double scaleValue) {
+
+
+        if (entity instanceof Slime) {
+            Slime slime = (Slime) entity;
+
+             baseValue *=  (slime.getSize() /3);
+
+
+        }
+
 
 
         entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(BASE_STAT_ID, BASE_STRING, baseValue, AttributeModifier.Operation.ADDITION));

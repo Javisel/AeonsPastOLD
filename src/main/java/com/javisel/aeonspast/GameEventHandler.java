@@ -6,10 +6,8 @@ import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.combat.APDamageSource;
-import com.javisel.aeonspast.common.combat.CombatInstance;
-import com.javisel.aeonspast.common.combat.DamageEngine;
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.*;
+import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
 import com.javisel.aeonspast.common.config.ClassDataLoader;
 import com.javisel.aeonspast.common.config.EntityDataLoader;
 import com.javisel.aeonspast.common.config.WeaponDataLoader;
@@ -28,21 +26,24 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -96,13 +97,25 @@ public class GameEventHandler {
 
                 if (attacker != null && source.getDirectEntity() == attacker) {
 
+
+                    if (attacker instanceof Creeper) {
+                        return;
+                    }
+
+                    if (attacker instanceof  Player) {
+                        Player player = (Player) attacker;
+
+                        if (player.getAttackStrengthScale(0.5f) != 1.0){
+                             return;
+                        }
+
+                    }
                     CombatInstance combatInstance = new CombatInstance(attacker,victim,attacker.getMainHandItem());
 
                     if (combatInstance.onPreHit()) {
                          if (combatInstance.onHit()) {
 
                         }
-                        return;
 
                     }
 
@@ -112,111 +125,123 @@ public class GameEventHandler {
 
             }
 
-        }
+
+            if (source ==DamageSource.FALL) {
+
+                EnvironmentalDamageSource environmentalDamageSource = new EnvironmentalDamageSource(source.getMsgId(),new DamageInstance(APDamageSubType.PENALTY,victim.getMaxHealth()*0.15f));
 
 
-    }
+
+            }
+            if (source ==DamageSource.DROWN) {
+
+                EnvironmentalDamageSource environmentalDamageSource = new EnvironmentalDamageSource(source.getMsgId(),new DamageInstance(APDamageSubType.PENALTY,victim.getMaxHealth()*0.10f));
 
 
 
-    @SubscribeEvent
-    public static void damageMitigate(LivingHurtEvent event) {
-        if (event.getEntityLiving().getLevel().isClientSide) {
+            }
+            if (source ==DamageSource.STARVE) {
+
+                EnvironmentalDamageSource environmentalDamageSource = new EnvironmentalDamageSource(source.getMsgId(),new DamageInstance(APDamageSubType.PENALTY,victim.getMaxHealth()*0.05f));
+
+
+
+            }
+
             return;
-        }
 
-      if (event.getSource() instanceof APDamageSource) {
-
-
-          APDamageSource source = (APDamageSource) event.getSource();
+        } else {
 
 
-          LivingEntity victim = event.getEntityLiving();
-            System.out.println("It IS an ap source!");
-
-            System.out.println(event.getSource().toString());
-            DamageInstance instance = source.getInstance();
-
-            System.out.println("Damage Typing: " + instance.getDamageType());
-            System.out.println("Pre Mit Damage:" + instance.getPreMitigationsAmount());
-            if (!instance.isMitigated) {
+                APDamageSource apsource = (APDamageSource) event.getSource();
 
 
-                double mitigate = DamageEngine.getMitigatedDamage(victim, instance);
 
-                instance.setMitigateDamage((float) mitigate);
+                DamageInstance instance = apsource.getInstance();
 
-                System.out.println("Pre Mit DMG:" + instance.getPreMitigationsAmount());
-                System.out.println("Post MIt Damage: " + instance.postMitigationsAmount);
-                event.setCanceled(true);
-
-                victim.hurt(source, (float) instance.postMitigationsAmount);
-
-                return;
-            } else {
-
-                LivingEntity attacker = null;
-                if (source.getEntity() != null) {
-
-                    attacker = (LivingEntity) source.getEntity();
+                if (!instance.isMitigated) {
 
 
-                }
+                    double mitigate = DamageEngine.getMitigatedDamage(victim, instance);
+
+                    instance.setMitigateDamage((float) mitigate);
+
+                    event.setCanceled(true);
+
+                    victim.hurt(source, (float) instance.postMitigationsAmount);
+
+                    return;
+                } else {
 
 
-                Object device = instance.damageDevice;
+                     LivingEntity attacker = null;
+                    if (source.getEntity() != null) {
 
-
-                if (device instanceof ItemStack) {
-
-                    ItemStack weapon = (ItemStack) device;
-
-
-                    for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
-
-
-                        property.postHitEntityInHand(attacker, victim, instance, weapon);
+                        attacker = (LivingEntity) source.getEntity();
 
 
                     }
 
 
-                }
-
-                if (attacker != null) {
-                    ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
-                    for (ItemStack attackerStack : attackerItems) {
+                    Object device = instance.damageDevice;
 
 
-                        if (ItemEngine.isItemInitialized(attackerStack)) {
+                    if (device instanceof ItemStack) {
+
+                        ItemStack weapon = (ItemStack) device;
 
 
-                            for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+                        for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
 
 
-                                property.onHitEntity(attacker, victim, instance);
+                            property.postHitEntityInHand(attacker, victim, instance, weapon);
 
-
-                            }
 
                         }
 
 
                     }
 
+                    if (attacker != null) {
+                        ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+                        for (ItemStack attackerStack : attackerItems) {
+
+
+                            if (ItemEngine.isItemInitialized(attackerStack)) {
+
+
+                                for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+
+
+                                    property.onHitEntity(attacker, victim, instance);
+
+
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                    ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+
+
+
+
                 }
-                ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
 
-
-                return;
 
             }
 
 
-        }
 
 
     }
+
+
+
+
     @SubscribeEvent
     public static void serversetup(ServerStartedEvent event) {
 
@@ -450,6 +475,7 @@ public class GameEventHandler {
             EntityStatisticalData data = ENTITY_DATA_LOADER.getEntityData(event.getEntity());
 
 
+
             data.loadtoEntity((LivingEntity) event.getEntity());
 
 
@@ -474,4 +500,40 @@ public class GameEventHandler {
     }
 
 
+
+    @SubscribeEvent
+    public static void newExplosionInfo(ExplosionEvent.Detonate event) {
+
+
+
+         for (Entity entity : event.getAffectedEntities()) {
+
+
+             if (entity instanceof LivingEntity) {
+
+                 LivingEntity livingEntity = (LivingEntity) entity;
+
+
+
+
+
+
+
+
+
+
+
+             }
+
+
+
+
+
+
+
+         }
+
+
+
+    }
 }
