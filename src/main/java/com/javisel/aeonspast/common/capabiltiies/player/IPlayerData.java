@@ -11,6 +11,10 @@ public interface IPlayerData {
 
     HashMap<PlayerGameClass, ClassInstance> getClasses();
 
+
+
+
+
     PlayerGameClass getActiveClass();
 
     void setActiveGameClass(PlayerGameClass activeGameClass);

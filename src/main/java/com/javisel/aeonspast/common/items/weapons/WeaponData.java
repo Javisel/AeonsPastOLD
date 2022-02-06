@@ -25,10 +25,11 @@ import static com.javisel.aeonspast.utilities.StringKeys.SPELL;
 public class WeaponData {
 
 
-    public static final String WEAPON_MOD_ID = "d9604102-763b-477c-a3b7-a4ea62647d61";
+    public static final String WEAPON_MOD_ID = "4703e862-a7ae-4697-aeea-f58ac8697e10";
 
     public static final String BASE_STATS = "base_stats";
 
+    public static final double ATTACK_SPEED_OFFSET = -1;
 
     private final ItemType itemType;
     private final StatisticPair attack_damage;
@@ -87,6 +88,7 @@ public class WeaponData {
 
 
         if (stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(WEAPON_MOD_ID)) {
+            System.out.println("Already loaded!");
             return;
         }
 
@@ -105,7 +107,7 @@ public class WeaponData {
         UUID id = UUID.fromString(WEAPON_MOD_ID);
         stack.addAttributeModifier(AttributeRegistration.WEAPON_POWER.get(), new AttributeModifier(id, BASE_STATS, attack_damage.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
 
-        stack.addAttributeModifier(Attributes.ATTACK_SPEED, new AttributeModifier(id, BASE_STATS, (-4 + attack_speed.roll(0, random)), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+        stack.addAttributeModifier(Attributes.ATTACK_SPEED, new AttributeModifier(id, BASE_STATS, (ATTACK_SPEED_OFFSET + attack_speed.roll(0, random)), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
 
 
         stack.addAttributeModifier(AttributeRegistration.CRITICAL_CHANCE.get(), new AttributeModifier(id, BASE_STATS, critical_chance.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);

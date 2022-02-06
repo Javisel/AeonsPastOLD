@@ -14,14 +14,18 @@ public class Kinetic extends WeaponProperty {
         if (super.onHitEntityInHand(attacker, victim, damageInstance, stack)) {
             double i = attacker.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
-            if (victim instanceof LivingEntity) {
-                victim.knockback((float) i * 0.5F, Mth.sin(attacker.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(attacker.getYRot() * ((float) Math.PI / 180F)));
-            } else {
-                victim.push(-Mth.sin(attacker.getYRot() * ((float) Math.PI / 180F)) * (float) i * 0.5F, 0.1D, Mth.cos(attacker.getYRot() * ((float) Math.PI / 180F)) * (float) i * 0.5F);
+
+
+            if (attacker.isSprinting()) {
+                if (victim != null) {
+                    victim.knockback((float) i * 0.5F, Mth.sin(attacker.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(attacker.getYRot() * ((float) Math.PI / 180F)));
+                } else {
+                    victim.push(-Mth.sin(attacker.getYRot() * ((float) Math.PI / 180F)) * (float) i * 0.5F, 0.1D, Mth.cos(attacker.getYRot() * ((float) Math.PI / 180F)) * (float) i * 0.5F);
+                }
+                attacker.setDeltaMovement(attacker.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+                attacker.setSprinting(false);
             }
 
-            attacker.setDeltaMovement(attacker.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
-            attacker.setSprinting(false);
             return true;
         }
 

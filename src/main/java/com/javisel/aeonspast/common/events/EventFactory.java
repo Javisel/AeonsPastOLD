@@ -1,7 +1,6 @@
 package com.javisel.aeonspast.common.events;
 
-import com.javisel.aeonspast.common.combat.APDamageSource;
-import com.javisel.aeonspast.common.combat.APDirectEntityDamageSource;
+import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

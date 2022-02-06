@@ -1,6 +1,6 @@
 {
 
-  "attack_damage" : 24,
+  "attack_damage" : 19,
   "attack_damage_scaling": 2.4,
   "attack_speed": 0.8,
   "attack_speed_scaling" : 0.125,

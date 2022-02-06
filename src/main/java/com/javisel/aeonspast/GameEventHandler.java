@@ -6,13 +6,16 @@ import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.combat.*;
-import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
+import com.javisel.aeonspast.common.combat.APDamageSubType;
+import com.javisel.aeonspast.common.combat.CombatEngine;
+import com.javisel.aeonspast.common.combat.CombatInstance;
+import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
+import com.javisel.aeonspast.common.combat.damagesource.EnvironmentalDamageSource;
 import com.javisel.aeonspast.common.config.ClassDataLoader;
 import com.javisel.aeonspast.common.config.EntityDataLoader;
 import com.javisel.aeonspast.common.config.WeaponDataLoader;
 import com.javisel.aeonspast.common.entities.EntityStatisticalData;
-import com.javisel.aeonspast.common.events.SwingItemEvent;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -22,24 +25,28 @@ import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.common.spell.SpellState;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -60,22 +67,45 @@ public class GameEventHandler {
     public static EntityDataLoader ENTITY_DATA_LOADER;
 
 
+
+
     @SubscribeEvent
-    public static void adjustForSwingPower(SwingItemEvent event) {
+    public static void playerAttack(AttackEntityEvent event) {
 
-        if (event.getEntity() instanceof Player) {
+        Player player = event.getPlayer();
 
-            Player player = (Player) event.getEntity();
-            System.out.println("Strength: " + player.getAttackStrengthScale(.5f));
+        if (!(event.getTarget() instanceof  LivingEntity)) {
+            return;
+        }
+         float f2 = player.getAttackStrengthScale(0.5F);
+        float check = 1 * ( 0.2F + f2 * f2 * 0.8F);
 
+        if (check != 1.0){
 
+            return;
         }
 
+        LivingEntity victim = (LivingEntity) event.getTarget();
+
+        CombatInstance combatInstance = new CombatInstance(player,victim,player.getMainHandItem());
+
+        if (combatInstance.onPreHit()) {
+            if (combatInstance.onHit()) {
+
+                return;
+            }
+
+        }
     }
+
+
+
+
 
 
     @SubscribeEvent
     public static void attackEntityEvent(LivingAttackEvent event) {
+
 
 
         LivingEntity victim = event.getEntityLiving();
@@ -87,13 +117,45 @@ public class GameEventHandler {
 
         if (!(event.getSource() instanceof APDamageSource)) {
 
-           event.setCanceled(true);
-
+            System.out.println("Direct Entity: " + source.getDirectEntity());
+            System.out.println("Entity: " + source.getEntity());
 
             LivingEntity attacker = (LivingEntity) event.getSource().getEntity();
 
+            if (source.isProjectile() ) {
+
+                Projectile projectile = (Projectile) source.getDirectEntity();
+
+
+                if (projectile.getOwner() !=null && projectile.getOwner() instanceof LivingEntity) {
+
+
+                        LivingEntity shooter = (LivingEntity) projectile.getOwner();
+
+                        CombatInstance instance = new CombatInstance(shooter,victim);
+                        if (instance.onPreHit()) {
+                            if (instance.onHit()) {
+
+                            }
+
+                        }
+                        return;
+                    }
+
+
+
+
+
+            }
+
+
+
 
             if (source.getDirectEntity() != null) {
+
+
+
+
 
                 if (attacker != null && source.getDirectEntity() == attacker) {
 
@@ -103,18 +165,17 @@ public class GameEventHandler {
                     }
 
                     if (attacker instanceof  Player) {
-                        Player player = (Player) attacker;
+                        return;
 
-                        if (player.getAttackStrengthScale(0.5f) != 1.0){
-                             return;
-                        }
 
                     }
-                    CombatInstance combatInstance = new CombatInstance(attacker,victim,attacker.getMainHandItem());
 
-                    if (combatInstance.onPreHit()) {
-                         if (combatInstance.onHit()) {
+                     CombatInstance combatInstance = new CombatInstance(attacker,victim,attacker.getMainHandItem());
 
+                     if (combatInstance.onPreHit()) {
+                          if (combatInstance.onHit()) {
+
+                             return;
                         }
 
                     }
@@ -159,14 +220,13 @@ public class GameEventHandler {
 
                 DamageInstance instance = apsource.getInstance();
 
-                if (!instance.isMitigated) {
+                 if (!instance.isMitigated) {
 
 
-                    double mitigate = DamageEngine.getMitigatedDamage(victim, instance);
+                    double mitigate = CombatEngine.getMitigatedDamage(victim, instance);
 
                     instance.setMitigateDamage((float) mitigate);
 
-                    event.setCanceled(true);
 
                     victim.hurt(source, (float) instance.postMitigationsAmount);
 
@@ -174,61 +234,87 @@ public class GameEventHandler {
                 } else {
 
 
+                     if (instance.isCritical) {
+
+                         victim.getLevel().playLocalSound(victim.getX(),victim.getY(),victim.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.NEUTRAL,1,1,true);
+                         victim.getLevel().playSound(null,victim,SoundEvents.PLAYER_ATTACK_CRIT,SoundSource.HOSTILE,1,1);
+
+
+
+                     }
+
                      LivingEntity attacker = null;
                     if (source.getEntity() != null) {
 
                         attacker = (LivingEntity) source.getEntity();
 
 
-                    }
+                        Object device = instance.damageDevice;
 
 
-                    Object device = instance.damageDevice;
+                        if (device != null) {
+
+                            if (instance.damageDevice instanceof Spell) {
+
+                                //TODO apply spell-lifesteal
 
 
-                    if (device instanceof ItemStack) {
-
-                        ItemStack weapon = (ItemStack) device;
+                                CombatEngine.applySpellLifestal(attacker, victim, instance);
 
 
-                        for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
+                            }
+                            if (instance.damageDevice instanceof ItemStack) {
 
 
-                            property.postHitEntityInHand(attacker, victim, instance, weapon);
+                                CombatEngine.applyWeaponLifesteal(attacker, victim, instance);
 
 
-                        }
+                            }
+
+                            if (device instanceof ItemStack) {
+
+                                ItemStack weapon = (ItemStack) device;
 
 
-                    }
-
-                    if (attacker != null) {
-                        ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
-                        for (ItemStack attackerStack : attackerItems) {
+                                for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
 
 
-                            if (ItemEngine.isItemInitialized(attackerStack)) {
+                                    property.postHitEntityInHand(attacker, victim, instance, weapon);
 
 
-                                for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+                                }
 
 
-                                    property.onHitEntity(attacker, victim, instance);
+                            }
+
+                            if (attacker != null) {
+                                ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+                                for (ItemStack attackerStack : attackerItems) {
+
+
+                                    if (ItemEngine.isItemInitialized(attackerStack)) {
+
+
+                                        for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+
+
+                                            property.postHitEntity(attacker, victim, instance);
+
+
+                                        }
+
+                                    }
 
 
                                 }
 
                             }
-
+                            ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
 
                         }
 
+
                     }
-                    ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
-
-
-
-
                 }
 
 
@@ -467,6 +553,21 @@ public class GameEventHandler {
 
 
     @SubscribeEvent
+    public static void stopDamage(LivingDamageEvent event) {
+
+
+        if (  !(event.getSource() instanceof APDamageSource)) {
+
+
+            event.setAmount(0);
+        }
+
+
+
+
+    }
+
+    @SubscribeEvent
     public static void newEntityData(EntityJoinWorldEvent event) {
 
 
@@ -536,4 +637,77 @@ public class GameEventHandler {
 
 
     }
+
+
+    @SubscribeEvent
+    public static void adjustBaseStats(EntityJoinWorldEvent event){
+
+        if (event.getEntity() instanceof Player) {
+
+            Player player = (Player) event.getEntity();
+
+            if (player.getAttributeBaseValue(Attributes.ATTACK_SPEED) != 1){
+
+                player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1);
+            }
+
+
+        }
+
+
+
+
+    }
+
+
+    @SubscribeEvent
+    public static void fireProjectile(EntityJoinWorldEvent event) {
+
+
+        if (event.getEntity() instanceof Projectile) {
+
+            Projectile projectile = (Projectile) event.getEntity();
+
+            if (projectile.getOwner() !=null) {
+
+                Entity owner = projectile.getOwner();
+
+
+                if (projectile instanceof AbstractHurtingProjectile ) {
+
+
+                    AbstractHurtingProjectile hurtingProjectile = (AbstractHurtingProjectile) projectile;
+                    if (owner instanceof LivingEntity) {
+
+                        LivingEntity livingOwner = (LivingEntity) owner;
+
+
+
+
+
+
+
+
+                    }
+
+                }
+
+
+            }
+
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
 }

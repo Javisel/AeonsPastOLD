@@ -1,10 +1,9 @@
-package com.javisel.aeonspast.common.combat;
+package com.javisel.aeonspast.common.combat.damagesource;
 
-import net.minecraft.world.damagesource.DamageSource;
+import com.javisel.aeonspast.common.combat.DamageInstance;
 
 public class EnvironmentalDamageSource extends APDamageSource{
 
-    DamageInstance instance;
 
     public EnvironmentalDamageSource(String p_19333_, DamageInstance instance) {
         super(p_19333_,instance);

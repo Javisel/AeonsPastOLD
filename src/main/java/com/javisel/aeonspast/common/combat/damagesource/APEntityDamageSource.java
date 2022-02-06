@@ -1,19 +1,20 @@
-package com.javisel.aeonspast.common.combat;
+package com.javisel.aeonspast.common.combat.damagesource;
 
-import net.minecraft.world.damagesource.EntityDamageSource;
+import com.javisel.aeonspast.common.combat.DamageInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-public class APDirectEntityDamageSource extends  APDamageSource {
+public class APEntityDamageSource extends  APDamageSource {
 
 
      private Entity sourceEntity;
 
 
-    public APDirectEntityDamageSource(String id, DamageInstance instance, Entity sourceEntity) {
+    public APEntityDamageSource(String id, DamageInstance instance, Entity sourceEntity) {
         super(sourceEntity instanceof Player ? "player" : "mob",instance );
          this.sourceEntity=sourceEntity;
+
     }
 
 

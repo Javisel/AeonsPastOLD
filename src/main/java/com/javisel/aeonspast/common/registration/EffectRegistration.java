@@ -10,7 +10,7 @@ public class EffectRegistration {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, AeonsPast.MODID);
 
 
-    public static final MobEffectB
+
 
 
 

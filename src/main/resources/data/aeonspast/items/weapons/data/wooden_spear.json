@@ -3,8 +3,8 @@
 {
   "item_type": "spear",
   "attack_damage": {
-    "min": 7.5,
-    "max": 22.5
+    "min": 2.5,
+    "max": 17.5
   },
   "attack_speed": {
     "min": 1.215,

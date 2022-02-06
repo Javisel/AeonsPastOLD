@@ -50,8 +50,7 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
                 player.getAttribute(container.getAttribute()).removeModifier(container.getModifier());
             }
 
-            System.out.println("Container Modding Attribute " + container.getAttribute().getRegistryName().toString() + " with Value: " + container.getModifier().getAmount());
-            player.getAttribute(container.getAttribute()).addPermanentModifier(container.getModifier());
+             player.getAttribute(container.getAttribute()).addPermanentModifier(container.getModifier());
 
 
         }

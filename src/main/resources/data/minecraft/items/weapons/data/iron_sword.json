@@ -3,8 +3,8 @@
   "item_type": "sword",
 
   "attack_damage": {
-    "min": 15,
-    "max":45
+    "min": 10,
+    "max":40
   },
   "attack_speed": {
     "min": 1.48,

@@ -16,16 +16,15 @@ public class Brutal extends WeaponProperty {
 
             boolean doesproc = attacker.fallDistance > 0.0F && !attacker.isOnGround() && !attacker.onClimbable() && !attacker.isInWater() && !attacker.hasEffect(MobEffects.BLINDNESS) && !attacker.isPassenger() && victim instanceof LivingEntity;
 
-            /*
 
             if (doesproc) {
 
-                damageInstance.preMitigationsAmount *= 1.15;
+                 damageInstance.preMitigationsAmount *= 1.15;
 
             }
 
 
-             */
+
 
             return true;
         }

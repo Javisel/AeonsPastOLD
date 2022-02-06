@@ -5,14 +5,17 @@ import com.javisel.aeonspast.client.RenderUtilities;
 import com.javisel.aeonspast.client.main.ClientProxy;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.Utilities;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -48,7 +51,7 @@ public class AbilityBar implements IIngameOverlay {
         }
 
 
-        //Renders the Item Holders
+         //Renders the Item Holders
 
         int zpos = -40;
         RenderUtilities.renderTextureFromSprite(mStack, ABILITY_BAR_TEXTURES, 20, 27, 1, height - 39, zpos, 0, 0, 20, 27);
@@ -60,6 +63,43 @@ public class AbilityBar implements IIngameOverlay {
         NonNullList<Spell> spellBarList = playerData.getSpellBar().getSpellList();
 
         //   Gui.drawString(mStack,gui.getFont(),"AEONS PAST INDEV FOOTAGE - NOT FINAL!", 0,0,0);
+
+        ItemStack weapon = player.getMainHandItem();
+
+
+        RenderUtilities.renderTextureFromSprite(mStack, ABILITY_BAR_TEXTURES, 20, 20, width/2 - 91 - 28, height - 43, zpos, 20, 7, 20, 20);
+
+        if (playerData.getActiveWeaponSpell() !=null) {
+
+
+
+            Spell weaponSpell = playerData.getActiveWeaponSpell();
+
+            SpellStack weaponspelldata = entityData.getSpellStackRaw(weaponSpell);
+
+
+
+
+
+            if (ItemEngine.isItemInitialized(weapon)) {
+
+                if (ItemEngine.getSpellFromItem(weapon) !=null ) {
+
+
+
+
+
+                }
+
+
+            }
+
+
+        }
+
+
+
+
 
         int xoffset = 0;
         zpos++;

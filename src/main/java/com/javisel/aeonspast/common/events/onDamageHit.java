@@ -1,6 +1,6 @@
 package com.javisel.aeonspast.common.events;
 
-import com.javisel.aeonspast.common.combat.APDamageSource;
+import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 

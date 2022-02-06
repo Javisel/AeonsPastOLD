@@ -1,6 +1,6 @@
 package com.javisel.aeonspast.common.networking;
 
-import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
+import com.javisel.aeonspast.common.combat.APDamageSubType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 

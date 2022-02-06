@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.combat.damagetypes;
+package com.javisel.aeonspast.common.combat;
 
 
 public enum APDamageSubType {

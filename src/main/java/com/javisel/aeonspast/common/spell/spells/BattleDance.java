@@ -12,13 +12,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.UUID;
 
-public class AssaultGuard extends ToggleSpell {
+public class BattleDance extends ToggleSpell {
 
 
     private static final String ASSAULT_GUARD_BUFF = "916d2955-8318-45e3-a230-3e74f9af4695";
 
-    public AssaultGuard() {
-        super(20, 5, SpellRank.SKILL_BASIC);
+    public BattleDance() {
+        super(20, 5, SpellRank.SKILL_ULTIMATE);
         setSpellResource(ResourceRegistration.MANA);
 
     }

@@ -144,7 +144,7 @@ public class ToolTipHandler {
 
         tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.WEAPON_POWER.get(), stack, weaponData.getAttack_damage(), power, EquipmentSlot.MAINHAND)));
 
-        double attack_speed = 4 + ItemEngine.getItemFlatAttributeValue(Attributes.ATTACK_SPEED, stack, EquipmentSlot.MAINHAND);
+        double attack_speed = 1 + ItemEngine.getItemFlatAttributeValue(Attributes.ATTACK_SPEED, stack, EquipmentSlot.MAINHAND);
         ;
         dps *= attack_speed;
 

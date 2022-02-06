@@ -1,8 +1,12 @@
 package com.javisel.aeonspast.common.combat;
 
-import com.javisel.aeonspast.common.combat.damagetypes.APDamageSubType;
+import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.utilities.StringKeys;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
+
+import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class DamageInstance {
 
@@ -61,13 +65,85 @@ public class DamageInstance {
         this.damage_type=subType;
         this.preMitigationsAmount =amount;
         doesProcWeaponHitEffects = true;
-        procPower = 1;
         this.isArea = isArea;
         this.isCritical = isCritical;
         damageDevice = device;
        this.isMelee = isMelee;
 
     }
+
+
+    /*
+    public DamageInstance fromNBT(CompoundTag tag){
+
+
+
+
+    }
+
+
+     */
+
+
+
+
+    private static final String CAN_CRIT = "can_crit";
+    private static final String IS_SPECIAL = "is_special";
+    private static final String IS_CRIT = "is_crit";
+    private static final String IS_AREA = "is_area";
+    private static final String IS_OVER_TIME = "is_over_time";
+    private static final String IS_MITIGATED = "is_mitigated";
+    private static final String IS_MELEE = "is_melee";
+    private static final String PROC_POWER = "proc_power";
+    private static final String CRIT_POWER = "crit_power";
+    private static final String DAMAGE_DEVICE = "damage_device";
+
+    public CompoundTag toNBT() {
+
+        CompoundTag tag = new CompoundTag();
+
+        tag.putBoolean(SPELL,doesProcSpellEffects);
+        tag.putBoolean(WEAPON,doesProcWeaponHitEffects);
+        tag.putBoolean(TRINKET,doesProcTrinketEffects);
+        tag.putBoolean(INVENTORY,doesProcInventoryItemEffects);
+        tag.putBoolean(CAN_CRIT,canCritical);
+        tag.putBoolean(IS_SPECIAL,isSpecial);
+        tag.putBoolean(IS_CRIT,isCritical);
+        tag.putBoolean(IS_AREA,isArea);
+        tag.putBoolean(IS_OVER_TIME,isOverTime);
+        tag.putBoolean(IS_MITIGATED,isMitigated);
+        tag.putBoolean(IS_MELEE,isMelee);
+        tag.putDouble(PROC_POWER,procPower);
+        tag.putDouble(CRIT_POWER,critPower);
+
+
+
+
+        if (damageDevice instanceof Spell) {
+
+            tag.putString(DAMAGE_DEVICE, ((Spell) damageDevice).getRegistryName().toString());
+
+        }
+
+        if (damageDevice instanceof ItemStack) {
+
+            tag.put(DAMAGE_DEVICE,  ((ItemStack) damageDevice).serializeNBT());
+
+        }
+
+
+        tag.putString(StringKeys.DAMAGE_TYPE,damage_type.getUnlocalizedName());
+
+        tag.putString(StringKeys.DAMAGE_TYPE,damage_type.getUnlocalizedName());
+
+
+
+ return  tag;
+    }
+
+
+
+
 
 
 

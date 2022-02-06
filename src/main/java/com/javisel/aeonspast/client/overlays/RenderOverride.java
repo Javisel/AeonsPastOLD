@@ -7,7 +7,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -57,6 +59,13 @@ public class RenderOverride {
      }
 
 
+     @SubscribeEvent
+    public static void disableRenderingOfNamePlates(RenderNameplateEvent event) {
+
+        event.setResult(Event.Result.DENY);
+
+
+     }
 
 
 }

@@ -1,5 +1,7 @@
 package com.javisel.aeonspast.common.combat;
 
+import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
+import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
@@ -11,29 +13,35 @@ import java.util.ArrayList;
 
 public class CombatInstance {
 
-    private final LivingEntity attacker;
-    private final LivingEntity victim;
+    public final LivingEntity attacker;
+    public final LivingEntity victim;
     public APDamageSource source;
 
 
-    //CombatInstance involving a Weapon.
+    //CombatInstance involving a Melee Weapon.
     public CombatInstance(LivingEntity attacker, LivingEntity victim, ItemStack weapon) {
         this.attacker = attacker;
         this.victim = victim;
-        DamageInstance instance = DamageEngine.calculateWeaponDamage(attacker, weapon, true);
+        DamageInstance instance = CombatEngine.calculateWeaponDamage(attacker, weapon, true);
 
-        source = new APDirectEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, attacker);
+        source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, attacker);
 
 
-        if (onPreHit()) {
-            onHit();
-        }
+    }
+
+    //CombatInstance involving a  Ranged Weapon.
+    public CombatInstance(LivingEntity attacker, LivingEntity victim) {
+        this.attacker = attacker;
+        this.victim = victim;
+        DamageInstance instance = CombatEngine.calculateWeaponDamage(attacker, attacker.getMainHandItem(), false);
+
+        source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, attacker);
+
+
     }
 
 
     public boolean onPreHit() {
-
-
 
 
         if (EventFactory.onDamagePreHit(attacker, victim, source.instance)) {
@@ -87,7 +95,11 @@ public class CombatInstance {
 
 
             for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
-                if (!property.onPreHitEntity(attacker, victim, source.instance)) {
+
+
+                //TODO When the owner is hit
+
+                if (!property.onOwnerPreHit(attacker, victim, source.instance)) {
 
                     return false;
                 }
@@ -106,6 +118,12 @@ public class CombatInstance {
     public boolean onHit() {
 
 
+        if (source.getInstance().canCritical && CombatEngine.attemptCriticalHit(attacker)) {
+
+
+            CombatEngine.onCrit(attacker, victim, source.instance);
+        }
+
 
         if (EventFactory.onDamageHit(attacker, victim, source)) {
 
@@ -123,13 +141,10 @@ public class CombatInstance {
             for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
 
 
-
                 if (!property.onHitEntityInHand(attacker, victim, source.instance, weapon)) {
 
                     return false;
                 }
-
-
 
 
             }
@@ -161,7 +176,9 @@ public class CombatInstance {
 
 
             for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
-                if (!property.onHitEntity(attacker, victim, source.instance)) {
+
+
+                if (!property.onOwnerHit(attacker, victim, source.instance)) {
 
                     return false;
                 }

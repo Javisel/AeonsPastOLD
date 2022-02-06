@@ -37,6 +37,26 @@ public class ItemProperty extends net.minecraftforge.registries.ForgeRegistryEnt
 
     }
 
+    //When the wielder is hit, before the hit is processed
+    public boolean onOwnerPreHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+
+        return  true;
+
+    }
+
+    //when the hit applies
+    public boolean onOwnerHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+
+        return  true;
+
+    }
+
+    //After the hit applies.
+    public boolean onOwnerPostHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+
+        return  true;
+
+    }
 
 
     public boolean onPreHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack ) {

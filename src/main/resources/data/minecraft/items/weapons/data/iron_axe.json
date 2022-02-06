@@ -4,8 +4,8 @@
   "item_type": "axe",
 
   "attack_damage": {
-    "min": 27,
-    "max": 81
+    "min": 22,
+    "max": 76
   },
   "attack_speed": {
     "min": 0.9,

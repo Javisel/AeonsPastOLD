@@ -8,6 +8,10 @@ public class StringKeys {
     public static final String END_AMOUNT = "end_amount";
 
     public static final String SPELL = "spell";
+    public static final String WEAPON = "weapon";
+    public static final String INVENTORY = "inventory";
+    public static final String TRINKET = "trinket";
+
     public static final String WEAPON_SPELL = "weapon_spell";
 
     public static final String SPELL_STATE = "spell_state";

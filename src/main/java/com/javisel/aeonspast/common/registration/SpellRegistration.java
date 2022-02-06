@@ -19,7 +19,7 @@ public class SpellRegistration {
     public static final RegistryObject<Spell> NONE = SPELLS.register("none", () -> new NoneSpell());
     public static final RegistryObject<Spell> WARRIOR_CLASS_SPELL = SPELLS.register("warrior_class_spell", () -> new WarriorClassSpell());
     public static final RegistryObject<Spell> BATTLE_FRENZY = SPELLS.register("battle_frenzy", () -> new BattleFrenzy());
-    public static final RegistryObject<Spell> ASSAULT_GUARD = SPELLS.register("assault_guard", () -> new AssaultGuard());
+    public static final RegistryObject<Spell> ASSAULT_GUARD = SPELLS.register("assault_guard", () -> new BattleDance());
     public static final RegistryObject<Spell> WARRIOR_SHOUT = SPELLS.register("warrior_shout", () -> new WarriorsShout());
     public static final RegistryObject<Spell> STORM_STRIKE = SPELLS.register("storm_strike", () -> new StormStrike());
     public static final RegistryObject<Spell> BLADESTORM = SPELLS.register("bladestorm", () -> new Bladestorm());

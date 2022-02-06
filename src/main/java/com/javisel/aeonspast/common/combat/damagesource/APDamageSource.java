@@ -1,5 +1,6 @@
-package com.javisel.aeonspast.common.combat;
+package com.javisel.aeonspast.common.combat.damagesource;
 
+import com.javisel.aeonspast.common.combat.DamageInstance;
 import net.minecraft.world.damagesource.DamageSource;
 
 public class APDamageSource extends DamageSource {
@@ -17,4 +18,10 @@ public class APDamageSource extends DamageSource {
     public DamageInstance getInstance() {
         return instance;
     }
+
+
+
+
+
+
 }

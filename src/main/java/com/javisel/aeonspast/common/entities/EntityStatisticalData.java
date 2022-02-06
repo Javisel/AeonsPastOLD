@@ -120,22 +120,25 @@ public class EntityStatisticalData {
     public void addAttributeToEntity(LivingEntity entity, Attribute attribute, double baseValue, double scaleValue) {
 
 
+        double appliedBase = baseValue;
+        double appliedScale = scaleValue;
         if (entity instanceof Slime) {
             Slime slime = (Slime) entity;
 
-             baseValue *=  (slime.getSize() /3);
 
+             appliedBase =   baseValue * ((double) slime.getSize());
+            appliedScale  =  scaleValue *  ((double) slime.getSize());
 
         }
 
 
 
-        entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(BASE_STAT_ID, BASE_STRING, baseValue, AttributeModifier.Operation.ADDITION));
+        entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(BASE_STAT_ID, BASE_STRING, appliedBase, AttributeModifier.Operation.ADDITION));
 
 
         int level = Utilities.getEntityData(entity).getLevel();
         if (level != 1) {
-            entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(LEVEL_STAT_ID, LEVEL_STRING, scaleValue * (level - 1), AttributeModifier.Operation.ADDITION));
+            entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(LEVEL_STAT_ID, LEVEL_STRING, appliedScale * (level - 1), AttributeModifier.Operation.ADDITION));
         }
 
 
