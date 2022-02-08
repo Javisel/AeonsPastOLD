@@ -124,10 +124,24 @@ public class ToolTipHandler {
 
         ArrayList<ItemProperty> properties = ItemEngine.getItemProperties(stack);
 
-         if (!properties.isEmpty()) {
+
+
+        ArrayList<ItemProperty> displayproperty = new ArrayList<>();
+
+
+        for (ItemProperty property : properties) {
+
+            if (property.isDisplayed()) {
+                displayproperty.add(property);
+            }
+
+        }
+
+
+         if (!displayproperty.isEmpty()) {
              MutableComponent propertycomponent = new TranslatableComponent("");
 
-            for (ItemProperty property : properties) {
+            for (ItemProperty property : displayproperty) {
 
                 if (property instanceof ItemRarity) {
                     MutableComponent mutableComponent = new TranslatableComponent(property.getRegistryName().toString());
@@ -135,8 +149,7 @@ public class ToolTipHandler {
                     tooltips.add(Either.left(mutableComponent));
                 } else {
 
-                    if (property.isDisplayed()) {
-                        if (properties.indexOf(property) != 1) {
+                         if (properties.indexOf(property) != 1) {
                             propertycomponent.append(" ");
                         }
                         propertycomponent.append(new TranslatableComponent(property.getRegistryName().toString()));
@@ -145,15 +158,15 @@ public class ToolTipHandler {
 
                             propertycomponent.append(",");
                         }
-                    }
+
 
                 }
 
-                tooltips.add(Either.left(propertycomponent));
 
             }
+             tooltips.add(Either.left(propertycomponent));
 
-        }
+         }
 
      }
 

@@ -82,9 +82,6 @@ public class ArmorData {
 
 
 
-             System.out.println("Entry Key: " + statisticsPair.getAttribute().getRegistryName().toString());
-            System.out.println("Value Max: "+ statisticsPair.max);
-
             Attribute attribute = statisticsPair.getAttribute();
 
 

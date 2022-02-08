@@ -47,6 +47,7 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
                 InputStream stream = resource.getInputStream();
 
 
+
                 Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
 
                 JsonObject jsonobject = GsonHelper.fromJson(GSON_INSTANCE, reader, JsonObject.class);
@@ -63,6 +64,7 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
 
                 finalLocations.forEach(location -> {
 
+                    System.out.println("Location: " + location.toString());
                     try {
                         ArmorData stats = getArmorProperties(location, resourceList.get(location));
                         if (stats != null)

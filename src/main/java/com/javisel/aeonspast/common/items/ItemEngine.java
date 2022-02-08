@@ -93,6 +93,8 @@ public class ItemEngine {
 
         if (!isItemInitialized(stack)) {
 
+            getAeonsPastTag(stack);
+
 
             if (isWeapon(stack.getItem())) {
 
