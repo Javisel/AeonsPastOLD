@@ -2,7 +2,7 @@ package com.javisel.aeonspast.client;
 
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.networking.AbilityMessage;
+import com.javisel.aeonspast.common.networking.abilitymessage.AbilityMessage;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.Utilities;

@@ -1,10 +1,10 @@
 package com.javisel.aeonspast.common.registration;
 
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.networking.AbilityMessage;
-import com.javisel.aeonspast.common.networking.PlayerCapabiltiiesMessage;
-import com.javisel.aeonspast.common.networking.ResourceMessage;
-import com.javisel.aeonspast.common.networking.StackSyncMessage;
+import com.javisel.aeonspast.common.networking.abilitymessage.AbilityMessage;
+import com.javisel.aeonspast.common.networking.playercapabilitiesmessage.PlayerCapabiltiiesMessage;
+import com.javisel.aeonspast.common.networking.resourcemessage.ResourceMessage;
+import com.javisel.aeonspast.common.networking.stacksyncmessage.StackSyncMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;

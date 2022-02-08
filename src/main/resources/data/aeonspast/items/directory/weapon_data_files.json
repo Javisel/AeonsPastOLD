@@ -14,7 +14,9 @@
     "minecraft:iron_axe",
     "minecraft:diamond_axe",
     "minecraft:netherite_axe",
-    "aeonspast:wooden_spear"
+    "aeonspast:wooden_spear",
+    "minecraft:bow",
+    "minecraft:crossbow"
 
 
 

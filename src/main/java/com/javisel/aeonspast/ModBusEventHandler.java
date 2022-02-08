@@ -103,11 +103,6 @@ public class ModBusEventHandler {
 
     }
 
-    @SubscribeEvent
-    public static void textures(TextureStitchEvent.Pre event) {
-
-
-    }
 
 
 }

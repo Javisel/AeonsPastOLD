@@ -19,10 +19,10 @@ public class CombatInstance {
 
 
     //CombatInstance involving a Melee Weapon.
-    public CombatInstance(LivingEntity attacker, LivingEntity victim, ItemStack weapon) {
+    public CombatInstance(LivingEntity attacker, LivingEntity victim  ) {
         this.attacker = attacker;
         this.victim = victim;
-        DamageInstance instance = CombatEngine.calculateWeaponDamage(attacker, weapon, true);
+        DamageInstance instance = CombatEngine.calculateMeleeDamage(attacker, attacker.getMainHandItem());
 
         source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, attacker);
 
@@ -30,11 +30,13 @@ public class CombatInstance {
     }
 
     //CombatInstance involving a  Ranged Weapon.
-    public CombatInstance(LivingEntity attacker, LivingEntity victim) {
+    public CombatInstance(LivingEntity attacker, LivingEntity victim, float rangedPower) {
         this.attacker = attacker;
         this.victim = victim;
-        DamageInstance instance = CombatEngine.calculateWeaponDamage(attacker, attacker.getMainHandItem(), false);
+        DamageInstance instance = CombatEngine.calculateRangedDamage(attacker, attacker.getMainHandItem(), rangedPower );
 
+
+        instance.procPower=rangedPower;
         source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, attacker);
 
 

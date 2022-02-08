@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "aeonspast:wooden_axe",
+    "aeonspast:golden_axe",
+    "aeonspast:stone_axe",
+    "aeonspast:iron_axe",
+    "aeonspast:diamond_axe",
+    "aeonspast:netherite_axe"
+  ]
+}

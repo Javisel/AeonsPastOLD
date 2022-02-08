@@ -12,7 +12,7 @@ public class APEntityDamageSource extends  APDamageSource {
 
 
     public APEntityDamageSource(String id, DamageInstance instance, Entity sourceEntity) {
-        super(sourceEntity instanceof Player ? "player" : "mob",instance );
+        super(id,instance );
          this.sourceEntity=sourceEntity;
 
     }

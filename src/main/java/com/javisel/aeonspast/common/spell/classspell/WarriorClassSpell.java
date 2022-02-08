@@ -47,21 +47,9 @@ public class WarriorClassSpell extends ClassSpell implements ICustomUseRequireme
         Level level = entity.getLevel();
 
 
-        if (level.isClientSide) {
-
-
-            System.out.println("CLIENT READ!");
-        }
-
-        if (!level.isClientSide) {
-
-
-            System.out.println("SERVER READ!");
-        }
 
 
         entity.heal(entity.getMaxHealth() * 0.25f);
-        entity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1000, 0));
 
 
         entity.getLevel().playLocalSound(entity.getX(),entity.getY(),entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL,1,1,false);

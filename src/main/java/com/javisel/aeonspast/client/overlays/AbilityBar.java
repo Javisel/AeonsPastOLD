@@ -11,12 +11,15 @@ import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.Utilities;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +28,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.server.command.TextComponentHelper;
+
+import java.awt.*;
 
 
 @OnlyIn(Dist.CLIENT)
@@ -42,6 +48,13 @@ public class AbilityBar implements IIngameOverlay {
 
         Player player = minecraft.player;
 
+
+
+        Gui.drawString(mStack,gui.getFont(),"AEON'S PAST IN-DEV", 0,0,0);
+
+        if (player ==null || player.isDeadOrDying()) {
+            return;
+        }
         IEntityData entityData = Utilities.getEntityData(minecraft.player);
 
         IPlayerData playerData = Utilities.getPlayerData(minecraft.player);
@@ -62,12 +75,10 @@ public class AbilityBar implements IIngameOverlay {
 
         NonNullList<Spell> spellBarList = playerData.getSpellBar().getSpellList();
 
-        //   Gui.drawString(mStack,gui.getFont(),"AEONS PAST INDEV FOOTAGE - NOT FINAL!", 0,0,0);
 
         ItemStack weapon = player.getMainHandItem();
 
 
-        RenderUtilities.renderTextureFromSprite(mStack, ABILITY_BAR_TEXTURES, 20, 20, width/2 - 91 - 28, height - 43, zpos, 20, 7, 20, 20);
 
         if (playerData.getActiveWeaponSpell() !=null) {
 
@@ -78,7 +89,11 @@ public class AbilityBar implements IIngameOverlay {
             SpellStack weaponspelldata = entityData.getSpellStackRaw(weaponSpell);
 
 
+            if (!weaponspelldata.isRecharging()&& !weaponspelldata.isCoolingDown()) {
+                return;
+            }
 
+            RenderUtilities.renderTextureFromSprite(mStack, ABILITY_BAR_TEXTURES, 20, 20, width/2 - 91 - 28, height - 43, zpos, 20, 7, 20, 20);
 
 
             if (ItemEngine.isItemInitialized(weapon)) {

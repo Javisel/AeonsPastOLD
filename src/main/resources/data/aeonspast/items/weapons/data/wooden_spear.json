@@ -2,6 +2,7 @@
 
 {
   "item_type": "spear",
+  "damage_type": "puncture",
   "attack_damage": {
     "min": 2.5,
     "max": 17.5
@@ -36,13 +37,13 @@
   "secondarydata" : [
 
     {
-      "damage": {
+      "throw_damage": {
 
       "min": 10.5,
       "max": 31.5
 
     },
-      "speed": {
+      "throw_speed": {
 
         "min": 0.6075,
         "max": 0.7425
@@ -53,7 +54,14 @@
         "min": 16,
         "max": 16
 
-      }
+      },
+      "projectile_speed": {
+
+      "min": 0.6075,
+      "max": 0.7425
+
+    }
+
 
 
     }

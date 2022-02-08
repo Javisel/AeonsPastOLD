@@ -1,6 +1,6 @@
 {
 
-  "item_type": "sword",
+  "weapon_type": "SWORD",
 
   "attack_damage": {
     "min": 12.5,
@@ -33,6 +33,7 @@
     "max": 4
   },
 
+  "is_ranged" : "false",
 
   "secondarydata" : [],
   "properties": [

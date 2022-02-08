@@ -1,6 +1,6 @@
 package com.javisel.aeonspast.client.main;
 
-import com.javisel.aeonspast.client.InWorldRenderer;
+import com.javisel.aeonspast.client.world.InWorldRenderer;
 import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
 import com.javisel.aeonspast.client.spell.SpellRenderer;
 import net.minecraft.client.Minecraft;
@@ -39,7 +39,7 @@ public class ClientProxy {
 
 
     @OnlyIn(Dist.CLIENT)
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class modBusEvents {
 
 

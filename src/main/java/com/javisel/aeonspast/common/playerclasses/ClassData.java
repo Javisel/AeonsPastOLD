@@ -102,6 +102,23 @@ public class ClassData {
         return attributeContainers;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public double getMax_health() {
         return max_health;
     }

@@ -1,8 +1,8 @@
-package com.javisel.aeonspast.common.items.weapons;
+package com.javisel.aeonspast.common.config;
 
-import com.javisel.aeonspast.common.config.StatisticPair;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.ItemType;
+import com.javisel.aeonspast.common.items.WeaponType;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import net.minecraft.nbt.CompoundTag;
@@ -20,10 +20,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.javisel.aeonspast.utilities.StringKeys.SPELL;
+import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class WeaponData {
 
+    public static final WeaponData UNARMED = new WeaponData(WeaponType.UNARMED,new StatisticPair(5,5),new StatisticPair(1,1),new StatisticPair(5,5),new StatisticPair(2,2), new StatisticPair(0,0), new StatisticPair(0,0), new StatisticPair(4,4), new ArrayList<>(),new ArrayList<>(),false);
 
     public static final String WEAPON_MOD_ID = "4703e862-a7ae-4697-aeea-f58ac8697e10";
 
@@ -31,7 +32,8 @@ public class WeaponData {
 
     public static final double ATTACK_SPEED_OFFSET = -1;
 
-    private final ItemType itemType;
+    private final WeaponType weapon_type;
+
     private final StatisticPair attack_damage;
     private final StatisticPair attack_speed;
     private final StatisticPair critical_chance;
@@ -39,14 +41,14 @@ public class WeaponData {
     private final StatisticPair durability;
     private final StatisticPair enchantability;
     private final StatisticPair range;
-    private final SecondaryData secondaryData;
-    private final List<String> properties = new ArrayList<>();
+     private final List<String> properties = new ArrayList<>();
     private final List<String> spells = new ArrayList<>();
+    private final boolean is_ranged;
     private StatisticPair dps;
 
 
-    public WeaponData(ItemType item_type, StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair enchantability, StatisticPair range, SecondaryData secondaryData, List<String> properties, List<String> spells) {
-        this.itemType = item_type;
+    public WeaponData(WeaponType item_type,   StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair enchantability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged) {
+        this.weapon_type = item_type;
 
         this.attack_damage = attack_damage;
         this.attack_speed = attack_speed;
@@ -55,7 +57,7 @@ public class WeaponData {
         this.durability = durability;
         this.enchantability = enchantability;
         this.range = range;
-        this.secondaryData = secondaryData;
+         this.is_ranged = is_ranged;
 
 
         for (String property : properties) {
@@ -88,8 +90,7 @@ public class WeaponData {
 
 
         if (stack.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(WEAPON_MOD_ID)) {
-            System.out.println("Already loaded!");
-            return;
+             return;
         }
 
         float luck = 0;
@@ -132,8 +133,8 @@ public class WeaponData {
 
         int choice = random.nextInt(i);
 
-
         ItemEngine.getAeonsPastTag(stack).putString(SPELL, spells.get(choice));
+        ItemEngine.getAeonsPastTag(stack).putBoolean(IS_RANGED, is_ranged);
 
 
     }
@@ -166,9 +167,6 @@ public class WeaponData {
         return range;
     }
 
-    public SecondaryData getSecondaryData() {
-        return secondaryData;
-    }
 
     public List<String> getProperties() {
         return properties;
@@ -177,6 +175,16 @@ public class WeaponData {
     public List<String> getSpells() {
         return spells;
     }
+
+    public WeaponType getWeapon_type() {
+        return weapon_type;
+    }
+
+
+
+
+
+
 
     public StatisticPair getDPS() {
 
@@ -193,18 +201,12 @@ public class WeaponData {
         return dps;
     }
 
-    private class SecondaryData {
 
-        final StatisticPair damage;
-        final StatisticPair speed;
-        final StatisticPair range;
-
-        public SecondaryData(StatisticPair damage, StatisticPair speed, StatisticPair range) {
-            this.damage = damage;
-            this.speed = speed;
-            this.range = range;
-        }
+    public boolean isIs_ranged() {
+        return is_ranged;
     }
 
-
+    public StatisticPair getDps() {
+        return dps;
+    }
 }

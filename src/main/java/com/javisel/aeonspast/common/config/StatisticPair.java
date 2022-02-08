@@ -19,6 +19,7 @@ public class StatisticPair {
     public float roll(float luck, Random random) {
 
 
+        System.out.println("Rolled!");
         float rng = min + random.nextFloat() * (max - min);
 
 
@@ -56,6 +57,7 @@ public class StatisticPair {
         }
 
 
+        System.out.println("RNG Result: " + rng);
         return rng;
     }
 

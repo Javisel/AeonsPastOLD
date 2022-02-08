@@ -61,4 +61,5 @@ public class StringKeys {
 
     public static final String ENTITY_TRAITS = "entity_traits";
 
+    public static final String IS_RANGED = "is_ranged";
 }

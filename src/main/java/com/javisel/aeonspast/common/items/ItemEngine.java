@@ -18,10 +18,37 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 
 import static com.javisel.aeonspast.AeonsPast.MODID;
-import static com.javisel.aeonspast.utilities.StringKeys.ITEM_PROPERTIES;
-import static com.javisel.aeonspast.utilities.StringKeys.SPELL;
+import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class ItemEngine {
+
+
+    public static boolean isWeaponRanged(ItemStack stack) {
+
+
+        if (!isWeapon(stack.getItem())) {
+            return false;
+        }
+
+        if (!isItemInitialized(stack)) {
+
+            return  false;
+        }
+
+
+        return  getAeonsPastTag(stack).getBoolean(IS_RANGED);
+
+
+
+    }
+
+
+    public static boolean isRPGItem(ItemStack stack) {
+
+
+        return  isArmor(stack.getItem()) || isWeapon(stack.getItem());
+    }
+
 
 
     public static boolean isItemInitialized(ItemStack stack) {
@@ -73,6 +100,13 @@ public class ItemEngine {
 
             }
 
+          else  if (isArmor(stack.getItem())) {
+
+                GameEventHandler.ARMOR_DATA_LOADER.getArmorData(stack.getItem()).loadToArmor(entity, stack);
+
+
+            }
+
 
         }
 
@@ -101,7 +135,26 @@ public class ItemEngine {
         return false;
     }
 
+    public static boolean isArmor(Item item) {
 
+        ResourceLocation location = item.getRegistryName();
+
+
+        for (ResourceLocation test : GameEventHandler.ARMOR_DATA_LOADER.getArmorStatisticsMap().keySet()) {
+
+
+            if (test.equals(location)) {
+
+
+                return true;
+            }
+
+
+        }
+
+
+        return false;
+    }
     public static ArrayList<ItemProperty> getItemProperties(ItemStack stack) {
 
         ArrayList<ItemProperty> properties = new ArrayList<>();

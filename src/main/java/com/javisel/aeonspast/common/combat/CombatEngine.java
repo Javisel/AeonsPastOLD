@@ -1,6 +1,8 @@
 package com.javisel.aeonspast.common.combat;
 
+import com.javisel.aeonspast.GameEventHandler;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
+import com.javisel.aeonspast.common.config.WeaponData;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
@@ -118,23 +120,63 @@ public class CombatEngine {
 
     }
 
-    public static DamageInstance calculateWeaponDamage(LivingEntity attacker, ItemStack weapon, boolean isMelee) {
+    public static DamageInstance calculateMeleeDamage(LivingEntity attacker, ItemStack weapon) {
 
 
         double baseDamage = attacker.getAttributeValue(AttributeRegistration.WEAPON_POWER.get());
          double physicalPower = attacker.getAttributeValue(AttributeRegistration.PHYSICAL_POWER.get());
-        double rangeBonus = isMelee ? attacker.getAttributeValue(AttributeRegistration.MELEE_POWER.get()) : attacker.getAttributeValue(AttributeRegistration.RANGED_POWER.get());
+        double rangeBonus = attacker.getAttributeValue(AttributeRegistration.MELEE_POWER.get());
 
-        double total = (baseDamage + physicalPower) * (1 + rangeBonus/100);
+        double total = (baseDamage + physicalPower) * (1 + (rangeBonus/100));
 
         total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
 
-        DamageInstance instance = new DamageInstance(weapon, APDamageSubType.PHYSICAL, total, false, false, isMelee);;
+
+        WeaponData weaponData = GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponData(weapon.getItem());
+
+
+        DamageInstance instance = new DamageInstance(weapon, weaponData.getWeapon_type().getDamageType(), total, false, false, true);;
 
          return instance;
 
 
     }
+
+
+    //TODO Ranged rework based on projectiles, and projectile damage types and mods
+    public static DamageInstance calculateRangedDamage(LivingEntity attacker, ItemStack weapon, float rangedPower ) {
+
+        double baseDamage = attacker.getAttributeValue(AttributeRegistration.WEAPON_POWER.get());
+        double physicalPower = attacker.getAttributeValue(AttributeRegistration.PHYSICAL_POWER.get());
+        double rangeBonus = attacker.getAttributeValue(AttributeRegistration.RANGED_POWER.get());
+
+        double total = (baseDamage + physicalPower) * (1 + (rangeBonus/100));
+
+
+        if (rangedPower <0) {
+            rangedPower = 0;
+        }
+
+        total *= rangedPower;
+        total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
+
+
+
+        DamageInstance instance = new DamageInstance(weapon, DamageTypes.PUNCTURE, total, false, false, false);;
+
+        return instance;
+
+
+
+
+    }
+
+
+
+
+
+
+
 
     public static double getMitigatedDamage(LivingEntity victim, DamageInstance instance) {
 
@@ -145,7 +187,12 @@ public class CombatEngine {
         double armor = 0;
         double damageMod = 1;
         damageMod += victim.getAttributeValue(AttributeRegistration.DAMAGE_INTAKE.get()) / 100;
-        if (instance.getDamage_type() == APDamageSubType.PHYSICAL) {
+
+        if (instance.getDamage_type().isAbsolute()) {
+
+            return baseamount;
+        }
+         else {
 
 
             armor = victim.getAttribute(AttributeRegistration.ARMOR.get()).getValue();
@@ -153,18 +200,18 @@ public class CombatEngine {
 
 
             damageMod -= victim.getAttributeValue(AttributeRegistration.PHYSICAL_MITIGATIONS.get()) / 100;
+            if (instance.isMagic) {
+
+                armor*= 0.5f;
+
+                armor+=victim.getAttribute(AttributeRegistration.MAGIC_RESISTANCE.get()).getValue();
+                damageMod=1 -victim.getAttributeValue(AttributeRegistration.MAGICAL_MITIGATIONS.get()) / 100;
+            }
 
 
-         }
-
-        if (instance.getDamage_type() == APDamageSubType.MAGIC) {
-
-
-            armor = victim.getAttribute(AttributeRegistration.MAGIC_RESISTANCE.get()).getValue();
-
-            damageMod -= victim.getAttributeValue(AttributeRegistration.MAGICAL_MITIGATIONS.get()) / 100;
         }
- ;
+
+
 
         baseamount = getDamagePostMitigations(armor, baseamount);
 
@@ -242,6 +289,12 @@ public class CombatEngine {
 
 
     }
+
+
+
+
+
+
 
 
 }

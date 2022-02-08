@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.TextureAtlasHolder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.RegistryManager;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.stream.Stream;
 
 import static com.javisel.aeonspast.AeonsPast.MODID;
 import static com.javisel.aeonspast.ModBusEventHandler.SPELL_REGISTRY_NAME;
-
+@OnlyIn(Dist.CLIENT)
 public class SpellAtlasHolder extends TextureAtlasHolder {
 
 

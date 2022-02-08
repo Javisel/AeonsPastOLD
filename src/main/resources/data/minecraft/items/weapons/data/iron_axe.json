@@ -1,7 +1,7 @@
 {
 
 
-  "item_type": "axe",
+  "weapon_type": "AXE",
 
   "attack_damage": {
     "min": 22,
@@ -34,6 +34,7 @@
     "max": 4
   },
 
+  "is_ranged" : "false",
 
   "secondarydata" : [],
   "properties": [

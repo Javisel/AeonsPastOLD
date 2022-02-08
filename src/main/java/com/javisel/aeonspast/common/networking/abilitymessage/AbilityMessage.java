@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.networking;
+package com.javisel.aeonspast.common.networking.abilitymessage;
 
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.utilities.Utilities;

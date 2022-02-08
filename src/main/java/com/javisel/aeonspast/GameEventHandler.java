@@ -6,12 +6,12 @@ import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.combat.APDamageSubType;
 import com.javisel.aeonspast.common.combat.CombatEngine;
 import com.javisel.aeonspast.common.combat.CombatInstance;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
-import com.javisel.aeonspast.common.combat.damagesource.EnvironmentalDamageSource;
+import com.javisel.aeonspast.common.combat.damagesource.VanillaAPDamageSourceMap;
+import com.javisel.aeonspast.common.config.ArmorDataLoader;
 import com.javisel.aeonspast.common.config.ClassDataLoader;
 import com.javisel.aeonspast.common.config.EntityDataLoader;
 import com.javisel.aeonspast.common.config.WeaponDataLoader;
@@ -28,11 +28,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -40,12 +42,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -54,8 +57,10 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 @Mod.EventBusSubscriber
@@ -64,6 +69,8 @@ public class GameEventHandler {
 
     public static ClassDataLoader CLASS_STATISTICS_LOADER;
     public static WeaponDataLoader WEAPON_STATISTICS_LOADER;
+    public static ArmorDataLoader ARMOR_DATA_LOADER;
+
     public static EntityDataLoader ENTITY_DATA_LOADER;
 
 
@@ -87,7 +94,7 @@ public class GameEventHandler {
 
         LivingEntity victim = (LivingEntity) event.getTarget();
 
-        CombatInstance combatInstance = new CombatInstance(player,victim,player.getMainHandItem());
+        CombatInstance combatInstance = new CombatInstance(player,victim  );
 
         if (combatInstance.onPreHit()) {
             if (combatInstance.onHit()) {
@@ -117,98 +124,113 @@ public class GameEventHandler {
 
         if (!(event.getSource() instanceof APDamageSource)) {
 
-            System.out.println("Direct Entity: " + source.getDirectEntity());
-            System.out.println("Entity: " + source.getEntity());
-
-            LivingEntity attacker = (LivingEntity) event.getSource().getEntity();
-
-            if (source.isProjectile() ) {
-
-                Projectile projectile = (Projectile) source.getDirectEntity();
-
-
-                if (projectile.getOwner() !=null && projectile.getOwner() instanceof LivingEntity) {
-
-
-                        LivingEntity shooter = (LivingEntity) projectile.getOwner();
-
-                        CombatInstance instance = new CombatInstance(shooter,victim);
-                        if (instance.onPreHit()) {
-                            if (instance.onHit()) {
-
-                            }
-
-                        }
-                        return;
-                    }
 
 
 
 
-
-            }
-
+            APDamageSource damageSource = null;
 
 
 
-            if (source.getDirectEntity() != null) {
+            if (source instanceof IndirectEntityDamageSource) {
+
+                IndirectEntityDamageSource indirectSource = (IndirectEntityDamageSource) source;
+                LivingEntity livingEntity = (LivingEntity) source.getEntity();
+
+                if (indirectSource.getEntity() !=null) {
 
 
 
 
+                    float power = 1;
 
-                if (attacker != null && source.getDirectEntity() == attacker) {
+                    if (indirectSource.getDirectEntity() != null && indirectSource.getDirectEntity() instanceof  Projectile) {
 
-
-                    if (attacker instanceof Creeper) {
-                        return;
-                    }
-
-                    if (attacker instanceof  Player) {
-                        return;
+                        Projectile projectile = (Projectile) indirectSource.getDirectEntity();
 
 
-                    }
 
-                     CombatInstance combatInstance = new CombatInstance(attacker,victim,attacker.getMainHandItem());
+                       power = (float) projectile.getDeltaMovement().length();
 
-                     if (combatInstance.onPreHit()) {
-                          if (combatInstance.onHit()) {
+                        if (power<= 1.6f) {
 
-                             return;
+                            power = 0.10f;
+
+                        } else {
+
+                            power = 3/power;
                         }
 
-                    }
 
+                     }
+
+
+                    CombatInstance combatInstance = new CombatInstance(livingEntity,victim,power);
+
+
+                    damageSource = combatInstance.source;
 
                 }
 
 
-            }
-
-
-            if (source ==DamageSource.FALL) {
-
-                EnvironmentalDamageSource environmentalDamageSource = new EnvironmentalDamageSource(source.getMsgId(),new DamageInstance(APDamageSubType.PENALTY,victim.getMaxHealth()*0.15f));
-
-
-
-            }
-            if (source ==DamageSource.DROWN) {
-
-                EnvironmentalDamageSource environmentalDamageSource = new EnvironmentalDamageSource(source.getMsgId(),new DamageInstance(APDamageSubType.PENALTY,victim.getMaxHealth()*0.10f));
-
-
-
-            }
-            if (source ==DamageSource.STARVE) {
-
-                EnvironmentalDamageSource environmentalDamageSource = new EnvironmentalDamageSource(source.getMsgId(),new DamageInstance(APDamageSubType.PENALTY,victim.getMaxHealth()*0.05f));
 
 
 
             }
 
+          else  if ( source.getEntity() != null && source.getEntity() instanceof LivingEntity) {
+
+
+                LivingEntity livingEntity = (LivingEntity) source.getEntity();
+                CombatInstance combatInstance = new CombatInstance(livingEntity,victim );
+
+
+                damageSource = combatInstance.source;
+            }
+           else {
+
+               if (source==DamageSource.WITHER) {
+
+                   float amount = victim.getMaxHealth() * 0.025f;
+
+                    damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount());
+                    damageSource.instance.preMitigationsAmount=amount;
+
+
+
+
+               } else if (source ==DamageSource.DRAGON_BREATH) {
+
+
+                   float amount = victim.getMaxHealth() * 0.01f;
+
+                   damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount());
+                   damageSource.instance.preMitigationsAmount=amount;
+
+
+
+               } else {
+
+
+                   damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount());
+               }
+
+
+            }
+
+
+            event.setCanceled(true);
+
+           if (damageSource!=null) {
+
+               victim.hurt(damageSource, (float) damageSource.instance.getPreMitigationsAmount());
+
+
+           } else {
+
+
+               AeonsPast.LOGGER.log(Level.TRACE,"Source: " + source.getMsgId() + " has no equivalent!");
+           }
             return;
 
         } else {
@@ -332,6 +354,9 @@ public class GameEventHandler {
     public static void serversetup(ServerStartedEvent event) {
 
         event.getServer().overworld().getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, event.getServer());
+
+     //TODO Remove
+        event.getServer().overworld().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, event.getServer());
 
 
     }
@@ -516,6 +541,7 @@ public class GameEventHandler {
 
 
         WEAPON_STATISTICS_LOADER = new WeaponDataLoader();
+        ARMOR_DATA_LOADER = new ArmorDataLoader();
 
 
         CLASS_STATISTICS_LOADER = new ClassDataLoader();
@@ -524,6 +550,7 @@ public class GameEventHandler {
         event.addListener(CLASS_STATISTICS_LOADER);
         event.addListener(WEAPON_STATISTICS_LOADER);
         event.addListener(ENTITY_DATA_LOADER);
+        event.addListener(ARMOR_DATA_LOADER);
 
 
     }
@@ -707,6 +734,49 @@ public class GameEventHandler {
 
 
 
+
+    @SubscribeEvent
+    public static void seeAttributes(ItemAttributeModifierEvent event) {
+
+
+        if (!ItemEngine.isItemInitialized(event.getItemStack())) {
+
+            event.clearModifiers();
+
+        } else{
+
+
+
+            for (Map.Entry<Attribute, AttributeModifier> set: event.getModifiers().entries()) {
+
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+        }
+
+
+
+    }
+
+
+@SubscribeEvent
+    public static void removeProjectile(ProjectileImpactEvent event) {
+
+
+        event.getProjectile().remove(Entity.RemovalReason.DISCARDED);
+
+}
 
 
 

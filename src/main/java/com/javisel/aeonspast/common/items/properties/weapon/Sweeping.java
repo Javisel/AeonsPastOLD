@@ -2,7 +2,7 @@ package com.javisel.aeonspast.common.items.properties.weapon;
 
 import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
 import com.javisel.aeonspast.common.combat.DamageInstance;
-import com.javisel.aeonspast.common.combat.APDamageSubType;
+import com.javisel.aeonspast.common.combat.DamageTypes;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +33,7 @@ public class Sweeping extends WeaponProperty {
                    if (livingentity != attacker && livingentity != victim && !attacker.isAlliedTo(livingentity) && (!(livingentity instanceof ArmorStand) || !((ArmorStand) livingentity).isMarker()) && attacker.distanceToSqr(livingentity) < 9.0D) {
 
 
-                       DamageInstance procDamage = new DamageInstance(APDamageSubType.PHYSICAL, bonusPhysicalDamage);
+                       DamageInstance procDamage = new DamageInstance(DamageTypes.SLASH, bonusPhysicalDamage);
 
                        APEntityDamageSource entityDamageSource = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", procDamage, attacker);
                        livingentity.hurt(entityDamageSource, (float) bonusPhysicalDamage);

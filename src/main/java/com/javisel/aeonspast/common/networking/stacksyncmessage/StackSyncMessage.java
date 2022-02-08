@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.networking;
+package com.javisel.aeonspast.common.networking.stacksyncmessage;
 
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.items.ItemEngine;
@@ -28,6 +28,8 @@ public class StackSyncMessage {
 
         return new StackSyncMessage();
     }
+
+
 
 
     public static class Handler {

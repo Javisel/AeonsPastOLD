@@ -126,7 +126,6 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
             }
 
 
-            System.out.println("Index: " + index + " Size: " + playerData.getSpellBar().getSpellList().size());
 
 
             playerData.getSpellBar().getSpellList().set(index, getSpell(player, stack).get());

@@ -25,6 +25,8 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.javisel.aeonspast.common.registration.SpellRegistration.SPELLS;
+@OnlyIn(Dist.CLIENT)
 
 public class SpellRenderer {
 

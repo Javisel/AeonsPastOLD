@@ -1,4 +1,7 @@
 {
+
+  "weapon_type": "SWORD",
+
   "attack_damage": {
     "min": 7.5,
     "max": 32.5
@@ -30,6 +33,7 @@
     "max": 4
   },
 
+  "is_ranged" : "false",
 
   "secondarydata" : [],
   "properties": [

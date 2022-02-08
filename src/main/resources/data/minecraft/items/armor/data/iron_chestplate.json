@@ -1,0 +1,39 @@
+{
+
+  "armor_type": "CHESTPLATE",
+  "statistics": [
+
+    {
+
+      "attribute": "minecraft:generic.max_health",
+      "operation": "ADDITION",
+      "min": 15,
+      "max": 35
+
+    },
+    {
+
+      "attribute": "aeonspast:armor",
+      "operation": "ADDITION",
+
+      "min": 8,
+      "max": 12
+
+    }
+
+
+
+
+  ],
+
+
+
+
+
+
+  "rarity": "COMMON",
+  "properties": [
+
+
+  ]
+}

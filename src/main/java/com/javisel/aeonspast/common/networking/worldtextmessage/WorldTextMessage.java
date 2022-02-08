@@ -1,6 +1,6 @@
-package com.javisel.aeonspast.common.networking;
+package com.javisel.aeonspast.common.networking.worldtextmessage;
 
-import com.javisel.aeonspast.common.combat.APDamageSubType;
+import com.javisel.aeonspast.common.combat.DamageTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -35,46 +35,7 @@ public class WorldTextMessage {
     }
 
 
-    enum Type {
 
-
-        PENALTY(0),
-        TRUE(1),
-        PHYSICAL(2),
-        MAGICAL(3),
-        HEALING(4),
-        EXPERIENCE(5);
-
-
-        int id;
-
-        Type(int id) {
-            this.id = id;
-        }
-
-        public static int getByDamageType(APDamageSubType damageSubType) {
-
-
-            switch (damageSubType) {
-                case PENALTY:
-                    return 0;
-
-                case TRUE:
-                    return 1;
-                case PHYSICAL:
-                    return 2;
-                case MAGIC:
-                    return 3;
-
-
-            }
-
-
-            return -1;
-        }
-
-
-    }
 
     public static class Handler {
 

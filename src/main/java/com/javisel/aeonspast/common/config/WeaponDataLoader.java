@@ -6,7 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.items.weapons.WeaponData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -14,6 +13,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.Deserializers;
 
 import java.io.*;
@@ -130,6 +130,13 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
 
 
         ResourceLocation location = item.getRegistryName();
+
+
+         if (item == null || item == Items.AIR) {
+
+            return  WeaponData.UNARMED;
+
+        }
 
         for (ResourceLocation test : weaponStatisticsMap.keySet()) {
 

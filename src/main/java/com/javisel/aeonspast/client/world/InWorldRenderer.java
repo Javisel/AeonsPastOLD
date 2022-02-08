@@ -1,6 +1,7 @@
-package com.javisel.aeonspast.client;
+package com.javisel.aeonspast.client.world;
 
 import com.javisel.aeonspast.AeonsPast;
+import com.javisel.aeonspast.client.RenderUtilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,10 +20,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.shadowed.eliotlash.mclib.utils.MathHelper;
 
 import java.util.ArrayList;
 import java.util.Map;
+@OnlyIn(Dist.CLIENT)
 
 public class InWorldRenderer {
 
@@ -39,6 +43,10 @@ public class InWorldRenderer {
 
         Minecraft minecraft = Minecraft.getInstance();
         Player player = minecraft.player;
+
+        if (entity==player) {
+            return;
+        }
         if (entity.isInvisible() || entity.isInvisibleTo(player) ) {
 
             return;

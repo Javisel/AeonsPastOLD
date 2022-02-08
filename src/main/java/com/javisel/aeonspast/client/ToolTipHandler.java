@@ -3,17 +3,20 @@ package com.javisel.aeonspast.client;
 
 import com.google.common.collect.Multimap;
 import com.javisel.aeonspast.GameEventHandler;
+import com.javisel.aeonspast.common.config.ArmorData;
+import com.javisel.aeonspast.common.config.AttributeStatisticsPair;
 import com.javisel.aeonspast.common.config.StatisticPair;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.properties.ItemRarity;
-import com.javisel.aeonspast.common.items.weapons.WeaponData;
-import com.javisel.aeonspast.common.networking.StackSyncMessage;
+import com.javisel.aeonspast.common.config.WeaponData;
+import com.javisel.aeonspast.common.networking.stacksyncmessage.StackSyncMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,6 +28,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -33,14 +37,20 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
+import org.antlr.v4.runtime.misc.MultiMap;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ToolTipHandler {
 
 
@@ -52,8 +62,9 @@ public class ToolTipHandler {
         }
 
         ItemStack stack = event.getItemStack();
+        Item item = stack.getItem();
 
-        if (GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack.getItem().getRegistryName()) != null) {
+        if (ItemEngine.isRPGItem(stack)) {
 
 
             List<Either<FormattedText, TooltipComponent>> tooltips = event.getTooltipElements();
@@ -62,7 +73,21 @@ public class ToolTipHandler {
 
 
             if (ItemEngine.isItemInitialized(stack)) {
-                adjustWeaponTooltip(stack, tooltips);
+
+
+                addPropertyToolTips(stack, tooltips);
+
+
+                if (ItemEngine.isWeapon(item)) {
+                    adjustWeaponTooltip(stack, tooltips);
+
+                } else if (ItemEngine.isArmor(item)) {
+
+
+                    adjustArmorTooltip(stack, tooltips);
+                }
+
+
             } else {
                 PacketRegistration.INSTANCE.sendTo(new StackSyncMessage(), Minecraft.getInstance().getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);
 
@@ -86,29 +111,21 @@ public class ToolTipHandler {
         tooltips.clear();
 
 
-        tooltips.clear();
-
-
         tooltips.add(Either.left(stack.getHoverName()));
 
     }
 
 
-    public static void adjustWeaponTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
+    public static void addPropertyToolTips(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
-
-        WeaponData weaponData = GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack.getItem());
 
         CompoundTag tag = ItemEngine.getPropertyTag(stack);
 
 
-        Multimap<Attribute, AttributeModifier> attributeMods = stack.getAttributeModifiers(EquipmentSlot.MAINHAND);
-
-
         ArrayList<ItemProperty> properties = ItemEngine.getItemProperties(stack);
 
-        MutableComponent propertycomponent = new TranslatableComponent("");
-        if (!properties.isEmpty()) {
+         if (!properties.isEmpty()) {
+             MutableComponent propertycomponent = new TranslatableComponent("");
 
             for (ItemProperty property : properties) {
 
@@ -118,24 +135,35 @@ public class ToolTipHandler {
                     tooltips.add(Either.left(mutableComponent));
                 } else {
 
-                    if (properties.indexOf(property) != 1) {
-                        propertycomponent.append(" ");
-                    }
-                    propertycomponent.append(new TranslatableComponent(property.getRegistryName().toString()));
+                    if (property.isDisplayed()) {
+                        if (properties.indexOf(property) != 1) {
+                            propertycomponent.append(" ");
+                        }
+                        propertycomponent.append(new TranslatableComponent(property.getRegistryName().toString()));
 
-                    if (properties.indexOf(property) != properties.size() - 1) {
+                        if (properties.indexOf(property) != properties.size() - 1) {
 
-                        propertycomponent.append(",");
+                            propertycomponent.append(",");
+                        }
                     }
+
                 }
 
+                tooltips.add(Either.left(propertycomponent));
 
             }
 
         }
 
+     }
 
-        tooltips.add(Either.left(propertycomponent));
+    public static void adjustWeaponTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
+
+
+        WeaponData weaponData = GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack.getItem());
+
+
+        Multimap<Attribute, AttributeModifier> attributeMods = stack.getAttributeModifiers(EquipmentSlot.MAINHAND);
 
 
         double power = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.WEAPON_POWER.get(), stack, EquipmentSlot.MAINHAND);
@@ -197,6 +225,34 @@ public class ToolTipHandler {
             tooltips.add(Either.left(spellcomponent));
             tooltips.add(Either.left(new TranslatableComponent(spell.getSimpleDescription())));
         }
+
+    }
+
+
+    public static void adjustArmorTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
+
+        ArmorData armorData = GameEventHandler.ARMOR_DATA_LOADER.getArmorData(stack.getItem());
+
+
+        Multimap<Attribute, AttributeModifier> attributeMods = stack.getAttributeModifiers(armorData.getEquipmentSlot());
+
+
+        for (Map.Entry entry : attributeMods.entries()) {
+
+            Attribute key = (Attribute) entry.getKey();
+
+            AttributeModifier modifier = (AttributeModifier) entry.getValue();
+            StatisticPair pair = armorData.getStatisticPair(key);
+
+
+            double value = modifier.getAmount();
+
+
+             tooltips.add(Either.left(getAttributeComponent(key, stack, armorData.getStatisticPair(key), value, armorData.getEquipmentSlot())));
+
+
+        }
+
 
     }
 
@@ -285,22 +341,61 @@ public class ToolTipHandler {
 
         return component;
     }
-
+    public static final DecimalFormat ATTRIBUTE_MODIFIER_FORMAT = Util.make(new DecimalFormat("#.##"), (p_41704_) -> {
+        p_41704_.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
+    });
     public static Component getAttributeComponent(Attribute attribute, ItemStack stack, StatisticPair pair, double value, EquipmentSlot slot) {
 
+            boolean isminute=false;
+        if (pair instanceof AttributeStatisticsPair) {
 
-        Component component = getVariableStringComponent(attribute.getDescriptionId());
-
-        Component numbercomponent = new TranslatableComponent(ATTRIBUTE_MODIFIER_FORMAT.format(value));
-        numbercomponent = applyColourFormattings(pair.getmin(), pair.getMax(), value, numbercomponent);
+            AttributeStatisticsPair attributePair = (AttributeStatisticsPair) pair;
 
 
-        component = component.copy().append(numbercomponent);
+             if (attributePair.getOperation()== AttributeModifier.Operation.MULTIPLY_BASE ||attributePair.getOperation()== AttributeModifier.Operation.MULTIPLY_TOTAL  ) {
 
+
+                isminute=true;
+
+
+            }
+
+
+        }
+
+
+        double inputvalue = value;
+
+
+
+        TranslatableComponent component = (TranslatableComponent) getVariableStringComponent(attribute.getDescriptionId());
+
+        //component.append(new TranslatableComponent("+ "));
+
+         if (isminute) {
+            inputvalue= value*100;
+        }
+        Component numbercomponent = new TranslatableComponent(ATTRIBUTE_MODIFIER_FORMAT.format(inputvalue));
+
+        if (isminute) {
+            numbercomponent = applyColourFormattings(pair.getmin()*100, pair.getMax()*100, inputvalue, numbercomponent);
+
+
+        } else{
+            numbercomponent = applyColourFormattings(pair.getmin(), pair.getMax(), inputvalue, numbercomponent);
+
+        }
+         component = (TranslatableComponent) component.copy().append(numbercomponent);
+
+
+        if (isminute) {
+            component = (TranslatableComponent) component.append("%");
+
+        }
         return component;
 
     }
 
-
 }
+
 

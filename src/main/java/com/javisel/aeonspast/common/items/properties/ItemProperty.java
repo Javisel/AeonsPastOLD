@@ -11,11 +11,23 @@ import net.minecraftforge.registries.RegistryManager;
 public class ItemProperty extends net.minecraftforge.registries.ForgeRegistryEntry<ItemProperty> {
 
 
+    private boolean isDisplayed = false;
     public ItemProperty() {
 
 
     }
 
+
+    public void setDisplayed(){
+
+
+        isDisplayed=true;
+    }
+
+    public boolean isDisplayed(){
+
+        return isDisplayed;
+    }
 
 
     public static ItemProperty getPropertyByLocation(ResourceLocation resourceLocation) {
