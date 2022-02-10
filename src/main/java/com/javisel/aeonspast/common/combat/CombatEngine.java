@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.combat;
 
-import com.javisel.aeonspast.GameEventHandler;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.config.WeaponData;
 import com.javisel.aeonspast.common.events.EventFactory;
@@ -8,6 +7,7 @@ import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.server.ServerHandler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -132,7 +132,7 @@ public class CombatEngine {
         total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
 
 
-        WeaponData weaponData = GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponData(weapon.getItem());
+        WeaponData weaponData = ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(weapon.getItem());
 
 
         DamageInstance instance = new DamageInstance(weapon, weaponData.getWeapon_type().getDamageType(), total, false, false, true);;

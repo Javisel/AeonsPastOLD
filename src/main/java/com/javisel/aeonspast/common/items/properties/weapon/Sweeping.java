@@ -28,7 +28,10 @@ public class Sweeping extends WeaponProperty {
            boolean flag2 =  attacker.fallDistance > 0.0F && !attacker.isOnGround() && !attacker.onClimbable() && !attacker.isInWater() && !attacker.hasEffect(MobEffects.BLINDNESS) && !attacker.isPassenger();
 
 
-           if ( flag2 && d0 < attacker.getSpeed())
+           boolean canPerformAction = stack.canPerformAction(net.minecraftforge.common.ToolActions.SWORD_SWEEP);
+
+
+           if ( flag2 && canPerformAction && d0 < attacker.getSpeed())
                 for (LivingEntity livingentity : attacker.level.getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(1, 0.25, 1))) {
                    if (livingentity != attacker && livingentity != victim && !attacker.isAlliedTo(livingentity) && (!(livingentity instanceof ArmorStand) || !((ArmorStand) livingentity).isMarker()) && attacker.distanceToSqr(livingentity) < 9.0D) {
 

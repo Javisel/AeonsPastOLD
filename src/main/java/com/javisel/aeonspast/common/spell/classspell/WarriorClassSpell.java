@@ -1,29 +1,17 @@
 package com.javisel.aeonspast.common.spell.classspell;
 
-import com.javisel.aeonspast.GameEventHandler;
-import com.javisel.aeonspast.common.attributes.AttributeContainer;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.playerclasses.ClassData;
 import com.javisel.aeonspast.common.registration.ClassRegistration;
 import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.spell.ClassSpell;
 import com.javisel.aeonspast.common.spell.ICustomUseRequirement;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.Utilities;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-
-import java.util.Map;
-
-import static com.javisel.aeonspast.GameEventHandler.WEAPON_STATISTICS_LOADER;
 
 public class WarriorClassSpell extends ClassSpell implements ICustomUseRequirement {
 

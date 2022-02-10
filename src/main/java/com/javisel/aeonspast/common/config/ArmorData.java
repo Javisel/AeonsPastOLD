@@ -16,6 +16,8 @@ import org.apache.logging.log4j.Level;
 import javax.annotation.Nullable;
 import java.util.*;
 
+import static com.javisel.aeonspast.utilities.StringKeys.*;
+
 public class ArmorData {
 
 
@@ -40,10 +42,78 @@ public class ArmorData {
         CompoundTag tag = new CompoundTag();
 
 
+        tag.putString(ARMOR_TYPE,armor_type.toString());
+
+
+        CompoundTag stattag = new CompoundTag();
+        int i = 0;
+
+        for (AttributeStatisticsPair pair : statistics) {
+
+            stattag.put("entry"+i, pair.toNBT());
+
+            i++;
+
+        }
+
+        tag.put(STATISTICS,stattag);
+
+        CompoundTag props = new CompoundTag();
+        for  (String prop : properties) {
+
+
+            props.putString(prop,"");
+
+
+
+
+        }
+
+
+
+        tag.put(ITEM_PROPERTIES,props);
+
+
+
         return tag;
 
 
     }
+
+    public static ArmorData fromNBT(CompoundTag tag) {
+
+
+        ArmorData data = new ArmorData(ArmorType.valueOf(tag.getString(ARMOR_TYPE)));
+
+        CompoundTag stats = tag.getCompound(STATISTICS);
+
+
+        for (String key : stats.getAllKeys()) {
+
+            AttributeStatisticsPair pair =  AttributeStatisticsPair.getPairFromNBT(stats.getCompound(key));
+
+
+            System.out.println("Pair Value: " + pair.getAverage());
+            data.statistics.add(pair);
+
+        }
+
+
+
+
+         data.properties.addAll(tag.getCompound(ITEM_PROPERTIES).getAllKeys());
+
+
+
+
+
+        return  data;
+
+    }
+
+
+
+
 
     public void loadToArmor(@Nullable LivingEntity entity, ItemStack stack) {
 

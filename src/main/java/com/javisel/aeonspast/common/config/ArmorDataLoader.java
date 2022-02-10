@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.javisel.aeonspast.AeonsPast;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -22,7 +23,8 @@ import java.util.Map;
 
 public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
     private static final Gson GSON_INSTANCE = Deserializers.createFunctionSerializer().create();
-    private static final String folder = "items/armor/data";
+
+    private static final String folder = "items/armor";
     private Map<ResourceLocation, ArmorData> armorStatisticsMap = ImmutableMap.of();
 
     public ArmorDataLoader() {
@@ -36,7 +38,7 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
 
         ImmutableMap.Builder<ResourceLocation, ArmorData> builder = ImmutableMap.builder();
 
-        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "items/directory/armor_data_files.json");
+        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "tags/items/armor/armor.json");
         ArrayList<ResourceLocation> finalLocations = new ArrayList<ResourceLocation>();
 
 
@@ -53,7 +55,7 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
                 JsonObject jsonobject = GsonHelper.fromJson(GSON_INSTANCE, reader, JsonObject.class);
                 boolean replace = jsonobject.get("replace").getAsBoolean();
                 if (replace) finalLocations.clear();
-                JsonArray entryList = jsonobject.get("entries").getAsJsonArray();
+                JsonArray entryList = jsonobject.get("values").getAsJsonArray();
                 for (JsonElement entry : entryList) {
                     String loc = entry.getAsString();
                     ResourceLocation res = new ResourceLocation(loc);
@@ -149,5 +151,24 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
 
     }
 
+    public CompoundTag toNBT() {
 
+        CompoundTag tag = new CompoundTag();
+      for (Map.Entry armorEntry : armorStatisticsMap.entrySet()) {
+
+
+
+          tag.put(armorEntry.getKey().toString(), ((ArmorData) armorEntry.getValue()).toNBT());
+
+
+
+        }
+
+
+
+        return  tag;
+
+
+
+    }
 }

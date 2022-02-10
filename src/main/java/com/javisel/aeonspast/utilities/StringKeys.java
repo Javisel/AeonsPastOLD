@@ -8,6 +8,9 @@ public class StringKeys {
     public static final String END_AMOUNT = "end_amount";
 
     public static final String SPELL = "spell";
+    public static final String WEAPON_TYPE = "weapon_type";
+    public static final String STATISTICS = "statistics";
+
     public static final String WEAPON = "weapon";
     public static final String INVENTORY = "inventory";
     public static final String TRINKET = "trinket";
@@ -18,6 +21,10 @@ public class StringKeys {
     public static final String SPELLS = "spells";
     public static final String SPELL_BAR = "spell_bar";
     public static final String EMPTY = "empty";
+
+    public static final String ARMOR = "armor";
+    public static final String ARMOR_TYPE = "armor_type";
+
 
 
     public static final String CHARGES = "charges";
@@ -54,7 +61,11 @@ public class StringKeys {
     public static final String DAMAGE_TYPE = "damage_type";
     public static final String ATTACK_SPEED = "attack_speed";
     public static final String CRITICAL_DAMAGE = "critical_damage";
+    public static final String CRITICAL_CHANCE = "critical_chance";
+
     public static final String DURABILITY = "durability";
+    public static final String ENCHANTABILITY = "enchantability";
+    public static final String RANGE = "range";
 
 
     public static final String ITEM_PROPERTIES = "item_properties";
@@ -62,4 +73,7 @@ public class StringKeys {
     public static final String ENTITY_TRAITS = "entity_traits";
 
     public static final String IS_RANGED = "is_ranged";
+
+    public static final String WEAPON_POWER = "weapon_power";
+
 }

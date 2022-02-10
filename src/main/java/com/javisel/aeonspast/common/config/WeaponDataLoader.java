@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.javisel.aeonspast.AeonsPast;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -23,11 +24,12 @@ import java.util.Map;
 
 public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
     private static final Gson GSON_INSTANCE = Deserializers.createFunctionSerializer().create();
-    private static final String folder = "items/weapons/data";
+    private static final String folder = "items/weapons";
     private Map<ResourceLocation, WeaponData> weaponStatisticsMap = ImmutableMap.of();
 
     public WeaponDataLoader() {
         super(GSON_INSTANCE, folder);
+
     }
 
 
@@ -37,7 +39,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
 
         ImmutableMap.Builder<ResourceLocation, WeaponData> builder = ImmutableMap.builder();
 
-        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "items/directory/weapon_data_files.json");
+        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "tags/items/weapons/weapons.json");
         ArrayList<ResourceLocation> finalLocations = new ArrayList<ResourceLocation>();
 
 
@@ -53,7 +55,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
                 JsonObject jsonobject = GsonHelper.fromJson(GSON_INSTANCE, reader, JsonObject.class);
                 boolean replace = jsonobject.get("replace").getAsBoolean();
                 if (replace) finalLocations.clear();
-                JsonArray entryList = jsonobject.get("entries").getAsJsonArray();
+                JsonArray entryList = jsonobject.get("values").getAsJsonArray();
                 for (JsonElement entry : entryList) {
                     String loc = entry.getAsString();
                     ResourceLocation res = new ResourceLocation(loc);
@@ -156,4 +158,24 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
     }
 
 
+    public CompoundTag toNBT() {
+
+        CompoundTag tag = new CompoundTag();
+        for (Map.Entry weaponEntry : weaponStatisticsMap.entrySet()) {
+
+
+
+            tag.put(weaponEntry.getKey().toString(), ((WeaponData) weaponEntry.getValue()).toNBT());
+
+
+
+        }
+
+
+
+        return  tag;
+
+
+
+    }
 }

@@ -1,6 +1,6 @@
 {
   "replace": false,
-  "entries": [
+  "values": [
 
     "minecraft:zombie",
     "minecraft:skeleton",
@@ -8,7 +8,6 @@
     "minecraft:spider",
     "minecraft:pig",
     "minecraft:phantom",
-
     "minecraft:slime",
     "minecraft:sheep",
     "minecraft:cow",

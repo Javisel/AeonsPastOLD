@@ -4,6 +4,7 @@ import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.networking.abilitymessage.AbilityMessage;
 import com.javisel.aeonspast.common.networking.playercapabilitiesmessage.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.networking.resourcemessage.ResourceMessage;
+import com.javisel.aeonspast.common.networking.serverdatamessage.ServerDataMessage;
 import com.javisel.aeonspast.common.networking.stacksyncmessage.StackSyncMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +34,7 @@ public class PacketRegistration {
         registerMessage(PlayerCapabiltiiesMessage.class, PlayerCapabiltiiesMessage::encode, PlayerCapabiltiiesMessage::decode, PlayerCapabiltiiesMessage.Handler::handle);
         registerMessage(AbilityMessage.class, AbilityMessage::encode, AbilityMessage::decode, AbilityMessage.Handler::handle);
         registerMessage(StackSyncMessage.class, StackSyncMessage::encode, StackSyncMessage::decode, StackSyncMessage.Handler::handle);
+        registerMessage(ServerDataMessage.class, ServerDataMessage::encode, ServerDataMessage::decode, ServerDataMessage.Handler::handle);
 
 
     }

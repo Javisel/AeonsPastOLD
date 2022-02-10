@@ -99,7 +99,6 @@ public class CombatInstance {
             for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
 
 
-                //TODO When the owner is hit
 
                 if (!property.onOwnerPreHit(attacker, victim, source.instance)) {
 

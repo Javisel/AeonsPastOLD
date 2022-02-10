@@ -31,7 +31,7 @@ public class ClassDataLoader extends SimpleJsonResourceReloadListener {
 
         ImmutableMap.Builder<ResourceLocation, ClassData> builder = ImmutableMap.builder();
 
-        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "classes/class_data_files.json");
+        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "classes/classes.json");
         ArrayList<ResourceLocation> finalLocations = new ArrayList<ResourceLocation>();
 
 

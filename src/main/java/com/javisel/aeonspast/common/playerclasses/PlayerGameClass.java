@@ -1,11 +1,11 @@
 package com.javisel.aeonspast.common.playerclasses;
 
-import com.javisel.aeonspast.GameEventHandler;
 import com.javisel.aeonspast.common.attributes.AttributeContainer;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.items.emblem.BasicEmblem;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.server.ServerHandler;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -30,7 +30,7 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
     public ClassData getClassData() {
 
 
-        return GameEventHandler.CLASS_STATISTICS_LOADER.getClassStatisticsMap().get(this.getRegistryName());
+        return ServerHandler.CLASS_STATISTICS_LOADER.getClassStatisticsMap().get(this.getRegistryName());
     }
 
     public BasicEmblem getClassEmblem() {
@@ -72,8 +72,7 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
         IPlayerData playerData = Utilities.getPlayerData(player);
         playerData.getOrCreatePlayerClass(this);
 
-        //TODO REMOVAL OF CLASS
-        playerData.setActiveGameClass(this);
+         playerData.setActiveGameClass(null);
         for (AttributeContainer container : getClassData().getAttributeModifiers(castResource.get())) {
 
 

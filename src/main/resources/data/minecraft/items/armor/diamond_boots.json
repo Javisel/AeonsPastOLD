@@ -1,6 +1,6 @@
 {
 
-  "armor_type": "HELMET",
+  "armor_type": "BOOTS",
   "statistics": [
 
     {
@@ -8,7 +8,7 @@
       "attribute": "minecraft:generic.max_health",
       "operation": "ADDITION",
       "min": 20,
-      "max": 36
+      "max": 30
 
     },
     {
@@ -16,8 +16,8 @@
       "attribute": "aeonspast:armor",
       "operation": "ADDITION",
 
-      "min": 3,
-      "max": 6
+      "min": 6,
+      "max": 8
 
     }
 
@@ -33,6 +33,6 @@
 
   "rarity": "COMMON",
   "properties": [
-
-   ]
+    "aeonspast:rare"
+  ]
 }

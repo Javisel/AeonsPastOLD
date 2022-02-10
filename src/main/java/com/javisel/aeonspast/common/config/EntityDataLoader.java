@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.entities.EntityStatisticalData;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class EntityDataLoader extends SimpleJsonResourceReloadListener {
     private static final Gson GSON_INSTANCE = Deserializers.createFunctionSerializer().create();
-    private static final String folder = "entities/data";
+    private static final String folder = "entities";
     private Map<ResourceLocation, EntityStatisticalData> entityStatisticsMap = ImmutableMap.of();
 
     public EntityDataLoader() {
@@ -38,7 +39,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
         System.out.println("Applying Entity Loader!");
         ImmutableMap.Builder<ResourceLocation, EntityStatisticalData> builder = ImmutableMap.builder();
 
-        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "entities/directory/entity_data_files.json");
+        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "tags/entity_types/entity_types.json");
         ArrayList<ResourceLocation> finalLocations = new ArrayList<ResourceLocation>();
 
 
@@ -54,7 +55,7 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
                 JsonObject jsonobject = GsonHelper.fromJson(GSON_INSTANCE, reader, JsonObject.class);
                 boolean replace = jsonobject.get("replace").getAsBoolean();
                 if (replace) finalLocations.clear();
-                JsonArray entryList = jsonobject.get("entries").getAsJsonArray();
+                JsonArray entryList = jsonobject.get("values").getAsJsonArray();
                 for (JsonElement entry : entryList) {
                     String loc = entry.getAsString();
                     ResourceLocation res = new ResourceLocation(loc);
@@ -148,6 +149,11 @@ public class EntityDataLoader extends SimpleJsonResourceReloadListener {
         return null;
 
     }
+
+
+
+
+
 
 
 }

@@ -56,6 +56,7 @@ public class AttributeRegistration {
     public static final RegistryObject<Attribute> DAMAGE_OUTPUT = ATTRIBUTES.register("damage_output", () -> new RangedAttribute("generic.damage_output", 1, -100, 100).setSyncable(true));
     public static final RegistryObject<Attribute> CRITICAL_CHANCE = ATTRIBUTES.register("critical_chance", () -> new RangedAttribute("generic.critical_chance", 5, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> CRITICAL_DAMAGE = ATTRIBUTES.register("critical_damage", () -> new RangedAttribute("generic.critical_damage", 2, 0, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> ATTACK_RANGE = ATTRIBUTES.register("attack_range", () -> new RangedAttribute("generic.attack_range", 2, 0, 100).setSyncable(true));
 
 
     //Resources

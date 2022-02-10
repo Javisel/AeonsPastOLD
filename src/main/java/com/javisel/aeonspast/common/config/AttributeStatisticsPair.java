@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.config;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -34,6 +35,30 @@ public class AttributeStatisticsPair extends StatisticPair{
 
     public AttributeModifier.Operation getOperation() {
         return operation;
+    }
+
+
+
+
+    public  static AttributeStatisticsPair getPairFromNBT(CompoundTag tag) {
+
+        StatisticPair pair = StatisticPair.fromNBT(tag);
+
+
+       return new AttributeStatisticsPair(tag.getString("attribute"), AttributeModifier.Operation.fromValue(tag.getInt("operation")) ,pair.getmin(),pair.getMax()  );
+
+
+    }
+
+    @Override
+    public CompoundTag toNBT() {
+        CompoundTag tag  = super.toNBT();
+
+        tag.putString("attribute", attribute);
+        tag.putInt("operation",operation.toValue());
+
+
+        return  tag;
     }
 }
 

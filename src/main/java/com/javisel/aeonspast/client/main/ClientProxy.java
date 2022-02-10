@@ -1,8 +1,13 @@
 package com.javisel.aeonspast.client.main;
 
+import com.google.common.collect.ImmutableMap;
 import com.javisel.aeonspast.client.world.InWorldRenderer;
 import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
 import com.javisel.aeonspast.client.spell.SpellRenderer;
+import com.javisel.aeonspast.common.config.ArmorData;
+import com.javisel.aeonspast.common.config.WeaponData;
+import com.javisel.aeonspast.common.entities.EntityStatisticalData;
+import com.javisel.aeonspast.common.playerclasses.ClassData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -10,6 +15,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.javisel.aeonspast.AeonsPast.MODID;
 
@@ -25,6 +33,18 @@ public class ClientProxy {
 
     public static SpellAtlasHolder spellAtlasHolder;
     public static InWorldRenderer inWorldRenderer = new InWorldRenderer();
+
+    public static Map<ResourceLocation, WeaponData> weaponStatisticsMap = ImmutableMap.of();
+    public static Map<ResourceLocation, ClassData> classStatisticsMap = ImmutableMap.of();
+    public static Map<ResourceLocation, ArmorData> armorStatisticsMap = ImmutableMap.of();
+    public static Map<ResourceLocation, EntityStatisticalData> entityStatisticsMap = ImmutableMap.of();
+
+
+
+
+
+
+
 
     public static void Init() {
 
@@ -58,6 +78,14 @@ public class ClientProxy {
 
 
     }
+
+
+
+
+
+
+
+
 
 
 

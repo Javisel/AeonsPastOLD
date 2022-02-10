@@ -2,17 +2,18 @@ package com.javisel.aeonspast.common.items;
 
 import com.google.common.collect.Multimap;
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.GameEventHandler;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.server.ServerHandler;
+import com.javisel.aeonspast.utilities.Tags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -26,14 +27,14 @@ public class ItemEngine {
     public static boolean isWeaponRanged(ItemStack stack) {
 
 
-        if (!isWeapon(stack.getItem())) {
-            return false;
-        }
-
         if (!isItemInitialized(stack)) {
 
             return  false;
         }
+        if (!isWeapon(stack )) {
+            return false;
+        }
+
 
 
         return  getAeonsPastTag(stack).getBoolean(IS_RANGED);
@@ -46,9 +47,17 @@ public class ItemEngine {
     public static boolean isRPGItem(ItemStack stack) {
 
 
-        return  isArmor(stack.getItem()) || isWeapon(stack.getItem());
+        return  isArmor(stack ) || isWeapon(stack ) || isTrinket(stack);
     }
 
+
+    public static boolean isTrinket(ItemStack stack) {
+
+
+
+
+        return  stack.is(Tags.TRINKETS);
+    }
 
 
     public static boolean isItemInitialized(ItemStack stack) {
@@ -96,17 +105,23 @@ public class ItemEngine {
             getAeonsPastTag(stack);
 
 
-            if (isWeapon(stack.getItem())) {
+            if (isWeapon(stack )) {
 
-                GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack.getItem()).loadToWeapon(entity, stack);
+                ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack.getItem()).loadToWeapon(entity, stack);
 
             }
 
-          else  if (isArmor(stack.getItem())) {
+          else  if (isArmor(stack )) {
 
-                GameEventHandler.ARMOR_DATA_LOADER.getArmorData(stack.getItem()).loadToArmor(entity, stack);
+                ServerHandler.ARMOR_DATA_LOADER.getArmorData(stack.getItem()).loadToArmor(entity, stack);
 
 
+            }
+
+          else if (isTrinket(stack)) {
+
+
+              //TODO Trinket stuff
             }
 
 
@@ -116,47 +131,21 @@ public class ItemEngine {
     }
 
 
-    public static boolean isWeapon(Item item) {
-
-        ResourceLocation location = item.getRegistryName();
+    public static boolean isWeapon(ItemStack stack) {
 
 
-        for (ResourceLocation test : GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponStatisticsMap().keySet()) {
+        return  stack.is(Tags.WEAPONS);
 
-
-            if (test.equals(location)) {
-
-
-                return true;
-            }
-
-
-        }
-
-
-        return false;
     }
 
-    public static boolean isArmor(Item item) {
-
-        ResourceLocation location = item.getRegistryName();
+     public static boolean isArmor(ItemStack stack) {
 
 
-        for (ResourceLocation test : GameEventHandler.ARMOR_DATA_LOADER.getArmorStatisticsMap().keySet()) {
+
+             return  stack.is(Tags.ARMOR);
 
 
-            if (test.equals(location)) {
-
-
-                return true;
-            }
-
-
-        }
-
-
-        return false;
-    }
+     }
     public static ArrayList<ItemProperty> getItemProperties(ItemStack stack) {
 
         ArrayList<ItemProperty> properties = new ArrayList<>();

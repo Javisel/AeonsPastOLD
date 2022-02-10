@@ -5,9 +5,7 @@ import com.javisel.aeonspast.common.spell.NoneSpell;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.classspell.WarriorClassSpell;
 import com.javisel.aeonspast.common.spell.spells.*;
-import com.javisel.aeonspast.common.spell.weaponspell.Cleave;
-import com.javisel.aeonspast.common.spell.weaponspell.DoubleStrike;
-import com.javisel.aeonspast.common.spell.weaponspell.Uppercut;
+import com.javisel.aeonspast.common.spell.weaponspell.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -28,6 +26,9 @@ public class SpellRegistration {
     public static final RegistryObject<Spell> CLEAVE = SPELLS.register("cleave", () -> new Cleave());
     public static final RegistryObject<Spell> UPPERCUT = SPELLS.register("uppercut", () -> new Uppercut());
     public static final RegistryObject<Spell> DOUBLE_STRIKE = SPELLS.register("double_strike", () -> new DoubleStrike());
+    public static final RegistryObject<Spell> VENGEFUL_ASSAULT = SPELLS.register("vengeful_assault", () -> new VengefulAssault());
+    public static final RegistryObject<Spell> ARROW_STORM = SPELLS.register("arrow_storm", () -> new ArrowStorm());
+    public static final RegistryObject<Spell> TRUE_STRIKE = SPELLS.register("true_strike", () -> new TrueStrike());
 
 
 }

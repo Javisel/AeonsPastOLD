@@ -31,8 +31,9 @@
 
 
 
-  "rarity": "COMMON",
-  "properties": [
 
+  "properties": [
+    "aeonspast:epic",
+    "aeonspast:fireproof"
    ]
 }

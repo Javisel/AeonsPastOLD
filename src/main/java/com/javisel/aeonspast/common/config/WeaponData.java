@@ -24,7 +24,7 @@ import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class WeaponData {
 
-    public static final WeaponData UNARMED = new WeaponData(WeaponType.UNARMED,new StatisticPair(5,5),new StatisticPair(1,1),new StatisticPair(5,5),new StatisticPair(2,2), new StatisticPair(0,0), new StatisticPair(0,0), new StatisticPair(4,4), new ArrayList<>(),new ArrayList<>(),false);
+    public static final WeaponData UNARMED = new WeaponData(WeaponType.UNARMED,new StatisticPair(5,5),new StatisticPair(1,1),new StatisticPair(5,5),new StatisticPair(2,2), new StatisticPair(0,0),   new StatisticPair(4,4), new ArrayList<>(),new ArrayList<>(),false);
 
     public static final String WEAPON_MOD_ID = "4703e862-a7ae-4697-aeea-f58ac8697e10";
 
@@ -39,15 +39,19 @@ public class WeaponData {
     private final StatisticPair critical_chance;
     private final StatisticPair critical_damage;
     private final StatisticPair durability;
-    private final StatisticPair enchantability;
-    private final StatisticPair range;
+     private final StatisticPair range;
      private final List<String> properties = new ArrayList<>();
     private final List<String> spells = new ArrayList<>();
     private final boolean is_ranged;
     private StatisticPair dps;
 
 
-    public WeaponData(WeaponType item_type,   StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair enchantability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged) {
+
+
+
+
+
+    public WeaponData(WeaponType item_type,   StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged) {
         this.weapon_type = item_type;
 
         this.attack_damage = attack_damage;
@@ -55,9 +59,11 @@ public class WeaponData {
         this.critical_chance = critical_chance;
         this.critical_damage = critical_damage;
         this.durability = durability;
-        this.enchantability = enchantability;
-        this.range = range;
+         this.range = range;
          this.is_ranged = is_ranged;
+
+
+
 
 
         for (String property : properties) {
@@ -80,11 +86,92 @@ public class WeaponData {
 
         CompoundTag tag = new CompoundTag();
 
+        CompoundTag stats = new CompoundTag();
+        stats.put(WEAPON_POWER,attack_damage.toNBT());
+        stats.put(ATTACK_SPEED,attack_speed.toNBT());
+        stats.put(CRITICAL_CHANCE,critical_chance.toNBT());
+        stats.put(CRITICAL_DAMAGE,critical_damage.toNBT());
+        stats.put(DURABILITY,durability.toNBT());
+         stats.put(RANGE,range.toNBT());
+
+
+         tag.put(STATISTICS,stats);
+        CompoundTag propertyTag = new CompoundTag();
+
+
+        tag.putString(WEAPON_TYPE,weapon_type.toString());
+
+        for (String property : properties) {
+
+
+            propertyTag.putString(property,"");
+
+
+
+
+        }
+        tag.put(ITEM_PROPERTIES,propertyTag);
+
+
+        CompoundTag spellTag = new CompoundTag();
+        for (String spell :spells) {
+
+            propertyTag.putString(spell,"");
+
+
+
+
+
+
+        }
+        tag.put(SPELL,spellTag);
+
+
+
+
+
+        tag.putBoolean(IS_RANGED,is_ranged);
+
 
         return tag;
+        
+    }
+    
+    public static WeaponData fromNBT(CompoundTag tag) {
+
+        CompoundTag statTag = tag.getCompound(STATISTICS);
+        StatisticPair weapon_power = StatisticPair.fromNBT(statTag.getCompound(WEAPON_POWER));
+        StatisticPair attacks_speed = StatisticPair.fromNBT(statTag.getCompound(ATTACK_SPEED));
+        StatisticPair crit_chance = StatisticPair.fromNBT(statTag.getCompound(CRITICAL_CHANCE));
+        StatisticPair crit_dmg = StatisticPair.fromNBT(statTag.getCompound(CRITICAL_DAMAGE));
+        StatisticPair durability = StatisticPair.fromNBT(statTag.getCompound(DURABILITY));
+        StatisticPair range = StatisticPair.fromNBT(statTag.getCompound(RANGE));
+
+        ArrayList<String> props = new ArrayList<>(tag.getCompound(ITEM_PROPERTIES).getAllKeys());
+
+        ArrayList<String> spells = new ArrayList<>(tag.getCompound(SPELL).getAllKeys());
+
+
+        WeaponType type =WeaponType.valueOf(tag.getString(WEAPON_TYPE));
+        WeaponData weaponData = new WeaponData(type,weapon_power,attacks_speed,crit_chance,crit_dmg,durability,range,props,spells,tag.getBoolean(IS_RANGED));
+
+        return  weaponData;
+
+
+
 
 
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     public void loadToWeapon(@Nullable LivingEntity entity, ItemStack stack) {
 
@@ -159,10 +246,7 @@ public class WeaponData {
         return durability;
     }
 
-    public StatisticPair getEnchantability() {
-        return enchantability;
-    }
-
+ 
     public StatisticPair getRange() {
         return range;
     }

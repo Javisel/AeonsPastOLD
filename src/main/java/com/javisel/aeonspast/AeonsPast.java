@@ -5,13 +5,16 @@ import com.javisel.aeonspast.client.OverlayRegistration;
 import com.javisel.aeonspast.client.main.ClientProxy;
 import com.javisel.aeonspast.common.items.AeonsPastItemGroup;
 import com.javisel.aeonspast.common.registration.*;
+import com.javisel.aeonspast.server.ServerHandler;
 import com.javisel.aeonspast.utilities.StringKeys;
+import com.javisel.aeonspast.utilities.Tags;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -48,12 +51,21 @@ public class AeonsPast {
         // Register the enqueueIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverSetup);
+
         MinecraftForge.EVENT_BUS.register(new GameEventHandler());
+        MinecraftForge.EVENT_BUS.register(new ServerHandler());
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
 
+    private void serverSetup(final FMLDedicatedServerSetupEvent setupEvent) {
+
+
+
+
+    }
     private void commonSetup(final FMLCommonSetupEvent event) {
 
 

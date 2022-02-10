@@ -7,8 +7,8 @@
 
       "attribute": "minecraft:generic.max_health",
       "operation": "ADDITION",
-      "min": 28,
-      "max": 36
+      "min": 32,
+      "max": 46
 
     },
     {
@@ -16,8 +16,8 @@
       "attribute": "aeonspast:armor",
       "operation": "ADDITION",
 
-      "min": 8,
-      "max": 14
+      "min": 10,
+      "max": 21
 
     }
 
@@ -31,8 +31,7 @@
 
 
 
-  "rarity": "COMMON",
-  "properties": [
-
+   "properties": [
+     "aeonspast:rare"
   ]
 }

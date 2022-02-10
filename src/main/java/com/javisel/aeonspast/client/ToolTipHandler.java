@@ -2,7 +2,7 @@ package com.javisel.aeonspast.client;
 
 
 import com.google.common.collect.Multimap;
-import com.javisel.aeonspast.GameEventHandler;
+import com.javisel.aeonspast.client.main.ClientProxy;
 import com.javisel.aeonspast.common.config.ArmorData;
 import com.javisel.aeonspast.common.config.AttributeStatisticsPair;
 import com.javisel.aeonspast.common.config.StatisticPair;
@@ -14,6 +14,7 @@ import com.javisel.aeonspast.common.networking.stacksyncmessage.StackSyncMessage
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.server.ServerHandler;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -37,8 +38,6 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
-import org.antlr.v4.runtime.misc.MultiMap;
-import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -46,8 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
@@ -78,10 +75,10 @@ public class ToolTipHandler {
                 addPropertyToolTips(stack, tooltips);
 
 
-                if (ItemEngine.isWeapon(item)) {
+                if (ItemEngine.isWeapon(stack) ){
                     adjustWeaponTooltip(stack, tooltips);
 
-                } else if (ItemEngine.isArmor(item)) {
+                } else if (ItemEngine.isArmor(stack)) {
 
 
                     adjustArmorTooltip(stack, tooltips);
@@ -173,7 +170,7 @@ public class ToolTipHandler {
     public static void adjustWeaponTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
 
-        WeaponData weaponData = GameEventHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack.getItem());
+        WeaponData weaponData = ClientProxy.weaponStatisticsMap.get(stack.getItem().getRegistryName());
 
 
         Multimap<Attribute, AttributeModifier> attributeMods = stack.getAttributeModifiers(EquipmentSlot.MAINHAND);
@@ -244,7 +241,7 @@ public class ToolTipHandler {
 
     public static void adjustArmorTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
-        ArmorData armorData = GameEventHandler.ARMOR_DATA_LOADER.getArmorData(stack.getItem());
+        ArmorData armorData =  ClientProxy.armorStatisticsMap.get(stack.getItem().getRegistryName());
 
 
         Multimap<Attribute, AttributeModifier> attributeMods = stack.getAttributeModifiers(armorData.getEquipmentSlot());
