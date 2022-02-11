@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.enums;
+package com.javisel.aeonspast.common.items;
 
 import com.javisel.aeonspast.utilities.StringKeys;
 

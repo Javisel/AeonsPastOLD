@@ -18,9 +18,8 @@ import static com.javisel.aeonspast.utilities.StringKeys.*;
 public class EntityData implements IEntityData {
 
 
-    CompoundTag storedData = new CompoundTag();
-    int ticks = 0;
-    int level = 0;
+     int ticks = 0;
+    int level = 1;
 
     HashMap<Spell, SpellStack> spellStackHashMap;
     HashMap<Resource, Float> resourceMap;
@@ -28,15 +27,9 @@ public class EntityData implements IEntityData {
 
 
     @Override
-    public CompoundTag getStoredData() {
-        return storedData;
-    }
-
-    @Override
     public CompoundTag writeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.put(StringKeys.STORED_DATA, storedData);
-        tag.putInt(StringKeys.LEVEL, level);
+         tag.putInt(StringKeys.LEVEL, level);
 
 
         if (activeSpells != null) {
@@ -97,9 +90,7 @@ public class EntityData implements IEntityData {
     public void readNBT(CompoundTag tag) {
 
 
-        if (tag.contains(StringKeys.STORED_DATA)) {
-            storedData = tag.getCompound(StringKeys.STORED_DATA);
-        }
+
         level = tag.getInt(StringKeys.LEVEL);
 
 
@@ -335,6 +326,21 @@ public class EntityData implements IEntityData {
 
 
     }
+
+    @Override
+    public void removeSpellStack(Spell spell) {
+
+
+        spellStackHashMap.remove(spell);
+
+
+    }
+
+
+
+
+
+
 
 }
 

@@ -1,5 +1,6 @@
-package com.javisel.aeonspast.common.entities;
+package com.javisel.aeonspast.common.config;
 
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.entities.entitytraits.EntityTrait;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -98,6 +99,7 @@ public class EntityStatisticalData {
 
         IMobData mobData = Utilities.getMobData((Mob) entity);
 
+        IEntityData entityData = Utilities.getEntityData(entity);
         for (String key : entity_traits) {
 
 
@@ -108,6 +110,7 @@ public class EntityStatisticalData {
 
         }
 
+        mobData.setExperienceReward((float) (base_experience + (experience_scaling * (1-entityData.getLevel()))));
 
 
 

@@ -45,8 +45,6 @@ public class ServerDataMessageHandler {
 
             ArmorData data = ArmorData.fromNBT(mes.armorDataTag.getCompound(key));
 
-            System.out.println("Key: " + key + "Value: " + data.getStatistics().get(0).getAverage());
-
 
                 armorDataBuilder.put(location,data);
 

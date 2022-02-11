@@ -1,6 +1,7 @@
 {
 
   "weapon_type": "CROSSBOW",
+  "rarity": "COMMON",
 
   "attack_damage": {
     "min": 33.8,
@@ -38,8 +39,7 @@
 
   "secondarydata" : [],
   "properties": [
-    "aeonspast:common"
-  ],
+   ],
   "spells": [
     "aeonspast:cleave",
     "aeonspast:uppercut",

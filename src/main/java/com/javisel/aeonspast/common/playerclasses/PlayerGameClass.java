@@ -11,6 +11,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
+
 public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistryEntry<PlayerGameClass> {
 
 
@@ -43,12 +45,15 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
     public void activateOnPlayer(Player player) {
 
 
+            IPlayerData playerData = Utilities.getPlayerData(player);
+            playerData.setActiveGameClass(this);
+
         for (AttributeContainer container : getClassData().getAttributeModifiers(castResource.get())) {
 
 
-            if (player.getAttribute(container.getAttribute()).hasModifier(container.getModifier())) {
+
                 player.getAttribute(container.getAttribute()).removeModifier(container.getModifier());
-            }
+
 
              player.getAttribute(container.getAttribute()).addPermanentModifier(container.getModifier());
 
@@ -64,6 +69,8 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
 
     }
+
+
 
 
     public void deActivateOnPlayer(Player player) {
@@ -89,6 +96,33 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
 
     }
+
+
+    public void onLevelUp(Player player) {
+
+
+        ClassData classData = getClassData();
+
+
+        IPlayerData playerData = Utilities.getPlayerData(player);
+        int level  =playerData.getOrCreatePlayerClass(this).getLevel();
+      ArrayList<AttributeContainer> containers= classData.getLevelModifiers(getCastResource(),level);
+
+
+
+        for (AttributeContainer container : containers) {
+
+
+            player.getAttribute(container.getAttribute()).removeModifier(container.getModifier().getId());
+            player.getAttribute(container.getAttribute()).addPermanentModifier(container.getModifier());
+
+
+        }
+
+
+    }
+
+
 
 
     public Resource getCastResource() {

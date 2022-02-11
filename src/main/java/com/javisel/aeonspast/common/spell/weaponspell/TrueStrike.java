@@ -5,7 +5,7 @@ import com.javisel.aeonspast.common.spell.SpellRank;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.world.entity.LivingEntity;
 
-public class TrueStrike  extends Spell {
+public class TrueStrike  extends WeaponSpell {
     public TrueStrike( ) {
         super(60, 21, SpellRank.WEAPON_SPELL);
     }

@@ -10,4 +10,7 @@ public interface IMobData {
 
     ArrayList<EntityTrait> getEntityTraits();
 
+    float getExperienceReward();
+
+    void setExperienceReward(float experienceReward);
 }

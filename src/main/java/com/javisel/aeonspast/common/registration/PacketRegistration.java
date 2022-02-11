@@ -2,6 +2,7 @@ package com.javisel.aeonspast.common.registration;
 
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.networking.abilitymessage.AbilityMessage;
+import com.javisel.aeonspast.common.networking.abilitymessage.WeaponAbilityMessage;
 import com.javisel.aeonspast.common.networking.playercapabilitiesmessage.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.networking.resourcemessage.ResourceMessage;
 import com.javisel.aeonspast.common.networking.serverdatamessage.ServerDataMessage;
@@ -33,6 +34,7 @@ public class PacketRegistration {
         registerMessage(ResourceMessage.class, ResourceMessage::encode, ResourceMessage::decode, ResourceMessage.Handler::handle);
         registerMessage(PlayerCapabiltiiesMessage.class, PlayerCapabiltiiesMessage::encode, PlayerCapabiltiiesMessage::decode, PlayerCapabiltiiesMessage.Handler::handle);
         registerMessage(AbilityMessage.class, AbilityMessage::encode, AbilityMessage::decode, AbilityMessage.Handler::handle);
+        registerMessage(WeaponAbilityMessage.class, WeaponAbilityMessage::encode, WeaponAbilityMessage::decode, WeaponAbilityMessage.Handler::handle);
         registerMessage(StackSyncMessage.class, StackSyncMessage::encode, StackSyncMessage::decode, StackSyncMessage.Handler::handle);
         registerMessage(ServerDataMessage.class, ServerDataMessage::encode, ServerDataMessage::decode, ServerDataMessage.Handler::handle);
 

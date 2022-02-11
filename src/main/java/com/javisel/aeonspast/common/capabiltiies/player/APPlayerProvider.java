@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class APPlayerProvider implements ICapabilitySerializable<CompoundTag> {
 
 
-    private final APPlayerData apPlayerData = new APPlayerData();
+    private final PlayerData apPlayerData = new PlayerData();
     private final LazyOptional<IPlayerData> apOptional = LazyOptional.of(() -> apPlayerData);
 
 

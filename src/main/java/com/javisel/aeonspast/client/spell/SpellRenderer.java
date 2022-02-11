@@ -86,6 +86,9 @@ public class SpellRenderer {
         IPlayerData playerData = Utilities.getPlayerData(player);
         IEntityData entityData = Utilities.getEntityData(player);
 
+        if (spellStack==null) {
+            return;
+        }
         Spell spell = spellStack.getSpell();
 
         Tesselator tesselator = Tesselator.getInstance();
@@ -211,7 +214,7 @@ public class SpellRenderer {
             }
 
 
-            if (spellStack.getCooldown() <= 5) {
+            if (spellStack.getCooldown() <= 2) {
 
 
                 z++;
@@ -275,19 +278,6 @@ public class SpellRenderer {
 
     }
 
-
-    public void renderModelLists(BakedModel bakedModel, SpellStack spellStack, int x, int y, PoseStack poseStack, VertexConsumer vertexConsumer) {
-        Random random = new Random();
-        long i = 42L;
-
-        for (Direction direction : Direction.values()) {
-            random.setSeed(42L);
-            this.renderQuadList(poseStack, vertexConsumer, bakedModel.getQuads(null, direction, random), spellStack, x, y);
-        }
-
-        random.setSeed(42L);
-        this.renderQuadList(poseStack, vertexConsumer, bakedModel.getQuads(null, null, random), spellStack, x, y);
-    }
 
 
     public void renderQuadList(PoseStack poseStack, VertexConsumer vertexConsumer, List<BakedQuad> p_115165_, SpellStack spellStack, int x, int y) {

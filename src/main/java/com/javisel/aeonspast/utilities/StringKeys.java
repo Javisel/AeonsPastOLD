@@ -75,5 +75,5 @@ public class StringKeys {
     public static final String IS_RANGED = "is_ranged";
 
     public static final String WEAPON_POWER = "weapon_power";
-
+    public static final String RARITY = "rarity";
 }

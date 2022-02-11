@@ -13,7 +13,7 @@ import java.util.HashMap;
 import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 
-public class APPlayerData implements IPlayerData {
+public class PlayerData implements IPlayerData {
 
 
     HashMap<PlayerGameClass, ClassInstance> playerGameClasses = new HashMap<>();
@@ -124,7 +124,9 @@ public class APPlayerData implements IPlayerData {
 
             activeWeaponSpell = Spell.getSpellByResourceLocation(new ResourceLocation(key));
 
-
+                if (activeWeaponSpell ==Spell.getDefaultSpell()) {
+                    activeWeaponSpell=null;
+                }
         }
 
 

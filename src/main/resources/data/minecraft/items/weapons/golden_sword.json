@@ -1,6 +1,7 @@
 {
 
   "weapon_type": "SWORD",
+  "rarity": "COMMON",
 
   "attack_damage": {
     "min": 6,
@@ -37,8 +38,7 @@
 
   "secondarydata" : [],
   "properties": [
-    "aeonspast:common",
-    "aeonspast:gilded_weapon",
+     "aeonspast:gilded_weapon",
     "aeonspast:versatile",
     "aeonspast:sweeping",
     "aeonspast:kinetic",

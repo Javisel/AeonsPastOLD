@@ -1,6 +1,7 @@
 {
 
   "weapon_type": "BOW",
+  "rarity": "COMMON",
 
   "attack_damage": {
     "min": 5,
@@ -36,9 +37,8 @@
   "is_ranged" : "true",
 
 
-  "secondarydata" : [],
+   "secondarydata" : [],
   "properties": [
-    "aeonspast:common"
 
   ],
   "spells": [

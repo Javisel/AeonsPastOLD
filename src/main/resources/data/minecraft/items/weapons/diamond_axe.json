@@ -2,6 +2,7 @@
 
 {
   "weapon_type": "AXE",
+  "rarity": "RARE",
 
   "attack_damage": {
     "min": 27.4,
@@ -38,8 +39,7 @@
 
   "secondarydata" : [],
   "properties": [
-    "aeonspast:rare",
-    "aeonspast:versatile",
+     "aeonspast:versatile",
     "aeonspast:brutal"
   ],
   "spells": [

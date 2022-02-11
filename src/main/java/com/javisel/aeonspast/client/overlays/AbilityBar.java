@@ -76,41 +76,12 @@ public class AbilityBar implements IIngameOverlay {
         NonNullList<Spell> spellBarList = playerData.getSpellBar().getSpellList();
 
 
-        ItemStack weapon = player.getMainHandItem();
-
-
-
-        if (playerData.getActiveWeaponSpell() !=null) {
-
-
-
-            Spell weaponSpell = playerData.getActiveWeaponSpell();
-
-            SpellStack weaponspelldata = entityData.getSpellStackRaw(weaponSpell);
-
-
-            if (!weaponspelldata.isRecharging()&& !weaponspelldata.isCoolingDown()) {
-                return;
-            }
-
-            RenderUtilities.renderTextureFromSprite(mStack, ABILITY_BAR_TEXTURES, 20, 20, width/2 - 91 - 28, height - 43, zpos, 20, 7, 20, 20);
-
-
-            if (ItemEngine.isItemInitialized(weapon)) {
-
-                if (ItemEngine.getSpellFromItem(weapon) !=null ) {
 
 
 
 
+        renderWeaponSpell(gui,mStack,width/2-91-28,height-43,zpos++);
 
-                }
-
-
-            }
-
-
-        }
 
 
 
@@ -175,6 +146,46 @@ public class AbilityBar implements IIngameOverlay {
 
 
     }
+
+
+
+
+    public void renderWeaponSpell(ForgeIngameGui gui, PoseStack stack, int x, int y, int z) {
+
+
+        Player player = Minecraft.getInstance().player;
+
+        IPlayerData playerData = Utilities.getPlayerData(player);
+
+        IEntityData entityData = Utilities.getEntityData(player);
+        Spell weaponSpell = playerData.getActiveWeaponSpell();
+
+         if (!Spell.isSpellDefault(weaponSpell)) {
+
+
+
+
+
+
+            SpellStack weaponspelldata = entityData.getSpellStackRaw(weaponSpell);
+
+
+
+                RenderUtilities.renderTextureFromSprite(stack, ABILITY_BAR_TEXTURES, 20, 20, x-2, y-2, z, 20, 7, 20, 20);
+
+                ClientProxy.spellRenderer.renderSpellAndSpellInfo(gui,weaponspelldata,stack,x,y,z++);
+
+
+
+
+
+        }
+
+    }
+
+
+
+
 
 
 }

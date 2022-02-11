@@ -13,7 +13,7 @@ public interface IEntityData {
 
     SpellStack getOrCreateSpellStack(Spell spell);
 
-    CompoundTag getStoredData();
+
 
     CompoundTag writeNBT();
 
@@ -38,4 +38,6 @@ public interface IEntityData {
     void addActiveSpell(Spell spell);
 
     void removeActiveSpell(Spell spell);
+
+    void removeSpellStack(Spell spell);
 }

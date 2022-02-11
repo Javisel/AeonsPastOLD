@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.registration;
 
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.enums.TrinketEnums;
+import com.javisel.aeonspast.common.items.TrinketEnums;
 import com.javisel.aeonspast.common.items.BasicSpellStone;
 import com.javisel.aeonspast.common.items.emblem.BasicEmblem;
 import net.minecraft.world.item.Item;

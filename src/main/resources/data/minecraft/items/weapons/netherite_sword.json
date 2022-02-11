@@ -1,6 +1,7 @@
 {
 
   "weapon_type": "SWORD",
+  "rarity": "EPIC",
 
   "attack_damage": {
     "min": 15,

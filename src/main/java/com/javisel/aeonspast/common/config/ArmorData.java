@@ -1,8 +1,8 @@
 package com.javisel.aeonspast.common.config;
 
-import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.items.ArmorType;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
+import com.javisel.aeonspast.common.items.properties.ItemRarity;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -28,13 +27,15 @@ public class ArmorData {
 
 
     private final ArmorType armor_type;
+    private final ItemRarity rarity;
     private final ArrayList<AttributeStatisticsPair> statistics = new ArrayList<>();
     private final List<String> properties = new ArrayList<>();
 
-    public ArmorData(ArmorType item_type) {
+    public ArmorData(ArmorType item_type, ItemRarity rarity) {
 
 
         this.armor_type = item_type;
+        this.rarity = rarity;
     }
 
     public CompoundTag toNBT() {
@@ -43,7 +44,7 @@ public class ArmorData {
 
 
         tag.putString(ARMOR_TYPE,armor_type.toString());
-
+        tag.putString(RARITY,rarity.toString());
 
         CompoundTag stattag = new CompoundTag();
         int i = 0;
@@ -83,7 +84,7 @@ public class ArmorData {
     public static ArmorData fromNBT(CompoundTag tag) {
 
 
-        ArmorData data = new ArmorData(ArmorType.valueOf(tag.getString(ARMOR_TYPE)));
+        ArmorData data = new ArmorData(ArmorType.valueOf(tag.getString(ARMOR_TYPE)), ItemRarity.valueOf(tag.getString(RARITY)));
 
         CompoundTag stats = tag.getCompound(STATISTICS);
 
@@ -93,8 +94,7 @@ public class ArmorData {
             AttributeStatisticsPair pair =  AttributeStatisticsPair.getPairFromNBT(stats.getCompound(key));
 
 
-            System.out.println("Pair Value: " + pair.getAverage());
-            data.statistics.add(pair);
+             data.statistics.add(pair);
 
         }
 

@@ -20,15 +20,6 @@ public class ItemPropertyRegistration {
     public static final DeferredRegister<ItemProperty> ITEM_PROPERTIES = DeferredRegister.create(ItemProperty.class, AeonsPast.MODID);
 
 
-    public static final RegistryObject<ItemProperty> EMBLEM = ITEM_PROPERTIES.register("emblem", () -> new ItemRarity());
-    public static final RegistryObject<ItemProperty> COMMON = ITEM_PROPERTIES.register("common", () -> new ItemRarity());
-    public static final RegistryObject<ItemProperty> RARE = ITEM_PROPERTIES.register("rare", () -> new ItemRarity());
-    public static final RegistryObject<ItemProperty> EPIC = ITEM_PROPERTIES.register("epic", () -> new ItemRarity());
-    public static final RegistryObject<ItemProperty> FABLED = ITEM_PROPERTIES.register("fabled", () -> new ItemRarity());
-    public static final RegistryObject<ItemProperty> LEGENDARY = ITEM_PROPERTIES.register("legendary", () -> new ItemRarity());
-    public static final RegistryObject<ItemProperty> MYTHIC = ITEM_PROPERTIES.register("mythic", () -> new ItemRarity());
-
-
     public static final RegistryObject<ItemProperty> GILDED_WEAPON = ITEM_PROPERTIES.register("gilded_weapon", () -> new com.javisel.aeonspast.common.items.properties.weapon.Gilded());
     public static final RegistryObject<ItemProperty> FIRE_PROOF = ITEM_PROPERTIES.register("fireproof", () -> new FireProof());
     public static final RegistryObject<ItemProperty> SWEEPING = ITEM_PROPERTIES.register("sweeping", () -> new Sweeping());

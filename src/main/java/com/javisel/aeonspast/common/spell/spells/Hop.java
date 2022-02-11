@@ -40,7 +40,7 @@ public class Hop extends Spell {
 
     /*
     @Override
-    public void onEventTrigger(LivingEntity entity, SpellStack stack, Event event) {
+    public void onEventTrigger(LivingEntityMixin entity, SpellStack stack, Event event) {
         super.onEventTrigger(entity, stack, event);
 
 

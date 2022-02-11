@@ -4,9 +4,14 @@ import com.javisel.aeonspast.common.attributes.AttributeContainer;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +21,8 @@ public class ClassData {
 
     public static final String BASE_STATISTICS = "7284a361-5491-45a7-8b40-0480a894079d";
     public static final String LEVEL_BONUS_STATISTICS = "b26e7562-dba6-438d-9f13-207dd29c96e0";
-
+    public static final String BASE_ID = "base_id";
+    public static final String LEVEL_ID = "level_id";
 
     private final double max_health;
     private final double max_health_scaling;
@@ -103,11 +109,57 @@ public class ClassData {
     }
 
 
+    public ArrayList<AttributeContainer> getLevelModifiers(Resource resource, int level) {
+
+        ArrayList<AttributeContainer> attributeContainers = new ArrayList<>();
+
+         attributeContainers.add(AttributeContainer.withUUID(Attributes.MAX_HEALTH, UUID.fromString(LEVEL_BONUS_STATISTICS), max_health_scaling * (level-1), AttributeModifier.Operation.ADDITION));
+         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.HEALTH_REGENERATION.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), health_regeneration_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+         attributeContainers.add(AttributeContainer.withUUID(Attributes.ARMOR, UUID.fromString(LEVEL_BONUS_STATISTICS), armor_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGIC_RESISTANCE.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), magic_resist_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+
+
+        if (resource != null) {
+
+
+
+            attributeContainers.add(AttributeContainer.withUUID(resource.getResourceMaxAttribute().get(), UUID.fromString(LEVEL_BONUS_STATISTICS), max_resource_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+
+
+             attributeContainers.add(AttributeContainer.withUUID(resource.getResourceRegenAttribute().get(), UUID.fromString(LEVEL_BONUS_STATISTICS), resource_regeneration_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+
+        }
+
+
+         attributeContainers.add(AttributeContainer.withUUID(Attributes.MOVEMENT_SPEED, UUID.fromString(LEVEL_BONUS_STATISTICS), movement_speed_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+
+
+        return attributeContainers;
+    }
 
 
 
 
 
+    public void addAttributeToEntity(Player entity, Attribute attribute, double baseValue, double scaleValue) {
+
+
+        double appliedBase = baseValue;
+        double appliedScale = scaleValue;
+
+
+
+
+        entity.getAttribute(attribute).removeModifier(UUID.fromString(BASE_STATISTICS));
+        entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(UUID.fromString(BASE_STATISTICS), BASE_ID, appliedBase, AttributeModifier.Operation.ADDITION));
+        int level = Utilities.getEntityData(entity).getLevel();
+        entity.getAttribute(attribute).removeModifier(UUID.fromString(LEVEL_BONUS_STATISTICS));
+
+        entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(UUID.fromString(LEVEL_BONUS_STATISTICS), LEVEL_ID, appliedScale * (level - 1), AttributeModifier.Operation.ADDITION));
+
+
+
+    }
 
 
 

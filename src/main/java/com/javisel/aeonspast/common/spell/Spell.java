@@ -80,6 +80,14 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         return SpellRegistration.NONE.get();
     }
 
+
+
+    public static boolean isSpellDefault(Spell spell) {
+
+
+        return  spell == null || spell == getDefaultSpell();
+    }
+
     public void onSpellEquipped(LivingEntity entity, SpellStack stack) {
 
         IEntityData data = Utilities.getEntityData(entity);
@@ -359,11 +367,6 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         return spellRank;
     }
 
-    public boolean isEmpty(Spell spell) {
-
-
-        return spell == getDefaultSpell();
-    }
 
     public void onFinishCooldown(LivingEntity entity, SpellStack stack) {
 
@@ -486,4 +489,14 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     }
 
 
+    public void equipWeaponSpell(Player player) {
+
+        IPlayerData playerData = Utilities.getPlayerData(player);
+        IEntityData entityData = Utilities.getEntityData(player);
+
+
+        playerData.setActiveWeaponSpell(this);
+        entityData.getOrCreateSpellStack(this);
+
+    }
 }

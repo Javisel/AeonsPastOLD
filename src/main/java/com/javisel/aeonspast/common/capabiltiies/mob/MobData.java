@@ -7,11 +7,13 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.ArrayList;
 
 import static com.javisel.aeonspast.utilities.StringKeys.ENTITY_TRAITS;
+import static com.javisel.aeonspast.utilities.StringKeys.EXPERIENCE;
 
 public class MobData implements IMobData {
 
     ArrayList<EntityTrait> traits = new ArrayList<>();
 
+    private float experienceReward = 0;
 
     @Override
     public float attackTimer() {
@@ -24,6 +26,9 @@ public class MobData implements IMobData {
     }
 
     public void fromNBT(CompoundTag tag) {
+
+
+        experienceReward=tag.getFloat(EXPERIENCE);
 
 
         if (tag.contains(ENTITY_TRAITS)) {
@@ -58,7 +63,7 @@ public class MobData implements IMobData {
 
         CompoundTag tag = new CompoundTag();
 
-
+        tag.putFloat(EXPERIENCE,experienceReward);
         if (!traits.isEmpty()) {
 
 
@@ -82,4 +87,13 @@ public class MobData implements IMobData {
     }
 
 
+    @Override
+    public float getExperienceReward() {
+        return experienceReward;
+    }
+
+    @Override
+    public void setExperienceReward(float experienceReward) {
+        this.experienceReward = experienceReward;
+    }
 }

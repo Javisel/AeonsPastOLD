@@ -1,6 +1,7 @@
 {
 
   "weapon_type": "AXE",
+  "rarity": "EPIC",
 
   "attack_damage": {
     "min": 33.8,
@@ -37,8 +38,7 @@
 
   "secondarydata" : [],
   "properties": [
-    "aeonspast:epic",
-    "aeonspast:versatile",
+     "aeonspast:versatile",
     "aeonspast:brutal",
     "aeonspast:fireproof"
   ],

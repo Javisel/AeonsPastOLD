@@ -3,6 +3,7 @@ package com.javisel.aeonspast.client;
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.networking.abilitymessage.AbilityMessage;
+import com.javisel.aeonspast.common.networking.abilitymessage.WeaponAbilityMessage;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.Utilities;
@@ -29,6 +30,7 @@ public class InputHandler {
     public static final KeyMapping SPELL_2 = new KeyMapping("keybinding.aeonspast.spell_2.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_B, AeonsPast.MODID);
     public static final KeyMapping SPELL_3 = new KeyMapping("keybinding.aeonspast.spell_3.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_N, AeonsPast.MODID);
     public static final KeyMapping SPELL_4 = new KeyMapping("keybinding.aeonspast.spell_4.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, AeonsPast.MODID);
+    public static final KeyMapping WEAPON_SPELL = new KeyMapping("keybinding.aeonspast.weapon_spell.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, AeonsPast.MODID);
 
 
     public static void registerKeyBindings() {
@@ -38,6 +40,7 @@ public class InputHandler {
         ClientRegistry.registerKeyBinding(SPELL_2);
         ClientRegistry.registerKeyBinding(SPELL_3);
         ClientRegistry.registerKeyBinding(SPELL_4);
+        ClientRegistry.registerKeyBinding(WEAPON_SPELL);
 
 
     }
@@ -71,6 +74,13 @@ public class InputHandler {
 
         }
 
+        if (WEAPON_SPELL.isDown()) {
+
+             attemptWeaponCast();
+
+
+        }
+
     }
 
 
@@ -87,20 +97,17 @@ public class InputHandler {
 
         if (slot > playerData.getSpellBar().getSpellList().size()) {
 
-            System.out.println("This slot doesn't exist!");
-            return;
+             return;
         }
 
         Spell spell = playerData.getSpellBar().getSpellList().get(slot);
 
 
-        if (!spell.isEmpty(spell)) {
+        if (!Spell.isSpellDefault(spell)) {
 
-            System.out.println("Spell exists!");
 
             if (spell.attemptCast(player, Utilities.getEntityData(player).getSpellStackRaw(spell))) {
 
-                System.out.println("Passed client check!");
 
                 PacketRegistration.INSTANCE.sendTo(new AbilityMessage(slot), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);
 
@@ -113,5 +120,36 @@ public class InputHandler {
 
     }
 
+    public static void attemptWeaponCast() {
 
+
+        Minecraft minecraft = Minecraft.getInstance();
+
+        Player player = minecraft.player;
+
+
+        IPlayerData playerData = Utilities.getPlayerData(player);
+
+
+
+
+        Spell spell = playerData.getActiveWeaponSpell();
+
+
+        if (!Spell.isSpellDefault(spell)) {
+
+
+            if (spell.attemptCast(player, Utilities.getEntityData(player).getSpellStackRaw(spell))) {
+
+
+                PacketRegistration.INSTANCE.sendTo(new WeaponAbilityMessage(), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);
+
+
+            }
+
+
+        }
+
+
+    }
 }

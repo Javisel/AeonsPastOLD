@@ -1,9 +1,9 @@
 package com.javisel.aeonspast.common.config;
 
 import com.javisel.aeonspast.common.items.ItemEngine;
-import com.javisel.aeonspast.common.items.ItemType;
 import com.javisel.aeonspast.common.items.WeaponType;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
+import com.javisel.aeonspast.common.items.properties.ItemRarity;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +24,7 @@ import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class WeaponData {
 
-    public static final WeaponData UNARMED = new WeaponData(WeaponType.UNARMED,new StatisticPair(5,5),new StatisticPair(1,1),new StatisticPair(5,5),new StatisticPair(2,2), new StatisticPair(0,0),   new StatisticPair(4,4), new ArrayList<>(),new ArrayList<>(),false);
+    public static final WeaponData UNARMED = new WeaponData(WeaponType.UNARMED,new StatisticPair(5,5),new StatisticPair(1,1),new StatisticPair(5,5),new StatisticPair(2,2), new StatisticPair(0,0),   new StatisticPair(4,4), new ArrayList<>(),new ArrayList<>(),false, ItemRarity.COMMON);
 
     public static final String WEAPON_MOD_ID = "4703e862-a7ae-4697-aeea-f58ac8697e10";
 
@@ -43,6 +43,7 @@ public class WeaponData {
      private final List<String> properties = new ArrayList<>();
     private final List<String> spells = new ArrayList<>();
     private final boolean is_ranged;
+    private final ItemRarity rarity;
     private StatisticPair dps;
 
 
@@ -51,7 +52,7 @@ public class WeaponData {
 
 
 
-    public WeaponData(WeaponType item_type,   StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged) {
+    public WeaponData(WeaponType item_type, StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged, ItemRarity item_rarity) {
         this.weapon_type = item_type;
 
         this.attack_damage = attack_damage;
@@ -61,9 +62,7 @@ public class WeaponData {
         this.durability = durability;
          this.range = range;
          this.is_ranged = is_ranged;
-
-
-
+        this.rarity = item_rarity;
 
 
         for (String property : properties) {
@@ -96,6 +95,7 @@ public class WeaponData {
 
 
          tag.put(STATISTICS,stats);
+         tag.putString("rarity", rarity.toString());
         CompoundTag propertyTag = new CompoundTag();
 
 
@@ -152,8 +152,11 @@ public class WeaponData {
         ArrayList<String> spells = new ArrayList<>(tag.getCompound(SPELL).getAllKeys());
 
 
+        ItemRarity rarity = ItemRarity.valueOf(tag.getString("rarity"));
+
+
         WeaponType type =WeaponType.valueOf(tag.getString(WEAPON_TYPE));
-        WeaponData weaponData = new WeaponData(type,weapon_power,attacks_speed,crit_chance,crit_dmg,durability,range,props,spells,tag.getBoolean(IS_RANGED));
+        WeaponData weaponData = new WeaponData(type,weapon_power,attacks_speed,crit_chance,crit_dmg,durability,range,props,spells,tag.getBoolean(IS_RANGED), rarity);
 
         return  weaponData;
 

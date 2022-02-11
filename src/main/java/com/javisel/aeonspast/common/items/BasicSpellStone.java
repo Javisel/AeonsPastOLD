@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.items;
 
-import com.javisel.aeonspast.common.enums.TrinketEnums;
 import com.javisel.aeonspast.common.spell.Spell;
 import net.minecraftforge.registries.RegistryObject;
 

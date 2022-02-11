@@ -7,7 +7,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public class DoubleStrike extends Spell {
+public class DoubleStrike extends WeaponSpell {
     public DoubleStrike() {
         super(60, 25, SpellRank.WEAPON_SPELL);
     }

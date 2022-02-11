@@ -2,7 +2,7 @@ package com.javisel.aeonspast.common.items.emblem;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.enums.TrinketEnums;
+import com.javisel.aeonspast.common.items.TrinketEnums;
 import com.javisel.aeonspast.common.items.TrinketItem;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.spell.Spell;
@@ -38,11 +38,11 @@ public class BasicEmblem extends TrinketItem {
 
             Player player = (Player) slotContext.entity();
 
+
             IPlayerData playerData = Utilities.getPlayerData(player);
             IEntityData entityData = Utilities.getEntityData(player);
 
-
-            entityData.getActiveSpells().add(super.getSpell(player, stack).get());
+             entityData.getActiveSpells().add(super.getSpell(player, stack).get());
             playerData.getSpellBar().getSpellList().set(0, super.getSpell(player, stack).get());
             getGameClass().get().activateOnPlayer(player);
 

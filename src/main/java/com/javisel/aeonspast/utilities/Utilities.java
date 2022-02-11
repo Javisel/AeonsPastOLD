@@ -6,7 +6,7 @@ import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataCapability;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerCapability;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.enums.TrinketEnums;
+import com.javisel.aeonspast.common.items.TrinketEnums;
 import com.javisel.aeonspast.common.networking.playercapabilitiesmessage.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.networking.resourcemessage.ResourceMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;

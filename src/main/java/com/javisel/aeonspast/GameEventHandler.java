@@ -3,15 +3,16 @@ package com.javisel.aeonspast;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityProvider;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.capabiltiies.player.PlayerData;
 import com.javisel.aeonspast.common.combat.CombatEngine;
 import com.javisel.aeonspast.common.combat.CombatInstance;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.combat.damagesource.VanillaAPDamageSourceMap;
-import com.javisel.aeonspast.common.entities.EntityStatisticalData;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -19,7 +20,6 @@ import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.common.spell.SpellState;
-import com.javisel.aeonspast.server.ServerHandler;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -27,12 +27,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -40,9 +41,7 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -65,18 +64,19 @@ public class GameEventHandler {
 
         Player player = event.getPlayer();
 
-        if (!(event.getTarget() instanceof LivingEntity)) {
+        if (!(event.getTarget() instanceof net.minecraft.world.entity.LivingEntity)) {
             return;
         }
         float f2 = player.getAttackStrengthScale(0.5F);
-        float check = 1 * (0.2F + f2 * f2 * 0.8F);
+         float check = 1 * (0.2F + f2 * f2 * 0.8F);
 
         if (check != 1.0) {
 
             return;
         }
+        System.out.println("Strength: " + player.attackStrengthTicker);
 
-        LivingEntity victim = (LivingEntity) event.getTarget();
+        net.minecraft.world.entity.LivingEntity victim = (net.minecraft.world.entity.LivingEntity) event.getTarget();
 
         CombatInstance combatInstance = new CombatInstance(player, victim);
 
@@ -94,7 +94,7 @@ public class GameEventHandler {
     public static void attackEntityEvent(LivingAttackEvent event) {
 
 
-        LivingEntity victim = event.getEntityLiving();
+        net.minecraft.world.entity.LivingEntity victim = event.getEntityLiving();
         DamageSource source = event.getSource();
 
         if (victim.getLevel().isClientSide) {
@@ -110,7 +110,7 @@ public class GameEventHandler {
             if (source instanceof IndirectEntityDamageSource) {
 
                 IndirectEntityDamageSource indirectSource = (IndirectEntityDamageSource) source;
-                LivingEntity livingEntity = (LivingEntity) source.getEntity();
+                net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) source.getEntity();
 
                 if (indirectSource.getEntity() != null) {
 
@@ -145,10 +145,10 @@ public class GameEventHandler {
                 }
 
 
-            } else if (source.getEntity() != null && source.getEntity() instanceof LivingEntity) {
+            } else if (source.getEntity() != null && source.getEntity() instanceof net.minecraft.world.entity.LivingEntity) {
 
 
-                LivingEntity livingEntity = (LivingEntity) source.getEntity();
+                net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) source.getEntity();
                 CombatInstance combatInstance = new CombatInstance(livingEntity, victim);
 
 
@@ -226,10 +226,10 @@ public class GameEventHandler {
 
                 }
 
-                LivingEntity attacker = null;
+                net.minecraft.world.entity.LivingEntity attacker = null;
                 if (source.getEntity() != null) {
 
-                    attacker = (LivingEntity) source.getEntity();
+                    attacker = (net.minecraft.world.entity.LivingEntity) source.getEntity();
 
 
                     Object device = instance.damageDevice;
@@ -320,7 +320,7 @@ public class GameEventHandler {
     public static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
 
 
-        if (event.getObject() instanceof LivingEntity) {
+        if (event.getObject() instanceof net.minecraft.world.entity.LivingEntity) {
 
             EntityProvider provider = new EntityProvider();
             event.addCapability(new ResourceLocation(AeonsPast.MODID, "entitydata"), provider);
@@ -349,73 +349,11 @@ public class GameEventHandler {
     }
 
 
-    @SubscribeEvent
-    public static void attemptWeaponCast(PlayerInteractEvent.RightClickItem event) {
 
 
-        ItemStack stack = event.getItemStack();
-
-        if (!event.getPlayer().isCrouching()) {
-            return;
-        }
-        if (ItemEngine.isWeapon(event.getItemStack())) {
-
-            if (ItemEngine.isItemInitialized(stack)) {
 
 
-                Spell spell = ItemEngine.getSpellFromItem(stack);
-                Player player = event.getPlayer();
-                IPlayerData playerData = Utilities.getPlayerData(player);
-                IEntityData entityData = Utilities.getEntityData(player);
-                Spell attunedWeaponSpell = playerData.getActiveWeaponSpell();
-
-                SpellStack attunedWeaponData = entityData.getSpellStackRaw(attunedWeaponSpell);
-
-
-                boolean cast = true;
-                if (attunedWeaponData == null) {
-
-
-                    playerData.setActiveWeaponSpell(spell);
-                    entityData.getOrCreateSpellStack(spell);
-
-
-                } else {
-
-                    if (spell != attunedWeaponSpell) {
-
-                        if (attunedWeaponData.getCharges() < 1 || attunedWeaponData.getSpellState() != SpellState.OFF) {
-
-                            cast = false;
-
-                        }
-
-                    } else {
-                        entityData.getOrCreateSpellStack(spell);
-
-                    }
-
-                }
-
-
-                if (cast) {
-                    entityData.getOrCreateSpellStack(spell);
-                    Utilities.syncTotalPlayerData(player);
-                    spell.attemptCast(player, entityData.getSpellStackRaw(attunedWeaponSpell));
-
-                }
-
-
-            }
-
-
-        }
-
-
-    }
-
-
-    //Player Regeneration
+    //LivingEntityMixin Regeneration
     @SubscribeEvent
     public static void tick(TickEvent.PlayerTickEvent tickEvent) {
 
@@ -454,13 +392,23 @@ public class GameEventHandler {
             }
             ArrayList<Spell> spells = Utilities.getEntityData(player).getActiveSpells();
 
+            Spell weaponSpell = playerData.getActiveWeaponSpell();
+
+            if (!Spell.isSpellDefault(weaponSpell)) {
+                weaponSpell.tick(player,data.getSpellStackRaw(weaponSpell));
+
+            }
+
+
 
             if (spells != null) {
                 for (Spell spell : spells) {
 
-                    spell.tick(player, data.getSpellStackRaw(spell));
 
+                    if (!Spell.isSpellDefault(spell)) {
+                        spell.tick(player, data.getSpellStackRaw(spell));
 
+                    }
                 }
 
             }
@@ -528,9 +476,9 @@ public class GameEventHandler {
         for (Entity entity : event.getAffectedEntities()) {
 
 
-            if (entity instanceof LivingEntity) {
+            if (entity instanceof net.minecraft.world.entity.LivingEntity) {
 
-                LivingEntity livingEntity = (LivingEntity) entity;
+                net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) entity;
 
 
             }
@@ -582,9 +530,9 @@ public class GameEventHandler {
 
 
                     AbstractHurtingProjectile hurtingProjectile = (AbstractHurtingProjectile) projectile;
-                    if (owner instanceof LivingEntity) {
+                    if (owner instanceof net.minecraft.world.entity.LivingEntity) {
 
-                        LivingEntity livingOwner = (LivingEntity) owner;
+                        net.minecraft.world.entity.LivingEntity livingOwner = (net.minecraft.world.entity.LivingEntity) owner;
 
 
                     }
@@ -625,6 +573,144 @@ public class GameEventHandler {
         event.getProjectile().remove(Entity.RemovalReason.DISCARDED);
 
     }
+
+@SubscribeEvent
+    public static void equipChangeEvent(LivingEquipmentChangeEvent event) {
+
+        if (event.getEntityLiving().level.isClientSide) {
+            return;
+        }
+        if (event.getEntityLiving() instanceof Player) {
+
+
+            if (event.getSlot()== EquipmentSlot.MAINHAND) {
+                Player player = (Player) event.getEntityLiving();
+
+                IPlayerData playerData = Utilities.getPlayerData(player);
+                IEntityData entityData = Utilities.getEntityData(player);
+
+                Item weapon = event.getTo().getItem();
+
+                ItemStack weaponStack = event.getTo();
+
+
+                Spell activeSpell = playerData.getActiveWeaponSpell();
+                Spell weaponSpell = ItemEngine.getSpellFromItem(weaponStack);
+
+
+                if (ItemEngine.isWeapon(weaponStack)) {
+
+
+                    if (ItemEngine.isItemInitialized(weaponStack)) {
+
+                        if (Spell.isSpellDefault(activeSpell)) {
+
+                            playerData.setActiveWeaponSpell(weaponSpell);
+
+
+                        } else {
+
+                            SpellStack spellStack = entityData.getOrCreateSpellStack(activeSpell);
+
+                            if (spellStack.isCoolingDown()) {
+
+                                return;
+                            } else {
+                                entityData.removeSpellStack(activeSpell);
+                                playerData.setActiveWeaponSpell(weaponSpell);
+
+                            }
+
+
+                        }
+
+
+                    }
+                } else {
+
+                    if (!Spell.isSpellDefault(activeSpell)) {
+
+
+                        SpellStack spellStack = entityData.getOrCreateSpellStack(activeSpell);
+
+
+                            if (spellStack.isCoolingDown()) {
+
+                                return;
+                            } else {
+
+                                entityData.removeSpellStack(activeSpell);
+                                playerData.setActiveWeaponSpell(Spell.getDefaultSpell());
+
+
+                            }
+
+
+                    }
+
+
+                }
+                Utilities.syncTotalPlayerData(player);
+
+
+            }
+         }
+
+
+}
+
+
+@SubscribeEvent
+    public static void experienceReward(LivingDeathEvent event) {
+
+        if (event.getSource().getEntity() !=null) {
+
+            if (event.getSource().getEntity() instanceof Player) {
+
+                Player player = (Player) event.getSource().getEntity();
+
+
+                if ((event.getEntity() instanceof Mob)) {
+
+                    Mob mob = (Mob) event.getEntityLiving();
+
+                    IMobData mobData = Utilities.getMobData(mob);
+                    IPlayerData playerData = Utilities.getPlayerData(player);
+
+                    playerData.getActiveClassInstance().addExperience(mobData.getExperienceReward());
+
+                    while (playerData.getActiveClassInstance().getExperience() >= Utilities.experienceForLevel(playerData.getActiveClassInstance().getLevel() +1)) {
+
+
+                        playerData.getActiveClass().onLevelUp(player);
+
+
+
+
+
+                    }
+
+
+
+
+
+                }
+
+
+
+            }
+
+
+
+
+        }
+
+
+}
+
+
+
+
 
 
 }

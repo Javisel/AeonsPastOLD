@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.javisel.aeonspast.utilities.StringKeys.RARITY;
+
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ToolTipHandler {
@@ -113,6 +115,15 @@ public class ToolTipHandler {
     }
 
 
+    public static void addRarityTooltip(ItemStack stack,  List<Either<FormattedText, TooltipComponent>> tooltips ) {
+        CompoundTag tag = ItemEngine.getPropertyTag(stack);
+
+        ItemRarity rarity = ItemRarity.valueOf(tag.getString(RARITY));
+        MutableComponent propertycomponent = new TranslatableComponent(rarity.getUnlocalizedName());
+        propertycomponent.withStyle();
+
+    }
+
     public static void addPropertyToolTips(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
 
@@ -140,11 +151,6 @@ public class ToolTipHandler {
 
             for (ItemProperty property : displayproperty) {
 
-                if (property instanceof ItemRarity) {
-                    MutableComponent mutableComponent = new TranslatableComponent(property.getRegistryName().toString());
-
-                    tooltips.add(Either.left(mutableComponent));
-                } else {
 
                          if (properties.indexOf(property) != 1) {
                             propertycomponent.append(" ");
@@ -157,7 +163,6 @@ public class ToolTipHandler {
                         }
 
 
-                }
 
 
             }
