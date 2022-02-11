@@ -1,6 +1,7 @@
 package com.javisel.aeonspast.common.capabiltiies.entity;
 
 import com.javisel.aeonspast.ModBusEventHandler;
+import com.javisel.aeonspast.common.effects.ComplexEffectInstance;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
@@ -24,7 +25,7 @@ public class EntityData implements IEntityData {
     HashMap<Spell, SpellStack> spellStackHashMap;
     HashMap<Resource, Float> resourceMap;
     ArrayList<Spell> activeSpells;
-
+    ArrayList<ComplexEffectInstance> instances = new ArrayList<>();
 
     @Override
     public CompoundTag writeNBT() {
@@ -81,6 +82,23 @@ public class EntityData implements IEntityData {
 
             tag.put(RESOURCE, resourceTag);
         }
+
+
+        CompoundTag effects = new CompoundTag();
+
+
+        int id = 0;
+        for (ComplexEffectInstance instance : instances) {
+
+            effects.put("instance_" + id,instance.toNBT());
+
+
+            id++;
+
+        }
+
+
+        tag.put("effects",effects);
 
 
         return tag;
@@ -188,6 +206,14 @@ public class EntityData implements IEntityData {
             return;
 
         }
+
+
+
+
+
+
+
+
 
         ticks++;
 
@@ -337,9 +363,10 @@ public class EntityData implements IEntityData {
     }
 
 
-
-
-
+    @Override
+    public ArrayList<ComplexEffectInstance> getInstances() {
+        return instances;
+    }
 
 
 }

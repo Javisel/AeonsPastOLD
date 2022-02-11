@@ -135,11 +135,8 @@ public class ComplexEffectInstance {
         return duration;
     }
 
-    public ArrayList<Entity> getallSourceEntities(Level level) {
-
-
-        return  new ArrayList<>();
-
+    public UUID getSource() {
+        return source;
     }
 
     @Nullable

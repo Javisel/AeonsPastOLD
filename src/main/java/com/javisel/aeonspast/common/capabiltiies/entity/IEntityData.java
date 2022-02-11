@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.capabiltiies.entity;
 
+import com.javisel.aeonspast.common.effects.ComplexEffectInstance;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
@@ -40,4 +41,6 @@ public interface IEntityData {
     void removeActiveSpell(Spell spell);
 
     void removeSpellStack(Spell spell);
+
+    ArrayList<ComplexEffectInstance> getInstances();
 }
