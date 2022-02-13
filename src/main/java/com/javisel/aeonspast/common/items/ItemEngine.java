@@ -107,7 +107,7 @@ public class ItemEngine {
 
             if (isWeapon(stack )) {
 
-                ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack.getItem()).loadToWeapon(entity, stack);
+                ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(stack).loadToWeapon(entity, stack);
 
             }
 

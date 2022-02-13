@@ -8,7 +8,7 @@ public class APDamageSource extends DamageSource {
 
     public DamageInstance instance;
     public APDamageSource(String p_19333_, DamageInstance instance) {
-        super( "ap" +p_19333_);
+        super(  p_19333_);
         this.instance=instance;
 
         this.bypassArmor();

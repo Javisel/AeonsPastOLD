@@ -14,6 +14,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.Deserializers;
 
@@ -128,17 +129,14 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
 
     }
 
-    public WeaponData getWeaponData(Item item) {
+    public WeaponData getWeaponData(ItemStack stack) {
 
 
-        ResourceLocation location = item.getRegistryName();
+
+        ResourceLocation location = stack.getItem().getRegistryName();
 
 
-         if (item == null || item == Items.AIR) {
 
-            return  WeaponData.UNARMED;
-
-        }
 
         for (ResourceLocation test : weaponStatisticsMap.keySet()) {
 
@@ -153,8 +151,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
         }
 
 
-        return null;
-
+        return WeaponData.UNARMED;
     }
 
 

@@ -13,6 +13,7 @@ import com.javisel.aeonspast.common.combat.CombatInstance;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.combat.damagesource.VanillaAPDamageSourceMap;
+import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -26,6 +27,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -52,6 +55,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 @Mod.EventBusSubscriber
@@ -70,11 +74,11 @@ public class GameEventHandler {
         float f2 = player.getAttackStrengthScale(0.5F);
          float check = 1 * (0.2F + f2 * f2 * 0.8F);
 
-        if (check != 1.0) {
+
+        if (check < 1.0) {
 
             return;
         }
-        System.out.println("Strength: " + player.attackStrengthTicker);
 
         net.minecraft.world.entity.LivingEntity victim = (net.minecraft.world.entity.LivingEntity) event.getTarget();
 
@@ -114,13 +118,11 @@ public class GameEventHandler {
 
                 if (indirectSource.getEntity() != null) {
 
-
                     float power = 1;
 
                     if (indirectSource.getDirectEntity() != null && indirectSource.getDirectEntity() instanceof Projectile) {
 
                         Projectile projectile = (Projectile) indirectSource.getDirectEntity();
-
 
                         power = (float) projectile.getDeltaMovement().length();
 
@@ -133,9 +135,7 @@ public class GameEventHandler {
                             power = 3 / power;
                         }
 
-
                     }
-
 
                     CombatInstance combatInstance = new CombatInstance(livingEntity, victim, power);
 
@@ -148,35 +148,21 @@ public class GameEventHandler {
             } else if (source.getEntity() != null && source.getEntity() instanceof net.minecraft.world.entity.LivingEntity) {
 
 
-                net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) source.getEntity();
-                CombatInstance combatInstance = new CombatInstance(livingEntity, victim);
+
+                if ( !(event.getSource().getEntity() instanceof Player)) {
+
+                    net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) source.getEntity();
+                    CombatInstance combatInstance = new CombatInstance(livingEntity, victim);
 
 
-                damageSource = combatInstance.source;
+                    damageSource = combatInstance.source;
+                }
             } else {
 
-                if (source == DamageSource.WITHER) {
-
-                    float amount = victim.getMaxHealth() * 0.025f;
-
-                    damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount());
-                    damageSource.instance.preMitigationsAmount = amount;
 
 
-                } else if (source == DamageSource.DRAGON_BREATH) {
+                    damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount(),victim);
 
-
-                    float amount = victim.getMaxHealth() * 0.01f;
-
-                    damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount());
-                    damageSource.instance.preMitigationsAmount = amount;
-
-
-                } else {
-
-
-                    damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount());
-                }
 
 
             }
@@ -217,6 +203,18 @@ public class GameEventHandler {
                 return;
             } else {
 
+                System.out.println(apsource.getInstance().preMitigationsAmount + " " + apsource.instance.getDamage_type().toString()  +" Pre-Mitigations Damage");
+                System.out.println(apsource.getInstance().postMitigationsAmount + " " + apsource.instance.getDamage_type().toString()  +" Post-Mitigations Damage");
+                System.out.println("Critical: " + apsource.getInstance().isCritical);
+
+
+                if (instance.postMitigationsAmount / victim.getMaxHealth() > 0.25) {
+
+                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.NEUTRAL, 1, 1, true);
+                    victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.HOSTILE, 1, 1);
+
+
+                }
 
                 if (instance.isCritical) {
 
@@ -227,6 +225,7 @@ public class GameEventHandler {
                 }
 
                 net.minecraft.world.entity.LivingEntity attacker = null;
+
                 if (source.getEntity() != null) {
 
                     attacker = (net.minecraft.world.entity.LivingEntity) source.getEntity();
@@ -289,14 +288,94 @@ public class GameEventHandler {
 
                             }
 
+                            Collection<MobEffectInstance> effects = attacker.getActiveEffects();
+
+
+                            for (MobEffectInstance mobEffectInstance : effects) {
+
+                                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                                    effect.onpostHitEffect(attacker,victim,apsource);
+
+                                }
+
+
+                            }
+
+
                         }
                         ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+
+
+
+                        for (ItemStack victimStack : victimItems) {
+
+
+                            if (ItemEngine.isItemInitialized(victimStack)) {
+
+
+                                for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
+
+
+                                    property.onOwnerPostHit(attacker, victim, instance);
+
+
+                                }
+
+                            }
+
+
+                        }
+                        Collection<MobEffectInstance> effects = victim.getActiveEffects();
+
+
+                        for (MobEffectInstance mobEffectInstance : effects) {
+
+                            if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                                ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                                effect.onOwnerpostHitEffect(attacker,victim,apsource);
+
+                            }
+
+
+                        }
+
+
+
 
                     }
 
 
+                    if (attacker instanceof Player) {
+
+
+                        Player player = (Player) attacker;
+
+
+
+
+
+
+
+
+
+                    }
+
                 }
             }
+
+
+
+
+
+
+
+
+
 
 
         }
@@ -414,8 +493,11 @@ public class GameEventHandler {
             }
             if (data.getTicks() == 20) {
 
-                player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
 
+                if (player.getFoodData().getFoodLevel() > 6) {
+                    player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
+
+                }
 
             }
 
@@ -659,6 +741,11 @@ public class GameEventHandler {
 
 }
 
+@SubscribeEvent
+public static void negateFrames(LivingDamageEvent event) {
+
+        event.getEntityLiving().hurtTime=0;
+}
 
 @SubscribeEvent
     public static void experienceReward(LivingDeathEvent event) {
@@ -707,10 +794,6 @@ public class GameEventHandler {
 
 
 }
-
-
-
-
 
 
 }

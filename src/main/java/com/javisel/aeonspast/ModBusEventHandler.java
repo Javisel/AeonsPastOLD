@@ -36,7 +36,6 @@ public class ModBusEventHandler {
     public static final ResourceLocation RESOURCE_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "resources");
     public static final ResourceLocation ITEM_PROPERTY_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "item_property");
     public static final ResourceLocation ENTITY_TRAIT_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "entity_trait");
-    public static final ResourceLocation COMPLEX_EFFECT_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "complex_effects");
 
 
     @SubscribeEvent
@@ -101,9 +100,6 @@ public class ModBusEventHandler {
         RegistryBuilder<EntityTrait> EntityTraitBuilder = new RegistryBuilder<>();
 
         EntityTraitBuilder.setName(ENTITY_TRAIT_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(EntityTrait.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
-        RegistryBuilder<ComplexEffect> ComplexEffectBuilder = new RegistryBuilder<>();
-
-        ComplexEffectBuilder.setName(COMPLEX_EFFECT_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(ComplexEffect.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
 
     }

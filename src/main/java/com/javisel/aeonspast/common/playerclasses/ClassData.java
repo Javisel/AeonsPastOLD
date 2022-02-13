@@ -6,11 +6,9 @@ import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
@@ -24,6 +22,10 @@ public class ClassData {
     public static final String BASE_ID = "base_id";
     public static final String LEVEL_ID = "level_id";
 
+    private final double physical_power;
+    private final double physical_power_scaling;
+    private final double magical_power;
+    private final double magical_power_scaling;
     private final double max_health;
     private final double max_health_scaling;
     private final double health_regeneration;
@@ -42,7 +44,7 @@ public class ClassData {
     private final List<String> spells = new ArrayList<>();
     private final List<String> weapon_types = new ArrayList<>();
 
-    public ClassData(double max_health, double max_health_scaling, double health_regeneration, double health_regeneration_scaling, double armor, double armor_scaling, double magic_resist, double magic_resist_scaling, double max_resource, double max_resource_scaling, double resource_regeneration, double resource_regeneration_scaling, double movement_speed, double movement_speed_scaling, List<String> spells, List<String> weapon_types) {
+    public ClassData(double max_health, double max_health_scaling, double health_regeneration, double health_regeneration_scaling, double armor, double armor_scaling, double magic_resist, double magic_resist_scaling, double max_resource, double max_resource_scaling, double resource_regeneration, double resource_regeneration_scaling, double movement_speed, double movement_speed_scaling, List<String> spells, List<String> weapon_types, double physical_power, double physical_power_scaling, double magical_power, double magical_power_scaing) {
         this.max_health = max_health;
         this.max_health_scaling = max_health_scaling;
         this.health_regeneration = health_regeneration;
@@ -57,6 +59,10 @@ public class ClassData {
         this.resource_regeneration_scaling = resource_regeneration_scaling;
         this.movement_speed = movement_speed;
         this.movement_speed_scaling = movement_speed_scaling;
+        this.physical_power = physical_power;
+        this.physical_power_scaling = physical_power_scaling;
+        this.magical_power = magical_power;
+        this.magical_power_scaling = magical_power_scaing;
 
 
         this.spells.addAll(spells);
@@ -77,12 +83,21 @@ public class ClassData {
 
         ArrayList<AttributeContainer> attributeContainers = new ArrayList<>();
 
+
+
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.PHYSICAL_POWER.get(), UUID.fromString(BASE_STATISTICS), physical_power, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.PHYSICAL_POWER.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), physical_power_scaling, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGICAL_POWER.get(), UUID.fromString(BASE_STATISTICS), magical_power, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGICAL_POWER.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), magical_power_scaling, AttributeModifier.Operation.ADDITION));
+
+        
+        
         attributeContainers.add(AttributeContainer.withUUID(Attributes.MAX_HEALTH, UUID.fromString(BASE_STATISTICS), max_health, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(Attributes.MAX_HEALTH, UUID.fromString(LEVEL_BONUS_STATISTICS), max_health_scaling, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.HEALTH_REGENERATION.get(), UUID.fromString(BASE_STATISTICS), health_regeneration, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.HEALTH_REGENERATION.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), health_regeneration_scaling, AttributeModifier.Operation.ADDITION));
-        attributeContainers.add(AttributeContainer.withUUID(Attributes.ARMOR, UUID.fromString(BASE_STATISTICS), armor, AttributeModifier.Operation.ADDITION));
-        attributeContainers.add(AttributeContainer.withUUID(Attributes.ARMOR, UUID.fromString(LEVEL_BONUS_STATISTICS), armor_scaling, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.ARMOR.get(), UUID.fromString(BASE_STATISTICS), armor, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.ARMOR.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), armor_scaling, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGIC_RESISTANCE.get(), UUID.fromString(BASE_STATISTICS), magic_resist, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGIC_RESISTANCE.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), magic_resist_scaling, AttributeModifier.Operation.ADDITION));
 

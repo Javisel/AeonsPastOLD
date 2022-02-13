@@ -3,9 +3,9 @@ package com.javisel.aeonspast.common.registration;
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.spell.NoneSpell;
 import com.javisel.aeonspast.common.spell.Spell;
-import com.javisel.aeonspast.common.spell.classspell.WarriorClassSpell;
-import com.javisel.aeonspast.common.spell.spells.*;
-import com.javisel.aeonspast.common.spell.weaponspell.*;
+import com.javisel.aeonspast.common.spell.spells.basicspell.*;
+import com.javisel.aeonspast.common.spell.spells.classspell.WarriorClassSpell;
+import com.javisel.aeonspast.common.spell.spells.weaponspell.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 

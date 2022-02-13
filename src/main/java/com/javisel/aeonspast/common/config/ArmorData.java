@@ -1,6 +1,7 @@
 package com.javisel.aeonspast.common.config;
 
 import com.javisel.aeonspast.common.items.ArmorType;
+import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.properties.ItemRarity;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -171,6 +172,7 @@ public class ArmorData {
 
         }
 
+        ItemEngine.getAeonsPastTag(stack).putUUID(UNIQUE_ID,UUID.randomUUID());
 
 
 

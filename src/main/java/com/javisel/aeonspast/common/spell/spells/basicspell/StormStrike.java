@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.spell.spells;
+package com.javisel.aeonspast.common.spell.spells.basicspell;
 
 import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.spell.ICustomUseRequirement;

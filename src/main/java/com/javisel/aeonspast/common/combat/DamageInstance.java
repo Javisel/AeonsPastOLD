@@ -15,6 +15,7 @@ public class DamageInstance {
     public boolean doesProcWeaponHitEffects = false;
     public boolean doesProcTrinketEffects = true;
     public boolean doesProcInventoryItemEffects = true;
+    public boolean doesProcStatusEffect = false;
     public boolean isCritical = false;
     public boolean isSpecial = false;
     public boolean isArea = false;
@@ -78,6 +79,7 @@ public class DamageInstance {
         this.damage_type=subType;
         this.preMitigationsAmount =amount;
         doesProcWeaponHitEffects = true;
+        this.canCritical=true;
         this.isArea = isArea;
         this.isCritical = isCritical;
         damageDevice = device;

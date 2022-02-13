@@ -1,4 +1,5 @@
 {
+  "rarity": "RARE",
 
   "armor_type": "HELMET",
   "statistics": [
@@ -31,10 +32,8 @@
 
 
 
-  "rarity": "COMMON",
   "properties": [
-    "aeonspast:epic",
-    "aeonspast:fireproof"
+     "aeonspast:fireproof"
 
   ]
 }

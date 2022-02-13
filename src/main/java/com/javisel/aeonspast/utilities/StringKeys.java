@@ -76,4 +76,7 @@ public class StringKeys {
 
     public static final String WEAPON_POWER = "weapon_power";
     public static final String RARITY = "rarity";
+    public static final String EFFECTS = "effects";
+    public static final String EFFECT = "effect";
+    public static final String UNIQUE_ID = "unique_id";
 }

@@ -1,4 +1,5 @@
 {
+  "rarity": "RARE",
 
   "armor_type": "BOOTS",
   "statistics": [
@@ -31,8 +32,6 @@
 
 
 
-  "rarity": "COMMON",
-  "properties": [
-    "aeonspast:rare"
-  ]
+   "properties": [
+   ]
 }

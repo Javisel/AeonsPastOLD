@@ -1,13 +1,13 @@
-package com.javisel.aeonspast.common.spell.weaponspell;
+package com.javisel.aeonspast.common.spell.spells.weaponspell;
 
-import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellRank;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.world.entity.LivingEntity;
 
-public class TrueStrike  extends WeaponSpell {
-    public TrueStrike( ) {
-        super(60, 21, SpellRank.WEAPON_SPELL);
+public class Chuck  extends WeaponSpell{
+
+    public Chuck(int defaultChargeTime, float defaultCost, SpellRank spellRank) {
+        super(100, 40, spellRank);
     }
 
     @Override

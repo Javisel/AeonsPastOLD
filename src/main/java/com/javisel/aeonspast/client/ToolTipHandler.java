@@ -120,7 +120,8 @@ public class ToolTipHandler {
 
         ItemRarity rarity = ItemRarity.valueOf(tag.getString(RARITY));
         MutableComponent propertycomponent = new TranslatableComponent(rarity.getUnlocalizedName());
-        propertycomponent.withStyle();
+        propertycomponent = propertycomponent.withStyle(rarity.getChatFormat());
+            tooltips.add(Either.left(propertycomponent));
 
     }
 

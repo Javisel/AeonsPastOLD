@@ -3,6 +3,7 @@ package com.javisel.aeonspast.common.combat.damagesource;
 import com.javisel.aeonspast.common.combat.DamageTypes;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.HashMap;
 
@@ -57,7 +58,7 @@ public class VanillaAPDamageSourceMap {
     }
 
 
-    public  static APDamageSource getNewDamageSource(DamageSource source, float amount) {
+    public  static APDamageSource getNewDamageSource(DamageSource source, float amount, LivingEntity entity) {
 
 
 
@@ -69,8 +70,30 @@ public class VanillaAPDamageSourceMap {
             System.err.println("Damage Type " + damageSource.getMsgId() +" has no AP Equivalent!");
             return null;
         }
-
         damageSource.instance.preMitigationsAmount=amount * 5;
+
+        if (entity!=null) {
+
+            if (damageSource.instance.getDamage_type() ==DamageTypes.WITHER) {
+
+
+                damageSource.instance.preMitigationsAmount += entity.getMaxHealth() * 0.0325;
+
+
+
+            }
+
+            if (damageSource.instance.getDamage_type() ==DamageTypes.ENDER) {
+
+
+                damageSource.instance.preMitigationsAmount += entity.getMaxHealth() * 0.025;
+
+
+
+            }
+
+        }
+
 
 
 

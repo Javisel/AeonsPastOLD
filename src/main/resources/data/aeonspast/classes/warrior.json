@@ -1,4 +1,9 @@
 {
+
+  "physical_power": 0,
+  "physical_power_scaling": 2,
+  "magical_power": 0,
+  "magical_power_scaling":0,
   "max_health": 150,
   "max_health_scaling": 15,
   "health_regeneration": 2.25,

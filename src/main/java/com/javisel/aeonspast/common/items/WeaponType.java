@@ -3,8 +3,7 @@ package com.javisel.aeonspast.common.items;
 import com.javisel.aeonspast.common.combat.DamageTypes;
 
 public enum  WeaponType {
-    UNARMED("aeonspast:unarmed", DamageTypes.SLASH, 0),
-
+    UNARMED("aeonspast:unarmed", DamageTypes.IMPACT, 0),
     SWORD("aeonspast:sword", DamageTypes.SLASH, 1),
     AXE("aeonspast:axe", DamageTypes.SLASH, 2),
     SPEAR("aeonspast:spear", DamageTypes.PUNCTURE, 3),

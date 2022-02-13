@@ -1,12 +1,15 @@
 package com.javisel.aeonspast.common.playerclasses;
 
 import com.javisel.aeonspast.common.attributes.AttributeContainer;
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.items.emblem.BasicEmblem;
+import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.server.ServerHandler;
 import com.javisel.aeonspast.utilities.Utilities;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
@@ -46,7 +49,9 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
 
             IPlayerData playerData = Utilities.getPlayerData(player);
-            playerData.setActiveGameClass(this);
+        IEntityData entityData = Utilities.getEntityData(player);
+
+        playerData.setActiveGameClass(this);
 
         for (AttributeContainer container : getClassData().getAttributeModifiers(castResource.get())) {
 
@@ -60,8 +65,9 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
         }
 
-
-        if (!player.getLevel().isClientSide) {
+        entityData.getResourceMap().put(getCastResource(), (float) player.getAttributeValue(castResource.get().getResourceMaxAttribute().get()));
+        player.heal(player.getMaxHealth());
+         if (!player.getLevel().isClientSide) {
 
             Utilities.syncTotalPlayerData(player);
 
@@ -80,6 +86,8 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
         playerData.getOrCreatePlayerClass(this);
 
          playerData.setActiveGameClass(null);
+
+
         for (AttributeContainer container : getClassData().getAttributeModifiers(castResource.get())) {
 
 

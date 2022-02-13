@@ -30,7 +30,7 @@ public class InputHandler {
     public static final KeyMapping SPELL_2 = new KeyMapping("keybinding.aeonspast.spell_2.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_B, AeonsPast.MODID);
     public static final KeyMapping SPELL_3 = new KeyMapping("keybinding.aeonspast.spell_3.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_N, AeonsPast.MODID);
     public static final KeyMapping SPELL_4 = new KeyMapping("keybinding.aeonspast.spell_4.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, AeonsPast.MODID);
-    public static final KeyMapping WEAPON_SPELL = new KeyMapping("keybinding.aeonspast.weapon_spell.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, AeonsPast.MODID);
+    public static final KeyMapping WEAPON_SPELL = new KeyMapping("keybinding.aeonspast.weapon_spell.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, AeonsPast.MODID);
 
 
     public static void registerKeyBindings() {

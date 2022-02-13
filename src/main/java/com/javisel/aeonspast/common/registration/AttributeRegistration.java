@@ -49,7 +49,7 @@ public class AttributeRegistration {
 
     public static final RegistryObject<Attribute> WEAPON_POWER = ATTRIBUTES.register("weapon_power", () -> new RangedAttribute("generic.weapon_power", 0, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> WEAPON_LIFESTEAL = ATTRIBUTES.register("weapon_lifesteal", () -> new RangedAttribute("generic.weapon_lifesteal", 15, 0, 100).setSyncable(true));
-    public static final RegistryObject<Attribute> SPELL_POWER = ATTRIBUTES.register("spell_power", () -> new RangedAttribute("generic.spell_power", 0, 0, 1000).setSyncable(true));
+    public static final RegistryObject<Attribute> MAGICAL_POWER = ATTRIBUTES.register("magical_power", () -> new RangedAttribute("generic.magical_power", 0, 0, 1000).setSyncable(true));
     public static final RegistryObject<Attribute> PHYSICAL_POWER = ATTRIBUTES.register("physical_power", () -> new RangedAttribute("generic.physical_power", 0, 0, 1000).setSyncable(true));
     public static final RegistryObject<Attribute> MELEE_POWER = ATTRIBUTES.register("melee_power", () -> new RangedAttribute("generic.melee_power", 0, 0, 1000).setSyncable(true));
     public static final RegistryObject<Attribute> RANGED_POWER = ATTRIBUTES.register("ranged_power", () -> new RangedAttribute("generic.ranged_power", 0, 0, 1000).setSyncable(true));

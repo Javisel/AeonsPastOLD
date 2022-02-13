@@ -5,6 +5,7 @@ import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,5 +43,5 @@ public interface IEntityData {
 
     void removeSpellStack(Spell spell);
 
-    ArrayList<ComplexEffectInstance> getInstances();
+    HashMap<MobEffect, ArrayList<ComplexEffectInstance>> getMobEffectArrayListHashMap();
 }

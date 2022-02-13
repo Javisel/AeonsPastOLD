@@ -73,6 +73,9 @@ public class AbilityBar implements IIngameOverlay {
         RenderUtilities.renderTextureFromSprite(mStack, ABILITY_BAR_TEXTURES, 20, 20, 67, height - 32, zpos, 40, 7, 20, 20);
 
 
+
+
+
         NonNullList<Spell> spellBarList = playerData.getSpellBar().getSpellList();
 
 
@@ -80,7 +83,6 @@ public class AbilityBar implements IIngameOverlay {
 
 
 
-        renderWeaponSpell(gui,mStack,width/2-91-28,height-43,zpos++);
 
 
 
@@ -107,6 +109,8 @@ public class AbilityBar implements IIngameOverlay {
             xoffset += 22;
 
         }
+        renderWeaponSpell(gui,mStack,width/2-91-28,height-43,zpos++);
+
 
         Resource resource = playerData.getActiveClass().getCastResource();
 
@@ -163,10 +167,6 @@ public class AbilityBar implements IIngameOverlay {
          if (!Spell.isSpellDefault(weaponSpell)) {
 
 
-
-
-
-
             SpellStack weaponspelldata = entityData.getSpellStackRaw(weaponSpell);
 
 
@@ -174,9 +174,6 @@ public class AbilityBar implements IIngameOverlay {
                 RenderUtilities.renderTextureFromSprite(stack, ABILITY_BAR_TEXTURES, 20, 20, x-2, y-2, z, 20, 7, 20, 20);
 
                 ClientProxy.spellRenderer.renderSpellAndSpellInfo(gui,weaponspelldata,stack,x,y,z++);
-
-
-
 
 
         }

@@ -85,7 +85,7 @@ public class EntityStatisticalData {
 
         addAttributeToEntity(entity, Attributes.ATTACK_SPEED, 4 - attack_speed, 4 - attack_speed_scaling);
         addAttributeToEntity(entity, AttributeRegistration.PHYSICAL_POWER.get(), physical_power, physical_power_scaling);
-        addAttributeToEntity(entity, AttributeRegistration.SPELL_POWER.get(), magical_power, magical_power_scaling);
+        addAttributeToEntity(entity, AttributeRegistration.MAGICAL_POWER.get(), magical_power, magical_power_scaling);
 
         addAttributeToEntity(entity, Attributes.MAX_HEALTH, max_health, max_health_scaling);
 

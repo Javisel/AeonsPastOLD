@@ -2,14 +2,18 @@ package com.javisel.aeonspast.common.combat;
 
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
+import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class CombatInstance {
 
@@ -90,6 +94,21 @@ public class CombatInstance {
         }
 
 
+        Collection<MobEffectInstance> effects = attacker.getActiveEffects();
+
+
+        for (MobEffectInstance mobEffectInstance : effects) {
+
+            if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                effect.onpostHitEffect(attacker,victim,source);
+
+            }
+
+
+        }
         ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
 
 
@@ -110,7 +129,21 @@ public class CombatInstance {
 
 
         }
+        Collection<MobEffectInstance> victimActiveEffects = victim.getActiveEffects();
 
+
+        for (MobEffectInstance mobEffectInstance : victimActiveEffects) {
+
+            if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                effect.onOwnerpostHitEffect(attacker,victim,source);
+
+            }
+
+
+        }
         return true;
 
     }
@@ -122,7 +155,7 @@ public class CombatInstance {
         if (source.getInstance().canCritical && CombatEngine.attemptCriticalHit(attacker)) {
 
 
-            CombatEngine.onCrit(attacker, victim, source.instance);
+            CombatEngine.applyCrits(attacker, victim, source.instance);
         }
 
 
@@ -133,11 +166,11 @@ public class CombatInstance {
         }
         victim.hurt(source, (float) source.getInstance().getPreMitigationsAmount());
 
-
-        if (source.instance.damageDevice instanceof ItemStack) {
+         if (source.instance.damageDevice instanceof ItemStack) {
 
             ItemStack weapon = (ItemStack) source.instance.damageDevice;
 
+            weapon.hurt(1, attacker.getRandom(), attacker instanceof ServerPlayer ? (ServerPlayer) attacker : null);
 
             for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
 
@@ -169,6 +202,21 @@ public class CombatInstance {
 
         }
 
+        Collection<MobEffectInstance> attackerEffects = attacker.getActiveEffects();
+
+
+        for (MobEffectInstance mobEffectInstance : attackerEffects) {
+
+            if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                effect.onHitEffect(attacker,victim,source);
+
+            }
+
+
+        }
 
         ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
 
@@ -190,6 +238,21 @@ public class CombatInstance {
 
         }
 
+        Collection<MobEffectInstance> victimActiveEffects = victim.getActiveEffects();
+
+
+        for (MobEffectInstance mobEffectInstance : victimActiveEffects) {
+
+            if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                effect.onOwnerHitEffect(attacker,victim,source);
+
+            }
+
+
+        }
         return true;
 
 

@@ -1,4 +1,5 @@
 {
+  "rarity": "RARE",
 
   "armor_type": "CHESTPLATE",
   "statistics": [
@@ -32,6 +33,5 @@
 
 
    "properties": [
-     "aeonspast:rare"
-  ]
+   ]
 }

@@ -31,7 +31,7 @@ public class CombatEngine {
 
     }
 
-    public static void onCrit(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
+    public static void applyCrits(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
 
         instance.preMitigationsAmount = applyCriticalInstance(attacker, instance);
@@ -132,7 +132,7 @@ public class CombatEngine {
         total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
 
 
-        WeaponData weaponData = ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(weapon.getItem());
+        WeaponData weaponData = ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(weapon);
 
 
         DamageInstance instance = new DamageInstance(weapon, weaponData.getWeapon_type().getDamageType(), total, false, false, true);;
@@ -195,14 +195,17 @@ public class CombatEngine {
          else {
 
 
-            armor = victim.getAttribute(AttributeRegistration.ARMOR.get()).getValue();
-            armor *= 1 + victim.getAttribute(AttributeRegistration.ARMOR_TOUGHNESS.get()).getValue();
+             if (!instance.isMagic) {
+
+                 armor = victim.getAttribute(AttributeRegistration.ARMOR.get()).getValue();
+                 armor *= 1 + victim.getAttribute(AttributeRegistration.ARMOR_TOUGHNESS.get()).getValue();
+
+                 damageMod -= victim.getAttributeValue(AttributeRegistration.PHYSICAL_MITIGATIONS.get()) / 100;
+
+             }
+             if (instance.isMagic) {
 
 
-            damageMod -= victim.getAttributeValue(AttributeRegistration.PHYSICAL_MITIGATIONS.get()) / 100;
-            if (instance.isMagic) {
-
-                armor*= 0.5f;
 
                 armor+=victim.getAttribute(AttributeRegistration.MAGIC_RESISTANCE.get()).getValue();
                 damageMod=1 -victim.getAttributeValue(AttributeRegistration.MAGICAL_MITIGATIONS.get()) / 100;

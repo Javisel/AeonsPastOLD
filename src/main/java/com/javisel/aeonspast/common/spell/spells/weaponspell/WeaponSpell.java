@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.spell.weaponspell;
+package com.javisel.aeonspast.common.spell.spells.weaponspell;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
@@ -75,6 +75,12 @@ public  abstract class WeaponSpell  extends Spell {
 
 
 
+
+    }
+
+    public static void attackReset(LivingEntity entity) {
+
+        entity.attackStrengthTicker=40;
 
     }
 

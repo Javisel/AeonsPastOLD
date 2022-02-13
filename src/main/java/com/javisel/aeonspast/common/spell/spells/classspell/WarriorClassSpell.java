@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.spell.classspell;
+package com.javisel.aeonspast.common.spell.spells.classspell;
 
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.registration.ClassRegistration;

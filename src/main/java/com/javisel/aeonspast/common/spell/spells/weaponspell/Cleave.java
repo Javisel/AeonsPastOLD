@@ -1,6 +1,5 @@
-package com.javisel.aeonspast.common.spell.weaponspell;
+package com.javisel.aeonspast.common.spell.spells.weaponspell;
 
-import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellRank;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.world.entity.LivingEntity;

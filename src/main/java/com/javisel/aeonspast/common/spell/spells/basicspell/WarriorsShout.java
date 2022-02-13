@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.spell.spells;
+package com.javisel.aeonspast.common.spell.spells.basicspell;
 
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellRank;

@@ -41,13 +41,17 @@
   "aeonspast:brutal" : "Brutal",
   "aeonspast:dyeable" : "Dyeable",
   "aeonspast:nimble" : "Nimble",
-
   "aeonspast:uppercut" : "Uppercut",
-  "aeonspast:uppercut.simpledesc" : "Deal weapon damage to melee target and Stun.",
+  "aeonspast:uppercut.simpledesc" : "Attack Reset. Next attack Knocks Up.",
   "aeonspast:cleave": "Cleave",
   "aeonspast:cleave.simpledesc": "Deal weapon damage in a cone",
   "aeonspast:double_strike": "Double Strike",
   "aeonspast:double_strike.simpledesc": "Swing twice dealing weapon damage",
+  "aeonspast:true_strike": "True Strike",
+
+  "aeonspast:true_strike.simpledesc": "Next weapon hit deals 10% bonus true damage",
+
   "tooltip.sleepingweapon.desc": "You need a closer look...",
-  "tooltip.weaponspell": "Weapon Spell"
+  "tooltip.weaponspell": "Weapon Spell",
+  "effect.aeonspast.uppercut_spell_buff": "Uppercut"
 }

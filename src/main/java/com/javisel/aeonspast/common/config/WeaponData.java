@@ -225,6 +225,7 @@ public class WeaponData {
 
         ItemEngine.getAeonsPastTag(stack).putString(SPELL, spells.get(choice));
         ItemEngine.getAeonsPastTag(stack).putBoolean(IS_RANGED, is_ranged);
+        ItemEngine.getAeonsPastTag(stack).putUUID(UNIQUE_ID,UUID.randomUUID());
 
 
     }
