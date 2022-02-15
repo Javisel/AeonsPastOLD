@@ -21,9 +21,12 @@ public class ClassData {
     public static final String LEVEL_BONUS_STATISTICS = "b26e7562-dba6-438d-9f13-207dd29c96e0";
     public static final String BASE_ID = "base_id";
     public static final String LEVEL_ID = "level_id";
-
+    private final double weapon_power;
+    private final double weapon_power_scaling;
     private final double physical_power;
     private final double physical_power_scaling;
+    private final double attack_speed;
+    private final double attack_speed_scaling;
     private final double magical_power;
     private final double magical_power_scaling;
     private final double max_health;
@@ -44,7 +47,11 @@ public class ClassData {
     private final List<String> spells = new ArrayList<>();
     private final List<String> weapon_types = new ArrayList<>();
 
-    public ClassData(double max_health, double max_health_scaling, double health_regeneration, double health_regeneration_scaling, double armor, double armor_scaling, double magic_resist, double magic_resist_scaling, double max_resource, double max_resource_scaling, double resource_regeneration, double resource_regeneration_scaling, double movement_speed, double movement_speed_scaling, List<String> spells, List<String> weapon_types, double physical_power, double physical_power_scaling, double magical_power, double magical_power_scaing) {
+    public ClassData(double weapon_power, double weapon_power_scaling, double attack_speed, double attack_speed_scaling, double max_health, double max_health_scaling, double health_regeneration, double health_regeneration_scaling, double armor, double armor_scaling, double magic_resist, double magic_resist_scaling, double max_resource, double max_resource_scaling, double resource_regeneration, double resource_regeneration_scaling, double movement_speed, double movement_speed_scaling, List<String> spells, List<String> weapon_types, double physical_power, double physical_power_scaling, double magical_power, double magical_power_scaing) {
+        this.weapon_power = weapon_power;
+        this.weapon_power_scaling = weapon_power_scaling;
+        this.attack_speed = attack_speed;
+        this.attack_speed_scaling = attack_speed_scaling;
         this.max_health = max_health;
         this.max_health_scaling = max_health_scaling;
         this.health_regeneration = health_regeneration;
@@ -84,9 +91,15 @@ public class ClassData {
         ArrayList<AttributeContainer> attributeContainers = new ArrayList<>();
 
 
-
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.WEAPON_POWER.get(), UUID.fromString(BASE_STATISTICS), weapon_power, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.WEAPON_POWER.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), weapon_power_scaling, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.PHYSICAL_POWER.get(), UUID.fromString(BASE_STATISTICS), physical_power, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.PHYSICAL_POWER.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), physical_power_scaling, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(Attributes.ATTACK_SPEED, UUID.fromString(BASE_STATISTICS), attack_speed, AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(Attributes.ATTACK_SPEED, UUID.fromString(LEVEL_BONUS_STATISTICS), attack_speed_scaling, AttributeModifier.Operation.ADDITION));
+
+
+
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGICAL_POWER.get(), UUID.fromString(BASE_STATISTICS), magical_power, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGICAL_POWER.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), magical_power_scaling, AttributeModifier.Operation.ADDITION));
 

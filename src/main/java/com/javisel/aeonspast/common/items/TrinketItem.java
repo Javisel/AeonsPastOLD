@@ -93,12 +93,13 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
         //TODO hook into Events
 
         LivingEntity entity = slotContext.entity();
-        getSpell(entity, stack).get().onSpellEquipped(entity, getSpellStack(entity, stack));
+
 
 
         if (entity instanceof Player) {
 
             Player player = (Player) entity;
+            getSpell(entity, stack).get().onSpellEquipped(player, getSpellStack((Player) entity, stack));
             IPlayerData playerData = Utilities.getPlayerData(player);
             int index = -1;
 
@@ -170,12 +171,13 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
-
-        getSpell(slotContext.entity(), stack).get().onSpellUnEquipped(slotContext.entity(), getSpellStack(slotContext.entity(), stack));
-
         Entity entity = slotContext.entity();
 
+
+
+
         if (entity instanceof Player) {
+            getSpell(slotContext.entity(), stack).get().onSpellUnEquipped((Player) slotContext.entity(), getSpellStack((Player) slotContext.entity(), stack));
 
             Player player = (Player) entity;
             IPlayerData playerData = Utilities.getPlayerData(player);

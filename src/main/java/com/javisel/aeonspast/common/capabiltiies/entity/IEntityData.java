@@ -13,7 +13,6 @@ import java.util.HashMap;
 public interface IEntityData {
 
 
-    SpellStack getOrCreateSpellStack(Spell spell);
 
 
 
@@ -27,21 +26,8 @@ public interface IEntityData {
 
     int getLevel();
 
-    SpellStack getSpellStackRaw(Spell spell);
 
-    Float getOrCreateResource(Resource resource);
 
-    Float getResourceAmountRaw(Resource resource);
-
-    HashMap<Resource, Float> getResourceMap();
-
-    ArrayList<Spell> getActiveSpells();
-
-    void addActiveSpell(Spell spell);
-
-    void removeActiveSpell(Spell spell);
-
-    void removeSpellStack(Spell spell);
 
     HashMap<MobEffect, ArrayList<ComplexEffectInstance>> getMobEffectArrayListHashMap();
 }

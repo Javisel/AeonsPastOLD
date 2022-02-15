@@ -1,6 +1,7 @@
 package com.javisel.aeonspast.client.main;
 
 import com.google.common.collect.ImmutableMap;
+import com.javisel.aeonspast.client.particles.WorldTextParticle;
 import com.javisel.aeonspast.client.world.InWorldRenderer;
 import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
 import com.javisel.aeonspast.client.spell.SpellRenderer;
@@ -8,10 +9,13 @@ import com.javisel.aeonspast.common.config.ArmorData;
 import com.javisel.aeonspast.common.config.WeaponData;
 import com.javisel.aeonspast.common.config.EntityStatisticalData;
 import com.javisel.aeonspast.common.playerclasses.ClassData;
+import com.javisel.aeonspast.common.registration.ParticleTypeRegistration;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -57,6 +61,9 @@ public class ClientProxy {
     }
 
 
+
+
+
     @OnlyIn(Dist.CLIENT)
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class modBusEvents {
@@ -74,11 +81,19 @@ public class ClientProxy {
 
 
         }
+        @SubscribeEvent
+        public static void particleProviderRegistration(ParticleFactoryRegisterEvent event) {
+
+
+            Minecraft minecraft = Minecraft.getInstance();
+            ParticleEngine particleEngine = minecraft.particleEngine;
+
+            particleEngine.register(ParticleTypeRegistration.WORLD_TEXT_TYPE.get(), new WorldTextParticle.Provider());
+
+        }
 
 
     }
-
-
 
 
 

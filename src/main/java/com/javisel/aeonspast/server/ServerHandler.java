@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.server;
 
+import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.config.ArmorDataLoader;
 import com.javisel.aeonspast.common.config.ClassDataLoader;
 import com.javisel.aeonspast.common.config.EntityDataLoader;
@@ -17,9 +18,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
+import org.apache.logging.log4j.Level;
 
 
- @Mod.EventBusSubscriber( )
+@Mod.EventBusSubscriber( )
 public class ServerHandler {
     public static ClassDataLoader CLASS_STATISTICS_LOADER;
     public static WeaponDataLoader WEAPON_STATISTICS_LOADER;
@@ -54,12 +56,10 @@ public class ServerHandler {
     @SubscribeEvent
     public static void syncPlayerData(PlayerEvent.PlayerLoggedInEvent event) {
 
-        System.out.println("LOGGED IN!");
 
         if (!event.getPlayer().level.isClientSide) {
 
 
-            System.out.println("SYNCING DATA!");
 
             Utilities.syncTotalPlayerData(event.getPlayer());
 
@@ -73,14 +73,13 @@ public class ServerHandler {
 
 
 
-
-
-
-
-
-
-
     }
+
+
+
+
+
+
     @SubscribeEvent
     public static void newEntityData(EntityJoinWorldEvent event) {
 
@@ -95,15 +94,14 @@ public class ServerHandler {
                 data.loadtoEntity((LivingEntity) event.getEntity());
 
 
-            }
+            } else {
 
-
-            if (event.getEntity() instanceof AbstractHurtingProjectile) {
-
-                AbstractHurtingProjectile hurtingProjectile = (AbstractHurtingProjectile) event.getEntity();
-
+                AeonsPast.LOGGER.log(Level.TRACE, event.getEntity().getType().getRegistryName().toString() +" has no stat data!");
 
             }
+
+
+
 
         }
 

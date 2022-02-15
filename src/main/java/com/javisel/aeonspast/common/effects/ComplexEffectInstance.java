@@ -11,7 +11,7 @@ public class ComplexEffectInstance {
    protected float power;
     protected  float duration;
     protected  float initialDuration;
-
+    public boolean remove = false;
     public ComplexEffectInstance(UUID source, float power, float duration, float initialDuration) {
         this.source = source;
         this.power = power;

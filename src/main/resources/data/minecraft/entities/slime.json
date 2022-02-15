@@ -10,7 +10,7 @@
   "magic_power_scaling": 0,
   "max_health": 100,
   "max_health_scaling": 8,
-  "health_regeneration": 0,
+  "health_regeneration": 1,
   "health_regeneration_scaling": 0,
   "armor": 8,
   "armor_scaling": 0.5,

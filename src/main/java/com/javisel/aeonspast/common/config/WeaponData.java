@@ -59,6 +59,7 @@ public class WeaponData {
         this.attack_speed = attack_speed;
         this.critical_chance = critical_chance;
         this.critical_damage = critical_damage;
+
         this.durability = durability;
          this.range = range;
          this.is_ranged = is_ranged;
@@ -204,7 +205,7 @@ public class WeaponData {
         stack.addAttributeModifier(AttributeRegistration.CRITICAL_CHANCE.get(), new AttributeModifier(id, BASE_STATS, critical_chance.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
 
 
-        stack.addAttributeModifier(AttributeRegistration.CRITICAL_DAMAGE.get(), new AttributeModifier(id, BASE_STATS, critical_damage.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+        stack.addAttributeModifier(AttributeRegistration.CRITICAL_DAMAGE.get(), new AttributeModifier(id, BASE_STATS, -2+critical_damage.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
 
 
         stack.addAttributeModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(id, BASE_STATS, -5 + range.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);

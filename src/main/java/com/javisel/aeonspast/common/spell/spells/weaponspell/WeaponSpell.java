@@ -22,15 +22,14 @@ public  abstract class WeaponSpell  extends Spell {
 
 
     @Override
-    public void onFinishCooldown(LivingEntity entity, SpellStack stack) {
+    public void onFinishCooldown(Player entity, SpellStack stack) {
         super.onFinishCooldown(entity, stack);
 
 
-        if (entity instanceof Player) {
 
             deEquipWeaponSpell((Player) entity);
 
-        }
+
 
 
 
@@ -55,7 +54,7 @@ public  abstract class WeaponSpell  extends Spell {
         } else {
 
             playerData.setActiveWeaponSpell(Spell.getDefaultSpell());
-            entityData.removeSpellStack(this);
+            playerData.removeSpellStack(this);
             if (ItemEngine.getSpellFromItem(weapon) !=null) {
                 Spell newSpell = ItemEngine.getSpellFromItem(weapon);
 

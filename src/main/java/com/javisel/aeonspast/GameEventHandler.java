@@ -7,7 +7,6 @@ import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.capabiltiies.player.PlayerData;
 import com.javisel.aeonspast.common.combat.CombatEngine;
 import com.javisel.aeonspast.common.combat.CombatInstance;
 import com.javisel.aeonspast.common.combat.DamageInstance;
@@ -16,21 +15,26 @@ import com.javisel.aeonspast.common.combat.damagesource.VanillaAPDamageSourceMap
 import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
+import com.javisel.aeonspast.common.particles.WorldTextOptions;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
-import com.javisel.aeonspast.common.spell.SpellState;
 import com.javisel.aeonspast.utilities.Utilities;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -44,11 +48,14 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -56,6 +63,7 @@ import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 
 @Mod.EventBusSubscriber
@@ -72,7 +80,7 @@ public class GameEventHandler {
             return;
         }
         float f2 = player.getAttackStrengthScale(0.5F);
-         float check = 1 * (0.2F + f2 * f2 * 0.8F);
+        float check = 1 * (0.2F + f2 * f2 * 0.8F);
 
 
         if (check < 1.0) {
@@ -98,10 +106,12 @@ public class GameEventHandler {
     public static void attackEntityEvent(LivingAttackEvent event) {
 
 
-        net.minecraft.world.entity.LivingEntity victim = event.getEntityLiving();
+        LivingEntity victim = event.getEntityLiving();
+
+        net.minecraft.world.level.Level level = victim.getLevel();
         DamageSource source = event.getSource();
 
-        if (victim.getLevel().isClientSide) {
+        if (level.isClientSide) {
             return;
         }
 
@@ -119,10 +129,10 @@ public class GameEventHandler {
                 if (indirectSource.getEntity() != null) {
 
                     float power = 1;
+                    Projectile projectile = (Projectile) indirectSource.getDirectEntity();
 
                     if (indirectSource.getDirectEntity() != null && indirectSource.getDirectEntity() instanceof Projectile) {
 
-                        Projectile projectile = (Projectile) indirectSource.getDirectEntity();
 
                         power = (float) projectile.getDeltaMovement().length();
 
@@ -137,8 +147,8 @@ public class GameEventHandler {
 
                     }
 
-                    CombatInstance combatInstance = new CombatInstance(livingEntity, victim, power);
 
+                    CombatInstance combatInstance = new CombatInstance(livingEntity, projectile, victim, power);
 
                     damageSource = combatInstance.source;
 
@@ -148,8 +158,7 @@ public class GameEventHandler {
             } else if (source.getEntity() != null && source.getEntity() instanceof net.minecraft.world.entity.LivingEntity) {
 
 
-
-                if ( !(event.getSource().getEntity() instanceof Player)) {
+                if (!(event.getSource().getEntity() instanceof Player)) {
 
                     net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) source.getEntity();
                     CombatInstance combatInstance = new CombatInstance(livingEntity, victim);
@@ -160,9 +169,7 @@ public class GameEventHandler {
             } else {
 
 
-
-                    damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount(),victim);
-
+                damageSource = VanillaAPDamageSourceMap.getNewDamageSource(source, event.getAmount(), victim);
 
 
             }
@@ -193,6 +200,7 @@ public class GameEventHandler {
             if (!instance.isMitigated) {
 
 
+
                 double mitigate = CombatEngine.getMitigatedDamage(victim, instance);
 
                 instance.setMitigateDamage((float) mitigate);
@@ -202,10 +210,6 @@ public class GameEventHandler {
 
                 return;
             } else {
-
-                System.out.println(apsource.getInstance().preMitigationsAmount + " " + apsource.instance.getDamage_type().toString()  +" Pre-Mitigations Damage");
-                System.out.println(apsource.getInstance().postMitigationsAmount + " " + apsource.instance.getDamage_type().toString()  +" Post-Mitigations Damage");
-                System.out.println("Critical: " + apsource.getInstance().isCritical);
 
 
                 if (instance.postMitigationsAmount / victim.getMaxHealth() > 0.25) {
@@ -224,12 +228,52 @@ public class GameEventHandler {
 
                 }
 
+
+
+
+
+
+
+
                 net.minecraft.world.entity.LivingEntity attacker = null;
 
-                if (source.getEntity() != null) {
 
-                    attacker = (net.minecraft.world.entity.LivingEntity) source.getEntity();
+                if (apsource.getEntity() != null) {
 
+                     attacker = (net.minecraft.world.entity.LivingEntity) apsource.getEntity();
+
+
+                     if (attacker instanceof Player) {
+
+                         Player player = (Player) attacker;
+
+
+
+                         ServerLevel serverLevel = (ServerLevel) level;
+
+
+
+
+                         WorldTextOptions textOptions = WorldTextOptions.getWorldNumberOptionByDamage(instance.damage_type, (float) instance.postMitigationsAmount,instance.isCritical);
+
+
+                         Random random =serverLevel.getRandom();
+                         double xpos = victim.getX();
+                         double ypos = victim.getY() + victim.getBbHeight()+0.25;
+                         double zpos = victim.getZ();
+
+                         double xd = .1d;
+                         double yd=.1d;
+                         double zd =.1d;
+
+
+                          serverLevel.sendParticles((ServerPlayer)player, textOptions,true,xpos,ypos,zpos,1,xd,yd,zd,0d);
+
+
+
+
+
+                     }
 
                     Object device = instance.damageDevice;
 
@@ -297,7 +341,7 @@ public class GameEventHandler {
 
                                     ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
 
-                                    effect.onpostHitEffect(attacker,victim,apsource);
+                                    effect.onpostHitEffect(attacker, victim, apsource);
 
                                 }
 
@@ -307,7 +351,6 @@ public class GameEventHandler {
 
                         }
                         ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
-
 
 
                         for (ItemStack victimStack : victimItems) {
@@ -337,45 +380,25 @@ public class GameEventHandler {
 
                                 ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
 
-                                effect.onOwnerpostHitEffect(attacker,victim,apsource);
+                                effect.onOwnerpostHitEffect(attacker, victim, apsource);
 
                             }
 
 
                         }
 
-
-
-
                     }
 
 
-                    if (attacker instanceof Player) {
-
-
-                        Player player = (Player) attacker;
 
 
 
 
 
 
-
-
-
-                    }
 
                 }
             }
-
-
-
-
-
-
-
-
-
 
 
         }
@@ -428,86 +451,6 @@ public class GameEventHandler {
     }
 
 
-
-
-
-
-    //LivingEntityMixin Regeneration
-    @SubscribeEvent
-    public static void tick(TickEvent.PlayerTickEvent tickEvent) {
-
-
-        if (tickEvent.phase == TickEvent.Phase.START) {
-
-            Player player = tickEvent.player;
-
-            if (player == null) {
-
-                return;
-
-            }
-            if (player.isDeadOrDying()) {
-
-
-                return;
-            }
-
-            IEntityData data = Utilities.getEntityData(player);
-            IPlayerData playerData = Utilities.getPlayerData(player);
-
-            data.tick();
-
-            if (playerData.getActiveClass() != null) {
-
-                Resource resource = playerData.getActiveClass().getCastResource();
-
-                if (resource != null) {
-
-
-                    resource.tick(player);
-
-                }
-
-            }
-            ArrayList<Spell> spells = Utilities.getEntityData(player).getActiveSpells();
-
-            Spell weaponSpell = playerData.getActiveWeaponSpell();
-
-            if (!Spell.isSpellDefault(weaponSpell)) {
-                weaponSpell.tick(player,data.getSpellStackRaw(weaponSpell));
-
-            }
-
-
-
-            if (spells != null) {
-                for (Spell spell : spells) {
-
-
-                    if (!Spell.isSpellDefault(spell)) {
-                        spell.tick(player, data.getSpellStackRaw(spell));
-
-                    }
-                }
-
-            }
-            if (data.getTicks() == 20) {
-
-
-                if (player.getFoodData().getFoodLevel() > 6) {
-                    player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
-
-                }
-
-            }
-
-
-        }
-
-
-    }
-
-
     @SubscribeEvent
     public static void awakenWeapon(PlayerInteractEvent.RightClickItem event) {
 
@@ -539,33 +482,6 @@ public class GameEventHandler {
 
 
             event.setAmount(0);
-        }
-
-
-    }
-
-    @SubscribeEvent
-    public static void playerHealEvent(LivingHealEvent event) {
-
-
-    }
-
-
-    @SubscribeEvent
-    public static void newExplosionInfo(ExplosionEvent.Detonate event) {
-
-
-        for (Entity entity : event.getAffectedEntities()) {
-
-
-            if (entity instanceof net.minecraft.world.entity.LivingEntity) {
-
-                net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) entity;
-
-
-            }
-
-
         }
 
 
@@ -656,7 +572,62 @@ public class GameEventHandler {
 
     }
 
-@SubscribeEvent
+
+    @SubscribeEvent
+    public static void playertickEvent(TickEvent.PlayerTickEvent event) {
+
+
+        if (event.phase == TickEvent.Phase.START) {
+
+            Player player = event.player;
+            if (player.isDeadOrDying()) {
+                return;
+            }
+            IPlayerData playerData = Utilities.getPlayerData(player);
+
+
+            if (playerData.getActiveClass() != null) {
+
+                Resource resource = playerData.getActiveClass().getCastResource();
+
+                if (resource != null) {
+
+
+                    resource.tick(player);
+
+                }
+
+            }
+            ArrayList<Spell> spells = playerData.getActiveSpells();
+
+            Spell weaponSpell = playerData.getActiveWeaponSpell();
+
+            if (!Spell.isSpellDefault(weaponSpell)) {
+                weaponSpell.tick(player, playerData.getSpellStackRaw(weaponSpell));
+
+            }
+
+
+            if (spells != null) {
+                for (Spell spell : spells) {
+
+
+                    if (!Spell.isSpellDefault(spell)) {
+                        spell.tick(player, playerData.getSpellStackRaw(spell));
+
+                    }
+                }
+
+            }
+
+
+        }
+
+
+    }
+
+
+    @SubscribeEvent
     public static void equipChangeEvent(LivingEquipmentChangeEvent event) {
 
         if (event.getEntityLiving().level.isClientSide) {
@@ -665,7 +636,7 @@ public class GameEventHandler {
         if (event.getEntityLiving() instanceof Player) {
 
 
-            if (event.getSlot()== EquipmentSlot.MAINHAND) {
+            if (event.getSlot() == EquipmentSlot.MAINHAND) {
                 Player player = (Player) event.getEntityLiving();
 
                 IPlayerData playerData = Utilities.getPlayerData(player);
@@ -692,13 +663,13 @@ public class GameEventHandler {
 
                         } else {
 
-                            SpellStack spellStack = entityData.getOrCreateSpellStack(activeSpell);
+                            SpellStack spellStack = playerData.getOrCreateSpellStack(activeSpell);
 
                             if (spellStack.isCoolingDown()) {
 
                                 return;
                             } else {
-                                entityData.removeSpellStack(activeSpell);
+                                playerData.removeSpellStack(activeSpell);
                                 playerData.setActiveWeaponSpell(weaponSpell);
 
                             }
@@ -713,19 +684,19 @@ public class GameEventHandler {
                     if (!Spell.isSpellDefault(activeSpell)) {
 
 
-                        SpellStack spellStack = entityData.getOrCreateSpellStack(activeSpell);
+                        SpellStack spellStack = playerData.getOrCreateSpellStack(activeSpell);
 
 
-                            if (spellStack.isCoolingDown()) {
+                        if (spellStack.isCoolingDown()) {
 
-                                return;
-                            } else {
+                            return;
+                        } else {
 
-                                entityData.removeSpellStack(activeSpell);
-                                playerData.setActiveWeaponSpell(Spell.getDefaultSpell());
+                            playerData.removeSpellStack(activeSpell);
+                            playerData.setActiveWeaponSpell(Spell.getDefaultSpell());
 
 
-                            }
+                        }
 
 
                     }
@@ -736,21 +707,21 @@ public class GameEventHandler {
 
 
             }
-         }
+        }
 
 
-}
+    }
 
-@SubscribeEvent
-public static void negateFrames(LivingDamageEvent event) {
+    @SubscribeEvent
+    public static void negateFrames(LivingDamageEvent event) {
 
-        event.getEntityLiving().hurtTime=0;
-}
+        event.getEntityLiving().hurtTime = 0;
+    }
 
-@SubscribeEvent
+    @SubscribeEvent
     public static void experienceReward(LivingDeathEvent event) {
 
-        if (event.getSource().getEntity() !=null) {
+        if (event.getSource().getEntity() != null) {
 
             if (event.getSource().getEntity() instanceof Player) {
 
@@ -766,34 +737,95 @@ public static void negateFrames(LivingDamageEvent event) {
 
                     playerData.getActiveClassInstance().addExperience(mobData.getExperienceReward());
 
-                    while (playerData.getActiveClassInstance().getExperience() >= Utilities.experienceForLevel(playerData.getActiveClassInstance().getLevel() +1)) {
+                    while (playerData.getActiveClassInstance().getExperience() >= Utilities.experienceForLevel(playerData.getActiveClassInstance().getLevel() + 1)) {
 
 
                         playerData.getActiveClass().onLevelUp(player);
 
 
-
-
-
                     }
-
-
-
 
 
                 }
 
 
-
             }
-
-
 
 
         }
 
 
-}
+    }
+
+
+    @SubscribeEvent
+    public static void tickAllEntities(TickEvent.WorldTickEvent event) {
+
+
+        if (event.side == LogicalSide.SERVER) {
+
+            if (event.phase == TickEvent.Phase.START) {
+
+
+                ServerLevel level = (ServerLevel) event.world;
+                for (Entity entity : level.getAllEntities()) {
+
+
+                    if (entity instanceof LivingEntity) {
+
+
+                        LivingEntity livingEntity = (LivingEntity) entity;
+
+                        IEntityData entityData = Utilities.getEntityData(livingEntity);
+
+
+                        entityData.tick();
+
+
+                        if (entityData.getTicks() == 20) {
+
+
+                            livingEntity.heal((float) livingEntity.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
+
+
+
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+
+
+    }
+
+
+
+
+    @SubscribeEvent
+    public static void playerDeathDataTransfer(PlayerEvent.Clone event) {
+
+
+
+        if (event.getOriginal().level.isClientSide) {
+            return;
+        }
+        IPlayerData originalData = Utilities.getPlayerData(event.getOriginal());
+
+
+        IPlayerData newData = Utilities.getPlayerData(event.getPlayer());
+
+            newData.readNBT(originalData.writeNBT());
+
+
+    }
 
 
 }

@@ -12,12 +12,16 @@ import com.javisel.aeonspast.common.networking.resourcemessage.ResourceMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -133,7 +137,7 @@ public class Utilities {
 
     public static void syncResourceData(Player player, Resource resource) {
 
-        IEntityData entityData = Utilities.getEntityData(player);
+        IPlayerData entityData = Utilities.getPlayerData(player);
 
         ResourceMessage resourceMessage = new ResourceMessage(entityData.getOrCreateResource(resource), resource.getRegistryName());
 
@@ -144,4 +148,18 @@ public class Utilities {
     }
 
 
+    public static Entity getEntityByID(ServerLevel level, UUID uuid) {
+
+
+
+     return    level.getEntities().get(uuid);
+
+
+
+
+
+
+
+
+    }
 }

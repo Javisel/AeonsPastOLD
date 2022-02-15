@@ -106,7 +106,7 @@ public class InputHandler {
         if (!Spell.isSpellDefault(spell)) {
 
 
-            if (spell.attemptCast(player, Utilities.getEntityData(player).getSpellStackRaw(spell))) {
+            if (spell.attemptCast(player, Utilities.getPlayerData(player).getSpellStackRaw(spell))) {
 
 
                 PacketRegistration.INSTANCE.sendTo(new AbilityMessage(slot), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);
@@ -139,7 +139,7 @@ public class InputHandler {
         if (!Spell.isSpellDefault(spell)) {
 
 
-            if (spell.attemptCast(player, Utilities.getEntityData(player).getSpellStackRaw(spell))) {
+            if (spell.attemptCast(player, Utilities.getPlayerData(player).getSpellStackRaw(spell))) {
 
 
                 PacketRegistration.INSTANCE.sendTo(new WeaponAbilityMessage(), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);

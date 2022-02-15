@@ -26,10 +26,9 @@ public class EntityData implements IEntityData {
     int level = 1;
 
 
-    HashMap<Spell, SpellStack> spellStackHashMap;
-    HashMap<Resource, Float> resourceMap;
+    //TODO move spell and resource stuff out of EntityData into PlayerData!
+
     HashMap<MobEffect,ArrayList<ComplexEffectInstance>> mobEffectArrayListHashMap = new HashMap<>();
-    ArrayList<Spell> activeSpells;
 
     @Override
     public CompoundTag writeNBT() {
@@ -37,55 +36,8 @@ public class EntityData implements IEntityData {
          tag.putInt(StringKeys.LEVEL, level);
 
 
-        if (activeSpells != null) {
-            CompoundTag activeSpellTag = new CompoundTag();
-            int i = 0;
-            for (Spell spell : activeSpells) {
 
 
-                String input = spell == null ? EMPTY : spell.getRegistryName().toString();
-
-
-                activeSpellTag.putString(String.valueOf(i), input);
-
-                i++;
-
-            }
-            tag.put(SPELLS, activeSpellTag);
-        }
-
-        if (spellStackHashMap != null) {
-            CompoundTag spelldata = new CompoundTag();
-
-
-            for (Spell spell : spellStackHashMap.keySet()) {
-
-
-                spelldata.put(spell.getRegistryName().toString(), spellStackHashMap.get(spell).toNBT());
-
-
-            }
-
-            tag.put(StringKeys.SPELL_DATA, spelldata);
-
-        }
-
-
-        if (resourceMap != null) {
-
-
-            CompoundTag resourceTag = new CompoundTag();
-            for (Resource resource : resourceMap.keySet()) {
-
-
-                resourceTag.putFloat(resource.getRegistryName().toString(), resourceMap.get(resource));
-
-
-            }
-
-
-            tag.put(RESOURCE, resourceTag);
-        }
 
 
         CompoundTag effects = new CompoundTag();
@@ -120,81 +72,6 @@ public class EntityData implements IEntityData {
 
         level = tag.getInt(StringKeys.LEVEL);
 
-
-        if (tag.contains(StringKeys.SPELL_DATA)) {
-
-            CompoundTag spelldata = tag.getCompound(StringKeys.SPELL_DATA);
-
-            if (spellStackHashMap == null) {
-
-
-                spellStackHashMap = new HashMap<>();
-            }
-            for (String entry : spelldata.getAllKeys()) {
-
-
-                ResourceLocation resourceLocation = new ResourceLocation(entry);
-
-                SpellStack spellStack = SpellStack.readNBT(spelldata.getCompound(entry));
-
-
-                Spell spell = (Spell) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.SPELL_REGISTRY_NAME).getValue(resourceLocation);
-
-
-                spellStackHashMap.put(spell, spellStack);
-
-            }
-
-
-        }
-
-        if (tag.contains(RESOURCE)) {
-
-            CompoundTag resourceTag = tag.getCompound(RESOURCE);
-
-            if (resourceMap == null) {
-                resourceMap = new HashMap<>();
-            }
-            for (String entry : resourceTag.getAllKeys()) {
-
-
-                Resource resource = (Resource) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.RESOURCE_REGISTRY_NAME).getValue(new ResourceLocation(entry));
-
-
-                resourceMap.put(resource, resourceTag.getFloat(entry));
-
-
-            }
-
-
-        }
-
-
-        if (tag.contains(SPELLS)) {
-            activeSpells = new ArrayList<>(4);
-
-            CompoundTag activeSpellTag = tag.getCompound(SPELLS);
-            if (!activeSpellTag.isEmpty()) {
-
-                for (String key : activeSpellTag.getAllKeys()) {
-                    int stuff = Integer.parseInt(key);
-
-
-                    String spell = activeSpellTag.getString(key);
-
-                    Spell thespell = Spell.getDefaultSpell();
-                    if (!spell.equalsIgnoreCase(EMPTY)) {
-
-                        thespell = Spell.getSpellByResourceLocation(new ResourceLocation(spell));
-
-                    }
-
-                    addActiveSpell(thespell);
-                }
-
-            }
-
-        }
 
         if (tag.contains(EFFECTS)) {
 
@@ -251,107 +128,33 @@ public class EntityData implements IEntityData {
             return;
 
         }
-
-
-
-
-
-
-
-
-
         ticks++;
 
-    }
 
-    @Override
-    public SpellStack getOrCreateSpellStack(Spell spell) {
+        for (MobEffect complexEffect : mobEffectArrayListHashMap.keySet())  {
 
 
-        if (spellStackHashMap == null) {
-            spellStackHashMap = new HashMap<>();
+            ArrayList<ComplexEffectInstance> instanceArrayList = mobEffectArrayListHashMap.get(complexEffect);
 
 
-        }
+            instanceArrayList.removeIf(instance -> instance.remove);
 
 
-        if (!spellStackHashMap.containsKey(spell)) {
-
-            SpellStack spellStack = new SpellStack(spell);
-
-            spellStackHashMap.put(spell, spellStack);
-        }
 
 
-        return spellStackHashMap.get(spell);
-    }
 
-
-    @Override
-    public SpellStack getSpellStackRaw(Spell spell) {
-
-
-        if (spellStackHashMap == null) {
-            spellStackHashMap = new HashMap<>();
 
 
         }
 
 
-        if (spellStackHashMap.containsKey(spell)) {
 
-            return spellStackHashMap.get(spell);
-        }
 
-        return null;
+
+
 
     }
 
-
-    @Override
-    public HashMap<Resource, Float> getResourceMap() {
-
-        return resourceMap;
-    }
-
-
-    @Override
-    public Float getOrCreateResource(Resource resource) {
-
-
-        if (resourceMap == null) {
-
-            resourceMap = new HashMap<>();
-        }
-
-        if (!resourceMap.containsKey(resource)) {
-
-            resourceMap.put(resource, (float) resource.getResourceMaxAttribute().get().getDefaultValue());
-        }
-
-        return resourceMap.get(resource);
-    }
-
-    @Override
-    public Float getResourceAmountRaw(Resource resource) {
-
-
-        if (resourceMap == null) {
-            spellStackHashMap = new HashMap<>();
-
-
-        }
-
-
-        if (resourceMap.containsKey(resource)) {
-
-            return resourceMap.get(resource);
-        }
-
-        return null;
-
-
-    }
 
     @Override
     public int getLevel() {
@@ -359,53 +162,7 @@ public class EntityData implements IEntityData {
     }
 
 
-    @Override
-    public ArrayList<Spell> getActiveSpells() {
 
-
-        return activeSpells;
-    }
-
-
-    @Override
-    public void addActiveSpell(Spell spell) {
-
-
-        if (activeSpells==null) {
-            activeSpells = new ArrayList<>();
-        }
-        for (Spell index : activeSpells) {
-
-
-            if (index == spell) {
-                return;
-            }
-
-        }
-
-        activeSpells.add(spell);
-
-
-    }
-
-
-    @Override
-    public void removeActiveSpell(Spell spell) {
-
-
-        activeSpells.removeIf(index -> index == spell);
-
-
-    }
-
-    @Override
-    public void removeSpellStack(Spell spell) {
-
-
-        spellStackHashMap.remove(spell);
-
-
-    }
 
 
     @Override

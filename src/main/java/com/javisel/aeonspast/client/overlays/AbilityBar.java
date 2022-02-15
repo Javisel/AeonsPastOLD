@@ -99,7 +99,7 @@ public class AbilityBar implements IIngameOverlay {
             if (spell != Spell.getDefaultSpell()) {
 
 
-                SpellStack stack = entityData.getSpellStackRaw(spell);
+                SpellStack stack = playerData.getSpellStackRaw(spell);
 
                 ClientProxy.spellRenderer.renderSpellAndSpellInfo(gui, stack, mStack, 3 + xoffset, height - 30, zpos);
 
@@ -116,7 +116,7 @@ public class AbilityBar implements IIngameOverlay {
 
         if (resource != null && resource != ResourceRegistration.FOOD.get()) {
 
-            float manaRatio = (float) (entityData.getResourceAmountRaw(resource) / player.getAttributeValue(resource.getResourceMaxAttribute().get()));
+            float manaRatio = (float) (playerData.getResourceAmountRaw(resource) / player.getAttributeValue(resource.getResourceMaxAttribute().get()));
 
 
             //Mana Bar
@@ -134,7 +134,7 @@ public class AbilityBar implements IIngameOverlay {
 
             ++zpos;
             mStack.scale(textScaling, textScaling, textScaling);
-            String manaData = Math.round(entityData.getResourceAmountRaw(resource)) + "/" + (int) player.getAttributeValue(resource.getResourceMaxAttribute().get());
+            String manaData = Math.round(playerData.getResourceAmountRaw(resource)) + "/" + (int) player.getAttributeValue(resource.getResourceMaxAttribute().get());
             int stringx = 97 / 2;
             int stringy = height - 6;
 
@@ -167,7 +167,7 @@ public class AbilityBar implements IIngameOverlay {
          if (!Spell.isSpellDefault(weaponSpell)) {
 
 
-            SpellStack weaponspelldata = entityData.getSpellStackRaw(weaponSpell);
+            SpellStack weaponspelldata = playerData.getSpellStackRaw(weaponSpell);
 
 
 

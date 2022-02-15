@@ -1,12 +1,15 @@
 package com.javisel.aeonspast.common.spell.spells.classspell;
 
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.particles.WorldTextOptions;
 import com.javisel.aeonspast.common.registration.ClassRegistration;
 import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.spell.ClassSpell;
 import com.javisel.aeonspast.common.spell.ICustomUseRequirement;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.Utilities;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,19 +20,12 @@ public class WarriorClassSpell extends ClassSpell implements ICustomUseRequireme
 
 
     public WarriorClassSpell() {
-        super(2, 300, 10, 25);
-        setSpellResource(ResourceRegistration.MANA);
-    }
+        super(2, 1, 10, 25);
+     }
 
 
     @Override
     public void cast(LivingEntity entity, SpellStack stack) {
-
-
-
-
-
-
 
 
         Level level = entity.getLevel();
@@ -42,6 +38,14 @@ public class WarriorClassSpell extends ClassSpell implements ICustomUseRequireme
 
         entity.getLevel().playLocalSound(entity.getX(),entity.getY(),entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL,1,1,false);
 
+        if (!level.isClientSide) {
+
+            ServerLevel serverLevel = (ServerLevel) level;
+
+
+
+
+        }
 
         //TODO spawn particles
 

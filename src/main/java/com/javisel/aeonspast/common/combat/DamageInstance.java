@@ -27,12 +27,12 @@ public class DamageInstance {
     public double critPower = 1;
     public Object damageDevice;
     public DamageSource vanillaDamageSource;
-    public DamageTypes damage_type;
+    public DamageTypeEnum damage_type;
     public double preMitigationsAmount;
     public double postMitigationsAmount = 0;
     public boolean cancel = false;
     public boolean isMagic = false;
-    public DamageInstance(DamageTypes damageTypes, double amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
+    public DamageInstance(DamageTypeEnum damageTypes, double amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
         this.preMitigationsAmount = amount;
         this.damage_type = damageTypes;
         isMagic=damage_type.isMagical();
@@ -48,31 +48,35 @@ public class DamageInstance {
 
     //Damage applied by "On-Hit" effects to prevent Infinite Looping crashes.
 
-    public DamageInstance(DamageTypes damageType, double amount) {
+    public DamageInstance(DamageTypeEnum damageType, double amount) {
         this.damage_type = damageType;
         isMagic=damage_type.isMagical();
-
         this.preMitigationsAmount = amount;
-        this.doesProcWeaponHitEffects=false;
-        this.doesProcInventoryItemEffects=false;
-        this.doesProcSpellEffects=false;
-        this.doesProcTrinketEffects=false;
+
 
     }
 
-    public DamageInstance(DamageTypes damageType ) {
-        this.damage_type = damageType;
-        isMagic=damage_type.isMagical();
+    public DamageInstance(DamageTypeEnum type) {
 
-        this.doesProcWeaponHitEffects=false;
-        this.doesProcInventoryItemEffects=false;
-        this.doesProcSpellEffects=false;
-        this.doesProcTrinketEffects=false;
+        this.damage_type=type;
+    }
 
+    public  static DamageInstance getGenericProcDamage(DamageTypeEnum damageType, double amount) {
+
+        DamageInstance instance = new DamageInstance(damageType, amount);
+
+        instance.isMagic=damageType.isMagical();
+
+        instance.doesProcWeaponHitEffects=false;
+        instance.doesProcInventoryItemEffects=false;
+        instance.doesProcSpellEffects=false;
+        instance.doesProcTrinketEffects=false;
+
+        return  instance;
     }
     //Damage applied by Weapons.
 
-    public DamageInstance(ItemStack device, DamageTypes subType, double amount, boolean isArea, boolean isCritical, boolean isMelee) {
+    public DamageInstance(ItemStack device, DamageTypeEnum subType, double amount, boolean isArea, boolean isCritical, boolean isMelee) {
 
 
 
@@ -86,20 +90,6 @@ public class DamageInstance {
        this.isMelee = isMelee;
 
     }
-
-
-    /*
-    public DamageInstance fromNBT(CompoundTag tag){
-
-
-
-
-    }
-
-
-     */
-
-
 
 
     private static final String CAN_CRIT = "can_crit";
@@ -163,7 +153,7 @@ public class DamageInstance {
 
 
 
-    public DamageTypes getDamage_type() {
+    public DamageTypeEnum getDamage_type() {
         return damage_type;
     }
 

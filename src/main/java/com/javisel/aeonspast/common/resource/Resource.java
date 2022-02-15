@@ -2,10 +2,10 @@ package com.javisel.aeonspast.common.resource;
 
 import com.javisel.aeonspast.ModBusEventHandler;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
+ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.RegistryObject;
@@ -28,7 +28,7 @@ public class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<R
         return resourceLocation == null ? null : (Resource) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.RESOURCE_REGISTRY_NAME).getValue(resourceLocation);
     }
 
-    public boolean doesNaturallyRegenerate(LivingEntity entity) {
+    public boolean doesNaturallyRegenerate(Player entity) {
 
 
         return true;
@@ -42,9 +42,9 @@ public class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<R
 
     }
 
-    public void setResourceAmount(LivingEntity entity, float amount, boolean sync) {
+    public void setResourceAmount(Player entity, float amount, boolean sync) {
 
-        IEntityData data = Utilities.getEntityData(entity);
+        IPlayerData data = Utilities.getPlayerData(entity);
 
         float old = data.getOrCreateResource(this);
 
@@ -62,7 +62,7 @@ public class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<R
 
         resourceAmountChange(entity, old, amount);
 
-        if (entity instanceof Player && sync && !entity.level.isClientSide) {
+         if (sync && !entity.level.isClientSide) {
 
 
             Utilities.syncResourceData((Player) entity, this);
@@ -71,7 +71,7 @@ public class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<R
 
     }
 
-    public void tick(LivingEntity entity) {
+    public void tick(Player entity) {
 
         IEntityData data = Utilities.getEntityData(entity);
 
@@ -90,21 +90,17 @@ public class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<R
 
     }
 
-    public void resourceAmountChange(LivingEntity entity, float oldamount, float newamount) {
+    public void resourceAmountChange(Player entity, float oldamount, float newamount) {
 
     }
 
-    public void addResource(LivingEntity entity, float amount, boolean sync) {
+    public void addResource(Player entity, float amount, boolean sync) {
 
-        IEntityData data = Utilities.getEntityData(entity);
+        IPlayerData data = Utilities.getPlayerData(entity);
 
         float old = data.getOrCreateResource(this);
 
 
-        if (old == entity.getAttribute(ResourceMaxAttribute.get()).getValue()) {
-            return;
-
-        }
         if (old + amount < 0) {
 
             amount = old;

@@ -45,8 +45,6 @@ public class AttributeRegistration {
 
     //Offensive
     public static final RegistryObject<Attribute> SPELL_LIFESTEAL = ATTRIBUTES.register("spell_lifesteal", () -> new RangedAttribute("generic.spell_lifesteal", 0, 0, 100).setSyncable(true));
-
-
     public static final RegistryObject<Attribute> WEAPON_POWER = ATTRIBUTES.register("weapon_power", () -> new RangedAttribute("generic.weapon_power", 0, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> WEAPON_LIFESTEAL = ATTRIBUTES.register("weapon_lifesteal", () -> new RangedAttribute("generic.weapon_lifesteal", 15, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> MAGICAL_POWER = ATTRIBUTES.register("magical_power", () -> new RangedAttribute("generic.magical_power", 0, 0, 1000).setSyncable(true));
@@ -57,7 +55,10 @@ public class AttributeRegistration {
     public static final RegistryObject<Attribute> CRITICAL_CHANCE = ATTRIBUTES.register("critical_chance", () -> new RangedAttribute("generic.critical_chance", 5, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> CRITICAL_DAMAGE = ATTRIBUTES.register("critical_damage", () -> new RangedAttribute("generic.critical_damage", 2, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> ATTACK_RANGE = ATTRIBUTES.register("attack_range", () -> new RangedAttribute("generic.attack_range", 2, 0, 100).setSyncable(true));
+
+  //Offensive - Status Chances
     public static final RegistryObject<Attribute> STATUS_CHANCE = ATTRIBUTES.register("status_chance", () -> new RangedAttribute("generic.status_chance", 0, -100, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> BLEED_CHANCE = ATTRIBUTES.register("bleed_chance", () -> new RangedAttribute("generic.bleed_chance", 0, -100, 100).setSyncable(true));
 
 
 

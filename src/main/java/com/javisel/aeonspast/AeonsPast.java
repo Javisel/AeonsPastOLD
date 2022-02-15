@@ -33,6 +33,8 @@ public class AeonsPast {
     public AeonsPast() {
         GeckoLib.initialize();
 
+        ParticleTypeRegistration.PARTICLE_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+
         AttributeRegistration.ATTRIBUTES.register(FMLJavaModLoadingContext.get().getModEventBus());
         ResourceRegistration.RESOURCES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
@@ -99,6 +101,8 @@ public class AeonsPast {
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.RELIC_IDENTIFIER).priority(3).size(1).build());
 
     }
+
+
 
 
 }

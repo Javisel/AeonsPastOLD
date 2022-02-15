@@ -49,7 +49,7 @@ public class AbilityMessage {
                 if (playerData.getSpellBar().getSpellList().isEmpty() || Spell.isSpellDefault( playerData.getSpellBar().getSpellList().get(mes.slot))) {
                     return;
                 }
-                playerData.getSpellBar().getSpellList().get(slot).attemptCast(player, Utilities.getEntityData(player).getOrCreateSpellStack(playerData.getSpellBar().getSpellList().get(mes.slot)));
+                playerData.getSpellBar().getSpellList().get(slot).attemptCast(player, Utilities.getPlayerData(player).getOrCreateSpellStack(playerData.getSpellBar().getSpellList().get(mes.slot)));
 
 
             });

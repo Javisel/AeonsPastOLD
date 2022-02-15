@@ -42,7 +42,7 @@ public class BasicEmblem extends TrinketItem {
             IPlayerData playerData = Utilities.getPlayerData(player);
             IEntityData entityData = Utilities.getEntityData(player);
 
-             entityData.getActiveSpells().add(super.getSpell(player, stack).get());
+            playerData.getActiveSpells().add(super.getSpell(player, stack).get());
             playerData.getSpellBar().getSpellList().set(0, super.getSpell(player, stack).get());
             getGameClass().get().activateOnPlayer(player);
 

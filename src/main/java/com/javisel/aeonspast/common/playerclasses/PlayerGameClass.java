@@ -65,7 +65,7 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
         }
 
-        entityData.getResourceMap().put(getCastResource(), (float) player.getAttributeValue(castResource.get().getResourceMaxAttribute().get()));
+        playerData.getResourceMap().put(getCastResource(), (float) player.getAttributeValue(castResource.get().getResourceMaxAttribute().get()));
         player.heal(player.getMaxHealth());
          if (!player.getLevel().isClientSide) {
 

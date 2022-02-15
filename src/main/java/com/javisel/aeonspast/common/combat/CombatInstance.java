@@ -7,9 +7,11 @@ import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -34,14 +36,14 @@ public class CombatInstance {
     }
 
     //CombatInstance involving a  Ranged Weapon.
-    public CombatInstance(LivingEntity attacker, LivingEntity victim, float rangedPower) {
+    public CombatInstance(LivingEntity attacker, Projectile projectile, LivingEntity victim, float rangedPower) {
         this.attacker = attacker;
         this.victim = victim;
         DamageInstance instance = CombatEngine.calculateRangedDamage(attacker, attacker.getMainHandItem(), rangedPower );
 
 
         instance.procPower=rangedPower;
-        source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, attacker);
+        source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", instance, projectile,attacker);
 
 
     }
@@ -172,6 +174,14 @@ public class CombatInstance {
 
             weapon.hurt(1, attacker.getRandom(), attacker instanceof ServerPlayer ? (ServerPlayer) attacker : null);
 
+
+            if (attacker instanceof  Player) {
+                Player player = (Player) attacker;
+                weapon.hurtAndBreak(1, player, (p_150686_) -> {
+                    p_150686_.broadcastBreakEvent(InteractionHand.MAIN_HAND);
+                });
+
+            }
             for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
 
 

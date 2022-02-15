@@ -1,8 +1,7 @@
 package com.javisel.aeonspast.common.spell;
 
 import com.javisel.aeonspast.ModBusEventHandler;
-import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
-import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+ import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.registration.ResourceRegistration;
 import com.javisel.aeonspast.common.registration.SpellRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
@@ -88,9 +87,9 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         return  spell == null || spell == getDefaultSpell();
     }
 
-    public void onSpellEquipped(LivingEntity entity, SpellStack stack) {
+    public void onSpellEquipped(Player entity, SpellStack stack) {
 
-        IEntityData data = Utilities.getEntityData(entity);
+        IPlayerData data = Utilities.getPlayerData(entity);
 
 
         SpellStack spellStack = data.getOrCreateSpellStack(this);
@@ -105,7 +104,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         //TODO more efficient sync
 
 
-        IEntityData entityData = Utilities.getEntityData(entity);
+        IPlayerData entityData = Utilities.getPlayerData(entity);
 
         entityData.addActiveSpell(this);
 
@@ -118,20 +117,20 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
-    public boolean canunEquipSpell(LivingEntity entity, SpellStack stack) {
+    public boolean canunEquipSpell(Player entity, SpellStack stack) {
 
 
         return getSpellStack(entity, stack).getCharges() >= 1;
     }
 
-    public void onSpellUnEquipped(LivingEntity entity, SpellStack stack) {
+    public void onSpellUnEquipped(Player entity, SpellStack stack) {
 
 
 
 
 
 
-            IEntityData entityData = Utilities.getEntityData(entity);
+            IPlayerData entityData = Utilities.getPlayerData(entity);
 
         entityData.removeActiveSpell(this);
 
@@ -145,17 +144,17 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
-    public void commitCosts(LivingEntity caster, SpellStack stack) {
+    public void commitCosts(Player caster, SpellStack stack) {
 
 
         if (spellResource != null) {
 
-            spellResource.get().addResource(caster, -1 * getCost(caster, stack), true);
+             spellResource.get().addResource(caster, -1 * getCost(caster, stack), true);
 
         }
 
 
-        SpellStack spellStack = Utilities.getEntityData(caster).getOrCreateSpellStack(this);
+        SpellStack spellStack = Utilities.getPlayerData(caster).getOrCreateSpellStack(this);
 
         spellStack.charges--;
 
@@ -178,11 +177,11 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
-    public boolean attemptCast(LivingEntity caster, SpellStack stack) {
+    public boolean attemptCast(Player caster, SpellStack stack) {
 
 
         if (stack == null) {
-            Utilities.getEntityData(caster).getOrCreateSpellStack(this);
+            Utilities.getPlayerData(caster).getOrCreateSpellStack(this);
         }
         if (canCast(caster, stack)) {
 
@@ -197,7 +196,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         return false;
     }
 
-    public void endCast(LivingEntity caster, SpellStack stack) {
+    public void endCast(Player caster, SpellStack stack) {
 
         if (caster instanceof Player) {
 
@@ -212,51 +211,56 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public boolean canCast(LivingEntity caster, SpellStack stack) {
 
 
-        IEntityData data = Utilities.getEntityData(caster);
+        if (caster instanceof Player) {
+
+            IPlayerData data = Utilities.getPlayerData((Player) caster);
 
 
-        if (stack == null) {
+            if (stack == null) {
 
-            stack = data.getOrCreateSpellStack(this);
-        }
+                stack = data.getOrCreateSpellStack(this);
+            }
 
-        if (stack.isCoolingDown()) {
-
-            return false;
-        }
-
-        if (stack.getCharges() < 1) {
-
-            return false;
-        }
-
-
-        if (getCostResource(caster, stack) != null) {
-            if (data.getOrCreateResource(getCostResource(caster, stack)) < getCost(caster, stack)) {
-
+            if (stack.isCoolingDown()) {
 
                 return false;
             }
 
-        }
-
-        if (this instanceof ICustomUseRequirement) {
-
-            ICustomUseRequirement checkRequirementItem = (ICustomUseRequirement) this;
-
-            if (!checkRequirementItem.canMeetRequirement(caster, stack)) {
+            if (stack.getCharges() < 1) {
 
                 return false;
             }
 
+
+            if (getCostResource((Player) caster, stack) != null) {
+                if (data.getOrCreateResource(getCostResource((Player) caster, stack)) < getCost((Player) caster, stack)) {
+
+
+                    return false;
+                }
+
+            }
+
+            if (this instanceof ICustomUseRequirement) {
+
+                ICustomUseRequirement checkRequirementItem = (ICustomUseRequirement) this;
+
+                if (!checkRequirementItem.canMeetRequirement(caster, stack)) {
+
+                    return false;
+                }
+
+            }
+
+
+            return true;
+
         }
 
-
-        return true;
-
+        return  false;
     }
 
-    public int getCurrentMaxCooldown(LivingEntity entity, SpellStack stack) {
+    public int getCurrentMaxCooldown(Player entity, SpellStack stack) {
 
 
         int result = defaultCooldown;
@@ -269,16 +273,16 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     public abstract void cast(LivingEntity entity, SpellStack stack);
 
-    public float getCost(LivingEntity caster, SpellStack stack) {
+    public float getCost(Player caster, SpellStack stack) {
 
 
         return defaultCost;
     }
 
-    public void tick(LivingEntity caster, SpellStack stack) {
+    public void tick(Player caster, SpellStack stack) {
 
 
-        SpellStack spellStack = Utilities.getEntityData(caster).getOrCreateSpellStack(this);
+        SpellStack spellStack = Utilities.getPlayerData(caster).getOrCreateSpellStack(this);
 
 
         if (spellStack.cooldown > 0) {
@@ -313,13 +317,13 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
-    public int getMaxCharges(LivingEntity caster, SpellStack stack) {
+    public int getMaxCharges(Player caster, SpellStack stack) {
 
 
         return defaultMaxCharges;
     }
 
-    public int getChargeTime(LivingEntity caster, SpellStack stack) {
+    public int getChargeTime(Player caster, SpellStack stack) {
 
         int result = defaultChargetime;
 
@@ -331,7 +335,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
-    public boolean isRecharging(LivingEntity entity, SpellStack stack) {
+    public boolean isRecharging(Player entity, SpellStack stack) {
 
 
         return getSpellStack(entity, stack).isRecharging();
@@ -339,10 +343,10 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
-    public SpellStack getSpellStack(LivingEntity entity, SpellStack stack) {
+    public SpellStack getSpellStack(Player entity, SpellStack stack) {
 
 
-        return Utilities.getEntityData(entity).getOrCreateSpellStack(this);
+        return Utilities.getPlayerData(entity).getOrCreateSpellStack(this);
 
 
     }
@@ -368,7 +372,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     }
 
 
-    public void onFinishCooldown(LivingEntity entity, SpellStack stack) {
+    public void onFinishCooldown(Player entity, SpellStack stack) {
 
 
         if (stack.charges < getMaxCharges(entity, stack)) {
@@ -390,7 +394,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     }
 
 
-    public Resource getCostResource(LivingEntity entity, SpellStack stack) {
+    public Resource getCostResource(Player entity, SpellStack stack) {
 
 
         if (spellResource != null) {
@@ -416,7 +420,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
 
 
-    public void onFinishCharge(LivingEntity entity, SpellStack stack) {
+    public void onFinishCharge(Player entity, SpellStack stack) {
 
 
         stack.charges++;
@@ -431,7 +435,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     }
 
 
-    public void addToCooldown(int amount, SpellStack stack, LivingEntity entity) {
+    public void addToCooldown(int amount, SpellStack stack, Player entity) {
 
 
         int cooldown = stack.cooldown;
@@ -454,7 +458,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     }
 
-    public void addToCharge(int amount, LivingEntity entity, SpellStack stack) {
+    public void addToCharge(int amount, Player entity, SpellStack stack) {
 
 
         int charge = stack.chargeTime;
@@ -492,7 +496,7 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
     public void equipWeaponSpell(Player player) {
 
         IPlayerData playerData = Utilities.getPlayerData(player);
-        IEntityData entityData = Utilities.getEntityData(player);
+        IPlayerData entityData = Utilities.getPlayerData(player);
 
 
         playerData.setActiveWeaponSpell(this);

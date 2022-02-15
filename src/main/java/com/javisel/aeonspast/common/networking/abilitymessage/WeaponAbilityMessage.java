@@ -50,7 +50,7 @@ public class WeaponAbilityMessage {
                 }
 
 
-                playerData.getActiveWeaponSpell().attemptCast(player, Utilities.getEntityData(player).getSpellStackRaw(playerData.getActiveWeaponSpell()));
+                playerData.getActiveWeaponSpell().attemptCast(player, Utilities.getPlayerData(player).getSpellStackRaw(playerData.getActiveWeaponSpell()));
 
             });
 

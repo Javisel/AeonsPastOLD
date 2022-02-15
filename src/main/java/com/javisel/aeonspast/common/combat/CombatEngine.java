@@ -34,6 +34,9 @@ public class CombatEngine {
     public static void applyCrits(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
 
+        if (instance.isCritical) {
+            return;
+        }
         instance.preMitigationsAmount = applyCriticalInstance(attacker, instance);
         instance.isCritical = true;
 
@@ -85,13 +88,14 @@ public class CombatEngine {
 
     }
 
-    public static double applyCriticalInstance(LivingEntity entity, DamageInstance instance) {
+    private static double applyCriticalInstance(LivingEntity entity, DamageInstance instance) {
 
         double critDamage = entity.getAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get());
 
         double base = instance.getPreMitigationsAmount();
 
         base *= critDamage;
+
 
         base *= instance.critPower;
 
@@ -162,7 +166,7 @@ public class CombatEngine {
 
 
 
-        DamageInstance instance = new DamageInstance(weapon, DamageTypes.PUNCTURE, total, false, false, false);;
+        DamageInstance instance = new DamageInstance(weapon, DamageTypeEnum.PUNCTURE, total, false, false, false);;
 
         return instance;
 

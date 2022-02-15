@@ -116,7 +116,7 @@ public class SpellRenderer {
 
 
         if (spell.getCostResource(player, spellStack) != null) {
-            if (entityData.getOrCreateResource(spell.getCostResource(player, spellStack)) < spell.getCost(player, spellStack)) {
+            if (playerData.getOrCreateResource(spell.getCostResource(player, spellStack)) < spell.getCost(player, spellStack)) {
 
 
                 RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16, 16, xpos, ypos, z, 60, 9, 16, 16);

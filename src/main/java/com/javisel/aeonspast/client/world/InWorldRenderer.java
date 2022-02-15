@@ -2,6 +2,8 @@ package com.javisel.aeonspast.client.world;
 
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.client.RenderUtilities;
+import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
+import com.javisel.aeonspast.utilities.Utilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
@@ -13,6 +15,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +26,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.shadowed.eliotlash.mclib.utils.MathHelper;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 @OnlyIn(Dist.CLIENT)
@@ -113,12 +118,26 @@ public class InWorldRenderer {
             stack.pushPose();
 
             float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-            int j = (int)(f1 * 255.0F) << 24;
 
             RenderSystem.setShaderColor(1,1,1,1);
             stack.scale(0.5f,0.5f,1);
 
+
         font.draw(stack,healthString,100- font.width(healthString)/2,0,1);
+
+     /*
+                float offset =  entity.hasCustomName() ? -16 : - 8;
+
+            IEntityData entityData = Utilities.getEntityData(entity);
+            MutableComponent mutableComponent = new TextComponent("Level " + entityData.getLevel());
+
+
+
+            font.draw(stack,mutableComponent.copy().withStyle(ChatFormatting.WHITE),100-font.width(mutableComponent)/2,offset,1);
+
+
+             */
+
             if (entity.hasCustomName()) {
 
 

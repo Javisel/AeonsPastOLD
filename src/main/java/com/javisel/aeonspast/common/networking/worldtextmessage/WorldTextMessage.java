@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.networking.worldtextmessage;
 
-import com.javisel.aeonspast.common.combat.DamageTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 

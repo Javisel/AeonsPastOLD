@@ -1,6 +1,6 @@
 package com.javisel.aeonspast.common.items.properties.weapon;
 
-import com.javisel.aeonspast.common.combat.DamageTypes;
+import com.javisel.aeonspast.common.combat.DamageTypeEnum;
 import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
@@ -24,7 +24,7 @@ public class Gilded extends WeaponProperty {
             if (victim.getMobType() == MobType.UNDEAD) {
 
 
-                DamageInstance proc = new DamageInstance(DamageTypes.RADIANT, ((damageInstance.getPreMitigationsAmount()) *0.05) * damageInstance.procPower);
+                DamageInstance proc = new DamageInstance(DamageTypeEnum.RADIANT, ((damageInstance.getPreMitigationsAmount()) *0.05) * damageInstance.procPower);
 
 
 
