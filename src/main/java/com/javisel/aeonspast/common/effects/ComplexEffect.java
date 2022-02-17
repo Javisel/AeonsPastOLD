@@ -7,12 +7,14 @@ import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ComplexEffect extends MobEffect{
 
@@ -20,15 +22,72 @@ public class ComplexEffect extends MobEffect{
 
 
 
-    protected ComplexEffect(MobEffectCategory p_19451_, int p_19452_) {
+    //TODO Color codes for all Effects
+    public ComplexEffect(MobEffectCategory p_19451_, int p_19452_) {
         super(p_19451_, p_19452_);
     }
 
 
+    @Override
+    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
+        return  true;
+    }
+
+    @Override
+    public void applyEffectTick(LivingEntity livingEntity, int durationIn) {
+        super.applyEffectTick(livingEntity, durationIn);
 
 
-    public void onEffectAdded(LivingEntity user) {
 
+        for (ComplexEffectInstance instance : getAllInstancesOnEntity(livingEntity)) {
+
+
+            instance.duration--;
+
+
+            if (instance.duration==0) {
+
+                instance.remove=true;
+                removeComplexInstance(instance.source,livingEntity);
+            }
+
+            if (instance.duration > durationIn) {
+
+
+
+            }
+
+
+        }
+
+
+
+
+
+
+    }
+
+    public void addnewComplexInstance(ComplexEffectInstance instance, LivingEntity user) {
+
+
+        if (user.hasEffect(this)) {
+
+
+            MobEffectInstance mobInstance = user.getEffect(this);
+
+
+
+
+
+        }
+
+
+
+    }
+
+
+
+    public void removeComplexInstance(UUID id, LivingEntity user) {
 
 
 
@@ -70,6 +129,37 @@ public class ComplexEffect extends MobEffect{
 
 
     }
+
+
+    public ArrayList<ComplexEffectInstance> getAllInstancesOnEntity(LivingEntity entity) {
+
+
+
+        ArrayList<ComplexEffectInstance> effectInstances = new ArrayList<>();
+
+
+
+        IEntityData entityData = Utilities.getEntityData(entity);
+
+
+        if (entityData.getMobEffectArrayListHashMap().containsKey(this)) {
+
+            effectInstances = entityData.getMobEffectArrayListHashMap().get(this);
+
+        }
+
+
+        return  effectInstances;
+
+
+
+    }
+
+
+
+
+
+
 
 
 

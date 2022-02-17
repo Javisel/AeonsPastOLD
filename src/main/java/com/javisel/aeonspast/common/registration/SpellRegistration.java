@@ -25,7 +25,8 @@ public class SpellRegistration {
     public static final RegistryObject<Spell> HOP = SPELLS.register("hop", () -> new Hop());
     public static final RegistryObject<Spell> CLEAVE = SPELLS.register("cleave", () -> new Cleave());
     public static final RegistryObject<Spell> UPPERCUT = SPELLS.register("uppercut", () -> new Uppercut());
-    public static final RegistryObject<Spell> DOUBLE_STRIKE = SPELLS.register("double_strike", () -> new DoubleStrike());
+    public static final RegistryObject<Spell> DOUBLE_SLASH = SPELLS.register("double_slash", () -> new DoubleSlash());
+    public static final RegistryObject<Spell> CHUCK = SPELLS.register("chuck", () -> new Chuck());
     public static final RegistryObject<Spell> VENGEFUL_ASSAULT = SPELLS.register("vengeful_assault", () -> new VengefulAssault());
     public static final RegistryObject<Spell> ARROW_STORM = SPELLS.register("arrow_storm", () -> new ArrowStorm());
     public static final RegistryObject<Spell> TRUE_STRIKE = SPELLS.register("true_strike", () -> new TrueStrike());

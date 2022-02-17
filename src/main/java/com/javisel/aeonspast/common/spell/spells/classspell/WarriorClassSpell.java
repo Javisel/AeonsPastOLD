@@ -20,7 +20,7 @@ public class WarriorClassSpell extends ClassSpell implements ICustomUseRequireme
 
 
     public WarriorClassSpell() {
-        super(2, 1, 10, 25);
+        super(2, 600, 10, 25);
      }
 
 

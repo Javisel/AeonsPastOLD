@@ -79,4 +79,7 @@ public class StringKeys {
     public static final String EFFECTS = "effects";
     public static final String EFFECT = "effect";
     public static final String UNIQUE_ID = "unique_id";
+
+    public static final String FLAGS = "flags";
+
 }

@@ -2,17 +2,22 @@ package com.javisel.aeonspast.common.combat;
 
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.config.WeaponData;
+import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
+import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.server.ServerHandler;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 public class CombatEngine {
@@ -266,33 +271,387 @@ public class CombatEngine {
 
     }
 
-    public boolean onDamageSet(APDamageSource apDamagesource, LivingEntity victim) {
-
-
-        return false;
-    }
 
     public void doDamageCalculations(APDamageSource damageSource, LivingEntity victim) {
 
 
     }
 
-    public void onDamagePostApplication(APDamageSource damageSource, LivingEntity livingEntity) {
+
+    
+    public static boolean   cycleAllPreHitEffects(LivingEntity attacker, LivingEntity victim, APDamageSource damageSource) {
+
+
+        boolean result = true;
+
+
+        DamageInstance instance = damageSource.instance;
+
+
+        Object device = instance.damageDevice;
+
+
+        if (device != null) {
+
+            if (attacker != null) {
+
+                if (device instanceof Spell) {
+
+
+
+
+                }
+                if (device instanceof ItemStack) {
+
+
+
+                    ItemStack weapon = (ItemStack) device;
+
+
+                    for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
+
+
+                        result =    property.onPreHitEntityInHand(attacker, victim, instance, weapon);
+
+
+                    }
+                }
+
+                ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+                for (ItemStack attackerStack : attackerItems) {
+
+
+                    if (ItemEngine.isItemInitialized(attackerStack)) {
+
+
+                        for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+
+
+                            result =             property.onPreHitEntity(attacker, victim, instance);
+
+
+                        }
+
+                    }
+
+
+                }
+
+                Collection<MobEffectInstance> effects = attacker.getActiveEffects();
+
+
+                for (MobEffectInstance mobEffectInstance : effects) {
+
+                    if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                        ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                        result =       effect.onpreHitEffect(attacker, victim, damageSource);
+
+                    }
+
+
+                }
+
+
+            }
+
+
+            ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+
+
+            for (ItemStack victimStack : victimItems) {
+
+
+                if (ItemEngine.isItemInitialized(victimStack)) {
+
+
+                    for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
+
+
+                        result =       property.onOwnerPreHit(attacker, victim, instance);
+
+
+                    }
+
+                }
+
+
+            }
+
+
+            Collection<MobEffectInstance> effects = victim.getActiveEffects();
+
+
+            for (MobEffectInstance mobEffectInstance : effects) {
+
+                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                    result =        effect.onOwnerpreHitEffect(attacker, victim, damageSource);
+
+                }
+
+
+            }
+
+        }
+
+
+
+return  result;
+    }
+
+
+
+    public static void cycleAllHitEffects(LivingEntity attacker, LivingEntity victim, APDamageSource damageSource) {
+
+
+
+        DamageInstance instance = damageSource.instance;
+
+
+        Object device = instance.damageDevice;
+
+
+        if (device != null) {
+
+            if (attacker != null) {
+
+                if (device instanceof Spell) {
+
+
+
+
+                }
+                if (device instanceof ItemStack) {
+
+
+
+                    ItemStack weapon = (ItemStack) device;
+
+
+                    for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
+
+
+                        property.onHitEntityInHand(attacker, victim, instance, weapon);
+
+
+                    }
+                }
+
+                ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+                for (ItemStack attackerStack : attackerItems) {
+
+
+                    if (ItemEngine.isItemInitialized(attackerStack)) {
+
+
+                        for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+
+
+                            property.onHitEntity(attacker, victim, instance);
+
+
+                        }
+
+                    }
+
+
+                }
+
+                Collection<MobEffectInstance> effects = attacker.getActiveEffects();
+
+
+                for (MobEffectInstance mobEffectInstance : effects) {
+
+                    if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                        ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                        effect.onHitEffect(attacker, victim, damageSource);
+
+                    }
+
+
+                }
+
+
+            }
+
+
+            ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+
+
+            for (ItemStack victimStack : victimItems) {
+
+
+                if (ItemEngine.isItemInitialized(victimStack)) {
+
+
+                    for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
+
+
+                        property.onOwnerHit(attacker, victim, instance);
+
+
+                    }
+
+                }
+
+
+            }
+
+
+            Collection<MobEffectInstance> effects = victim.getActiveEffects();
+
+
+            for (MobEffectInstance mobEffectInstance : effects) {
+
+                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                    effect.onOwnerHitEffect(attacker, victim, damageSource);
+
+                }
+
+
+            }
+
+        }
+
+
 
 
     }
 
-    public void fireWeapon(LivingEntity attacker, ItemStack stack) {
 
 
-    }
-
-    public void onProjectileHit(LivingEntity attacker, LivingEntity victim, Projectile projectile) {
 
 
-    }
 
-    public void attackEntity(LivingEntity attacker, LivingEntity victim, ItemStack weapon) {
+
+    public static void cycleAllPostHitEffects(LivingEntity attacker, LivingEntity victim, APDamageSource damageSource) {
+
+        DamageInstance instance = damageSource.instance;
+
+
+        Object device = instance.damageDevice;
+
+
+        if (device != null) {
+
+            if (attacker != null) {
+
+                if (device instanceof Spell) {
+
+
+                    CombatEngine.applySpellLifestal(attacker, victim, instance);
+
+
+                }
+                if (device instanceof ItemStack) {
+
+
+                    CombatEngine.applyWeaponLifesteal(attacker, victim, instance);
+
+                    ItemStack weapon = (ItemStack) device;
+
+
+                    for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
+
+
+                        property.postHitEntityInHand(attacker, victim, instance, weapon);
+
+
+                    }
+                }
+
+                ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+                for (ItemStack attackerStack : attackerItems) {
+
+
+                    if (ItemEngine.isItemInitialized(attackerStack)) {
+
+
+                        for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+
+
+                            property.postHitEntity(attacker, victim, instance);
+
+
+                        }
+
+                    }
+
+
+                }
+
+                Collection<MobEffectInstance> effects = attacker.getActiveEffects();
+
+
+                for (MobEffectInstance mobEffectInstance : effects) {
+
+                    if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                        ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                        effect.onpostHitEffect(attacker, victim, damageSource);
+
+                    }
+
+
+                }
+
+
+            }
+
+
+            ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+
+
+            for (ItemStack victimStack : victimItems) {
+
+
+                if (ItemEngine.isItemInitialized(victimStack)) {
+
+
+                    for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
+
+
+                        property.onOwnerPostHit(attacker, victim, instance);
+
+
+                    }
+
+                }
+
+
+            }
+
+
+            Collection<MobEffectInstance> effects = victim.getActiveEffects();
+
+
+            for (MobEffectInstance mobEffectInstance : effects) {
+
+                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+
+                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+
+                    effect.onOwnerpostHitEffect(attacker, victim, damageSource);
+
+                }
+
+
+            }
+
+        }
+
+
+
 
 
     }

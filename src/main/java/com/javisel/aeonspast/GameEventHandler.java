@@ -48,10 +48,7 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -101,10 +98,67 @@ public class GameEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void newAttackEntityEvent(LivingAttackEvent event) {
+
+        LivingEntity victim = event.getEntityLiving();
+        Entity directEntity = event.getSource().getDirectEntity();
+        Entity sourceEntity = event.getSource().getEntity();
+        net.minecraft.world.level.Level level = event.getEntityLiving().level;
+        DamageSource source = event.getSource();
+
+
+        if (level.isClientSide) {
+
+            return;
+        }
+
+        if (!(source instanceof APDamageSource)) {
+
+            APDamageSource newDamageSource = null;
+
+
+            if (source instanceof IndirectEntityDamageSource) {
+
+                IndirectEntityDamageSource indirectEntityDamageSource = (IndirectEntityDamageSource) source;
+
+                if (indirectEntityDamageSource.isProjectile()) {
+
+
+
+
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        }
+
 
     @SubscribeEvent
     public static void attackEntityEvent(LivingAttackEvent event) {
-
 
         LivingEntity victim = event.getEntityLiving();
 
@@ -212,10 +266,25 @@ public class GameEventHandler {
             } else {
 
 
-                if (instance.postMitigationsAmount / victim.getMaxHealth() > 0.25) {
+
+
+                if (instance.cancel) {
+                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, SoundSource.NEUTRAL, 1, 1, true);
+
+
+                    return;
+                }
+
+
+                if (instance.postMitigationsAmount / victim.getMaxHealth() > 0.4) {
 
                     victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.NEUTRAL, 1, 1, true);
-                    victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.HOSTILE, 1, 1);
+
+
+                } else {
+
+
+                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.NEUTRAL, 1, 1, true);
 
 
                 }
@@ -223,17 +292,8 @@ public class GameEventHandler {
                 if (instance.isCritical) {
 
                     victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.NEUTRAL, 1, 1, true);
-                    victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.HOSTILE, 1, 1);
-
 
                 }
-
-
-
-
-
-
-
 
                 net.minecraft.world.entity.LivingEntity attacker = null;
 
@@ -247,157 +307,32 @@ public class GameEventHandler {
 
                          Player player = (Player) attacker;
 
-
-
                          ServerLevel serverLevel = (ServerLevel) level;
-
-
-
 
                          WorldTextOptions textOptions = WorldTextOptions.getWorldNumberOptionByDamage(instance.damage_type, (float) instance.postMitigationsAmount,instance.isCritical);
 
 
                          Random random =serverLevel.getRandom();
                          double xpos = victim.getX();
-                         double ypos = victim.getY() + victim.getBbHeight()+0.25;
+                         double ypos = victim.getY() + victim.getBbHeight()+0.1;
                          double zpos = victim.getZ();
 
-                         double xd = .1d;
-                         double yd=.1d;
-                         double zd =.1d;
+                         double xd = 0;
+                         double yd=0;
+                         double zd =0;
 
 
                           serverLevel.sendParticles((ServerPlayer)player, textOptions,true,xpos,ypos,zpos,1,xd,yd,zd,0d);
 
 
-
-
-
                      }
-
-                    Object device = instance.damageDevice;
-
-
-                    if (device != null) {
-
-                        if (instance.damageDevice instanceof Spell) {
-
-
-                            CombatEngine.applySpellLifestal(attacker, victim, instance);
-
-
-                        }
-                        if (instance.damageDevice instanceof ItemStack) {
-
-
-                            CombatEngine.applyWeaponLifesteal(attacker, victim, instance);
-
-
-                        }
-
-                        if (device instanceof ItemStack) {
-
-                            ItemStack weapon = (ItemStack) device;
-
-
-                            for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
-
-
-                                property.postHitEntityInHand(attacker, victim, instance, weapon);
-
-
-                            }
-
-
-                        }
-
-                        if (attacker != null) {
-                            ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
-                            for (ItemStack attackerStack : attackerItems) {
-
-
-                                if (ItemEngine.isItemInitialized(attackerStack)) {
-
-
-                                    for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
-
-
-                                        property.postHitEntity(attacker, victim, instance);
-
-
-                                    }
-
-                                }
-
-
-                            }
-
-                            Collection<MobEffectInstance> effects = attacker.getActiveEffects();
-
-
-                            for (MobEffectInstance mobEffectInstance : effects) {
-
-                                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
-
-                                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
-
-                                    effect.onpostHitEffect(attacker, victim, apsource);
-
-                                }
-
-
-                            }
-
-
-                        }
-                        ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
-
-
-                        for (ItemStack victimStack : victimItems) {
-
-
-                            if (ItemEngine.isItemInitialized(victimStack)) {
-
-
-                                for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
-
-
-                                    property.onOwnerPostHit(attacker, victim, instance);
-
-
-                                }
-
-                            }
-
-
-                        }
-                        Collection<MobEffectInstance> effects = victim.getActiveEffects();
-
-
-                        for (MobEffectInstance mobEffectInstance : effects) {
-
-                            if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
-
-                                ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
-
-                                effect.onOwnerpostHitEffect(attacker, victim, apsource);
-
-                            }
-
-
-                        }
-
-                    }
-
-
-
-
-
-
-
 
 
                 }
+
+                CombatEngine.cycleAllPostHitEffects(attacker,victim,apsource);
+
+
             }
 
 
@@ -580,17 +515,32 @@ public class GameEventHandler {
         if (event.phase == TickEvent.Phase.START) {
 
             Player player = event.player;
-            if (player.isDeadOrDying()) {
+             if (player.isDeadOrDying()) {
                 return;
             }
             IPlayerData playerData = Utilities.getPlayerData(player);
+            IEntityData entityData = Utilities.getEntityData(player);
 
 
+
+
+            entityData.tick();
+
+
+            if (entityData.getTicks() == 20) {
+
+
+                player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
+
+
+
+            }
             if (playerData.getActiveClass() != null) {
 
                 Resource resource = playerData.getActiveClass().getCastResource();
 
                 if (resource != null) {
+
 
 
                     resource.tick(player);
@@ -771,7 +721,12 @@ public class GameEventHandler {
                 for (Entity entity : level.getAllEntities()) {
 
 
-                    if (entity instanceof LivingEntity) {
+                    if (entity instanceof Player) {
+
+                        continue;
+                    }
+
+                     if (entity instanceof LivingEntity) {
 
 
                         LivingEntity livingEntity = (LivingEntity) entity;
@@ -817,6 +772,16 @@ public class GameEventHandler {
         if (event.getOriginal().level.isClientSide) {
             return;
         }
+
+
+        IEntityData oldEnt = Utilities.getEntityData(event.getOriginal());
+        IEntityData newDat = Utilities.getEntityData(event.getPlayer());
+
+        newDat.readNBT(oldEnt.writeNBT());
+
+
+
+
         IPlayerData originalData = Utilities.getPlayerData(event.getOriginal());
 
 
@@ -826,6 +791,21 @@ public class GameEventHandler {
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

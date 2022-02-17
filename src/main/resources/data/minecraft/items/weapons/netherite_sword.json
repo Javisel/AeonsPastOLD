@@ -38,16 +38,15 @@
 
   "secondarydata" : [],
   "properties": [
-    "aeonspast:epic",
-    "aeonspast:fireproof",
+     "aeonspast:fireproof",
     "aeonspast:versatile",
     "aeonspast:sweeping",
     "aeonspast:kinetic",
     "aeonspast:brutal"
   ],
   "spells": [
-    "aeonspast:cleave",
-    "aeonspast:uppercut",
-    "aeonspast:double_strike"
+    "aeonspast:true_strike",
+    "aeonspast:double_slash",
+    "aeonspast:cleave"
   ]
 }

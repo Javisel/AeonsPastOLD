@@ -16,7 +16,7 @@ public enum DamageTypeEnum {
     FIRE("aeonspast:fire",6, null, 0xF73718),
     COLD("aeonspast:cold",7, null, 0xd6ecef),
     ELECTRIC("aeonspast:electric",8, null, 0xffff33),
-    RADIANT("eaonspast:radiant",9, null, 0xffd700),
+    RADIANT("eaonspast:radiant",9, null, 0xFFD700),
     POISON("aeonspast:poison",10, null, 0x80b692),
     WITHER("aeonspast:wither",11, null, 0x301934),
     ENVIRONMENTAL("aeonspast:environmental",12, null, 0xFFFFFF),

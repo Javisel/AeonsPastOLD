@@ -73,11 +73,13 @@ public class ToolTipHandler {
 
             if (ItemEngine.isItemInitialized(stack)) {
 
+                addRarityTooltip(stack,tooltips);
 
-                addPropertyToolTips(stack, tooltips);
+                 addPropertyToolTips(stack, tooltips);
 
 
                 if (ItemEngine.isWeapon(stack) ){
+
                     adjustWeaponTooltip(stack, tooltips);
 
                 } else if (ItemEngine.isArmor(stack)) {
@@ -116,7 +118,7 @@ public class ToolTipHandler {
 
 
     public static void addRarityTooltip(ItemStack stack,  List<Either<FormattedText, TooltipComponent>> tooltips ) {
-        CompoundTag tag = ItemEngine.getPropertyTag(stack);
+        CompoundTag tag = ItemEngine.getAeonsPastTag(stack);
 
         ItemRarity rarity = ItemRarity.valueOf(tag.getString(RARITY));
         MutableComponent propertycomponent = new TranslatableComponent(rarity.getUnlocalizedName());
@@ -158,7 +160,7 @@ public class ToolTipHandler {
                         }
                         propertycomponent.append(new TranslatableComponent(property.getRegistryName().toString()));
 
-                        if (properties.indexOf(property) != properties.size() - 1) {
+                        if (properties.indexOf(property) != displayproperty.size() - 1) {
 
                             propertycomponent.append(",");
                         }
@@ -205,10 +207,10 @@ public class ToolTipHandler {
         }
 
         double crit_damage = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get(), stack, EquipmentSlot.MAINHAND);
-        ;
 
 
-        if (crit_damage != 2) {
+
+        if (crit_damage != 0) {
 
             tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.CRITICAL_DAMAGE.get(), stack, weaponData.getCritical_damage(), crit_damage, EquipmentSlot.MAINHAND)));
 
@@ -363,21 +365,20 @@ public class ToolTipHandler {
     public static Component getAttributeComponent(Attribute attribute, ItemStack stack, StatisticPair pair, double value, EquipmentSlot slot) {
 
             boolean isminute=false;
-        if (pair instanceof AttributeStatisticsPair) {
-
-            AttributeStatisticsPair attributePair = (AttributeStatisticsPair) pair;
-
-
-             if (attributePair.getOperation()== AttributeModifier.Operation.MULTIPLY_BASE ||attributePair.getOperation()== AttributeModifier.Operation.MULTIPLY_TOTAL  ) {
+            boolean isPercentage=false;
+            boolean isAdditive = false;
+            if (attribute == Attributes.MOVEMENT_SPEED || attribute ==  AttributeRegistration.CRITICAL_DAMAGE.get()) {
 
 
                 isminute=true;
-
-
-            }
-
-
+                isPercentage=true;
+                isAdditive=true;
         }
+            if (attribute == AttributeRegistration.CRITICAL_CHANCE.get()) {
+
+                isPercentage=true;
+                isAdditive=true;
+            }
 
 
         double inputvalue = value;
@@ -386,8 +387,12 @@ public class ToolTipHandler {
 
         TranslatableComponent component = (TranslatableComponent) getVariableStringComponent(attribute.getDescriptionId());
 
-        //component.append(new TranslatableComponent("+ "));
 
+
+        if (isAdditive) {
+            component.append(new TranslatableComponent("+ "));
+
+        }
          if (isminute) {
             inputvalue= value*100;
         }
@@ -404,7 +409,7 @@ public class ToolTipHandler {
          component = (TranslatableComponent) component.copy().append(numbercomponent);
 
 
-        if (isminute) {
+        if (isPercentage) {
             component = (TranslatableComponent) component.append("%");
 
         }

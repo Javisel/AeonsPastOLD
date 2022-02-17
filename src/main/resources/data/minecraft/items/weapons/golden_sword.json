@@ -45,8 +45,8 @@
     "aeonspast:brutal"
   ],
   "spells": [
-    "aeonspast:cleave",
-    "aeonspast:uppercut",
-    "aeonspast:double_strike"
+    "aeonspast:true_strike",
+    "aeonspast:double_slash",
+    "aeonspast:cleave"
   ]
 }

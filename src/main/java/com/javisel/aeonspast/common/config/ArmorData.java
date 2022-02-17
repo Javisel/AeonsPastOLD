@@ -73,6 +73,8 @@ public class ArmorData {
 
 
 
+        tag.putString(RARITY,rarity.name());
+
         tag.put(ITEM_PROPERTIES,props);
 
 
@@ -98,7 +100,6 @@ public class ArmorData {
              data.statistics.add(pair);
 
         }
-
 
 
 
@@ -171,6 +172,7 @@ public class ArmorData {
 
 
         }
+        ItemEngine.getAeonsPastTag(stack).putString(RARITY, rarity.name());
 
         ItemEngine.getAeonsPastTag(stack).putUUID(UNIQUE_ID,UUID.randomUUID());
 

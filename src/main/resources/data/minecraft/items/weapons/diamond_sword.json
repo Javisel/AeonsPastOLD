@@ -45,6 +45,7 @@
   ],
   "spells": [
     "aeonspast:true_strike",
-    "aeonspast:double_strike"
+    "aeonspast:double_slash",
+    "aeonspast:cleave"
   ]
 }

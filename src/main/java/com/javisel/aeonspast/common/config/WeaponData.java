@@ -33,7 +33,7 @@ public class WeaponData {
     public static final double ATTACK_SPEED_OFFSET = -1;
 
     private final WeaponType weapon_type;
-
+    private final ItemRarity rarity;
     private final StatisticPair attack_damage;
     private final StatisticPair attack_speed;
     private final StatisticPair critical_chance;
@@ -43,8 +43,7 @@ public class WeaponData {
      private final List<String> properties = new ArrayList<>();
     private final List<String> spells = new ArrayList<>();
     private final boolean is_ranged;
-    private final ItemRarity rarity;
-    private StatisticPair dps;
+     private StatisticPair dps;
 
 
 
@@ -96,7 +95,7 @@ public class WeaponData {
 
 
          tag.put(STATISTICS,stats);
-         tag.putString("rarity", rarity.toString());
+         tag.putString(RARITY, rarity.toString());
         CompoundTag propertyTag = new CompoundTag();
 
 
@@ -153,7 +152,7 @@ public class WeaponData {
         ArrayList<String> spells = new ArrayList<>(tag.getCompound(SPELL).getAllKeys());
 
 
-        ItemRarity rarity = ItemRarity.valueOf(tag.getString("rarity"));
+        ItemRarity rarity = ItemRarity.valueOf(tag.getString(RARITY));
 
 
         WeaponType type =WeaponType.valueOf(tag.getString(WEAPON_TYPE));
@@ -223,6 +222,8 @@ public class WeaponData {
         int i = spells.size();
 
         int choice = random.nextInt(i);
+        System.out.println("Rarity: " + rarity.getUnlocalizedName());
+        ItemEngine.getAeonsPastTag(stack).putString(RARITY, rarity.name());
 
         ItemEngine.getAeonsPastTag(stack).putString(SPELL, spells.get(choice));
         ItemEngine.getAeonsPastTag(stack).putBoolean(IS_RANGED, is_ranged);

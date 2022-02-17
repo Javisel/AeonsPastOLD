@@ -3,8 +3,10 @@ package com.javisel.aeonspast.client.particles;
 import com.javisel.aeonspast.common.particles.WorldTextOptions;
 import com.javisel.aeonspast.common.particles.WorldTextType;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -21,8 +23,9 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class WorldTextParticle extends SingleQuadParticle {
+public class WorldTextParticle extends Particle {
 
+    protected float quadSize = 0.1F * (this.random.nextFloat() * 0.5F + 0.5F) * 2.0F;
 
     Component component;
     public WorldTextParticle(Component component, ClientLevel level, double xo, double yo, double zo) {
@@ -49,65 +52,36 @@ public class WorldTextParticle extends SingleQuadParticle {
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float ticks) {
 
-        super.render(vertexConsumer, camera, ticks);
+         PoseStack stack =  new PoseStack();
+        stack.pushPose();
 
-        Font font = Minecraft.getInstance().font;
-
-
-        double x =xo;
-        double y = yo;
-        double z =zo;
-
-        float scale = 0.03f;
+            Vec3 vec3 = camera.getPosition();
+         float x = (float)(Mth.lerp((double)ticks, this.xo, this.x) - vec3.x());
+        float y = (float)(Mth.lerp((double)ticks, this.yo, this.y) - vec3.y());
+        float z = (float)(Mth.lerp((double)ticks, this.zo, this.z) - vec3.z());
 
 
+          Font font = Minecraft.getInstance().font;
 
 
-        Vec3 camPos = camera.getPosition();
-        double camX = camPos.x;
-        double camY = camPos.y;
-        double camZ = camPos.z;
+         float scale = 0.03f;
 
-        PoseStack stack = RenderSystem.getModelViewStack();
         RenderSystem.disableBlend();
         RenderSystem.disableDepthTest();
         RenderSystem.disableColorLogicOp();
         RenderSystem.disablePolygonOffset();
-           stack.pushPose();
 
-      stack.translate(x - (camX), (y) - camY, z - (camZ));
+        stack.translate(x, y, z);
 
-        stack.mulPose(Vector3f.YP.rotationDegrees(-camera.getYRot()));
-       stack.mulPose(Vector3f.XP.rotationDegrees(camera.getXRot()));
+        stack.mulPose(camera.rotation());
+
+
+
         stack.scale(-scale, -scale, scale);
-
-
-
-
 
          font.draw(stack,component,(float)0,(float)0,0);
            stack.popPose();
 
-    }
-
-    @Override
-    protected float getU0() {
-        return 0;
-    }
-
-    @Override
-    protected float getU1() {
-        return 0;
-    }
-
-    @Override
-    protected float getV0() {
-        return 0;
-    }
-
-    @Override
-    protected float getV1() {
-        return 0;
     }
 
 

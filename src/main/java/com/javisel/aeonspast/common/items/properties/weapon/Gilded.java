@@ -24,7 +24,7 @@ public class Gilded extends WeaponProperty {
             if (victim.getMobType() == MobType.UNDEAD) {
 
 
-                DamageInstance proc = new DamageInstance(DamageTypeEnum.RADIANT, ((damageInstance.getPreMitigationsAmount()) *0.05) * damageInstance.procPower);
+                DamageInstance proc = new DamageInstance(DamageTypeEnum.RADIANT, ((damageInstance.getPreMitigationsAmount()) *0.10) * damageInstance.procPower);
 
 
 

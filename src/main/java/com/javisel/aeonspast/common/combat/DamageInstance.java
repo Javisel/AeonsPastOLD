@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
+
 import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class DamageInstance {
@@ -32,6 +34,8 @@ public class DamageInstance {
     public double postMitigationsAmount = 0;
     public boolean cancel = false;
     public boolean isMagic = false;
+
+    public ArrayList<String> flags = new ArrayList<>();
     public DamageInstance(DamageTypeEnum damageTypes, double amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
         this.preMitigationsAmount = amount;
         this.damage_type = damageTypes;
@@ -141,7 +145,20 @@ public class DamageInstance {
 
         tag.putString(StringKeys.DAMAGE_TYPE,damage_type.getUnlocalizedName());
 
+        CompoundTag flagTag = new CompoundTag();
 
+        for (String string : flags) {
+
+
+
+            flagTag.putString(string,string);
+
+
+
+
+
+        }
+tag.put(FLAGS,flagTag);
 
  return  tag;
     }

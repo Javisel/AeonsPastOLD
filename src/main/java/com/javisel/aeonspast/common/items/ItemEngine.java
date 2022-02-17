@@ -5,6 +5,7 @@ import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.server.ServerHandler;
+import com.javisel.aeonspast.utilities.StringKeys;
 import com.javisel.aeonspast.utilities.Tags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.javisel.aeonspast.AeonsPast.MODID;
 import static com.javisel.aeonspast.utilities.StringKeys.*;
@@ -102,7 +104,9 @@ public class ItemEngine {
 
         if (!isItemInitialized(stack)) {
 
-            getAeonsPastTag(stack);
+            getAeonsPastTag(stack).putUUID(UNIQUE_ID, UUID.randomUUID());
+
+
 
 
             if (isWeapon(stack )) {

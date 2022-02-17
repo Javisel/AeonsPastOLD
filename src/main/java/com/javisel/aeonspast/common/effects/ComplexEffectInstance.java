@@ -2,23 +2,38 @@ package com.javisel.aeonspast.common.effects;
 
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class ComplexEffectInstance {
 
 
+
+    protected final UUID instanceID;
     protected final UUID source;
    protected float power;
     protected  float duration;
     protected  float initialDuration;
     public boolean remove = false;
-    public ComplexEffectInstance(UUID source, float power, float duration, float initialDuration) {
+
+    ArrayList<StatusFlags> statusFlags = new ArrayList<>();
+
+    public ComplexEffectInstance(UUID instanceID, UUID source, float power, float duration, float initialDuration) {
+        this.instanceID = instanceID;
         this.source = source;
         this.power = power;
         this.duration = duration;
         this.initialDuration = initialDuration;
     }
-
+    public ComplexEffectInstance(UUID instanceID, UUID source, float power, float duration, float initialDuration, StatusFlags... statusFlags) {
+        this.instanceID = instanceID;
+        this.source = source;
+        this.power = power;
+        this.duration = duration;
+        this.initialDuration = initialDuration;
+        this.statusFlags= new ArrayList<StatusFlags>(Arrays.asList(statusFlags));
+    }
 
     public UUID getSource() {
         return source;
@@ -37,6 +52,7 @@ public class ComplexEffectInstance {
     }
 
 
+    public static final String STATUS_FLAGS = "status_flags";
     public CompoundTag toNBT() {
 
 
@@ -46,18 +62,50 @@ public class ComplexEffectInstance {
         tag.putFloat("power",power);
         tag.putFloat("duration",duration);
         tag.putFloat("initialduration",initialDuration);
+
+        CompoundTag statusFlagTag = new CompoundTag();
+
+        int i = 0;
+         for (StatusFlags flags : statusFlags) {
+
+             statusFlagTag.putInt("flag_" + i,flags.id);
+
+             i++;
+
+         }
+
+        tag.put(STATUS_FLAGS,statusFlagTag);
+
+
         return  tag;
     }
 
-    public static ComplexEffectInstance fromNBT(CompoundTag tag) {
+     public static ComplexEffectInstance fromNBT(CompoundTag tag) {
 
 
 
 
+      ComplexEffectInstance instance = new ComplexEffectInstance(tag.getUUID("instanceid"), tag.getUUID("source"),tag.getFloat("power"),tag.getFloat("duration"),tag.getFloat("initialduration"));
+
+       CompoundTag flags =  tag.getCompound(STATUS_FLAGS);
+
+       for (String key : flags.getAllKeys())  {
+
+
+           int id = flags.getInt(key);
+
+           StatusFlags flag = StatusFlags.STATUS_FLAGS[id];
+
+           instance.statusFlags.add(flag);
 
 
 
-        return  new ComplexEffectInstance(tag.getUUID("source"),tag.getFloat("power"),tag.getFloat("duration"),tag.getFloat("initialduration"));
+       }
+
+
+        return  instance;
+
+
     }
 
 

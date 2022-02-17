@@ -6,8 +6,8 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class Chuck  extends WeaponSpell{
 
-    public Chuck(int defaultChargeTime, float defaultCost, SpellRank spellRank) {
-        super(100, 40, spellRank);
+    public Chuck( ) {
+        super(100, 40, SpellRank.WEAPON_SPELL);
     }
 
     @Override

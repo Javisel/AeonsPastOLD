@@ -5,8 +5,8 @@ import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public class DoubleStrike extends WeaponSpell {
-    public DoubleStrike() {
+public class DoubleSlash extends WeaponSpell {
+    public DoubleSlash() {
         super(60, 25, SpellRank.WEAPON_SPELL);
     }
 

@@ -26,7 +26,7 @@ public class TrueStrikeSpellBuff extends ComplexEffect {
         if (instance.doesProcWeaponHitEffects && instance.damageDevice instanceof ItemStack) {
 
 
-             float damage = (float) (instance.getPreMitigationsAmount()*  0.25f);
+             float damage = (float) (instance.getPreMitigationsAmount()*  0.60f);
 
              DamageInstance damageInstance = new DamageInstance(DamageTypeEnum.TRUE, damage);
             APEntityDamageSource apEntityDamageSource = new APEntityDamageSource(damageSource.getMsgId(), damageInstance,attacker);

@@ -1,6 +1,15 @@
 package com.javisel.aeonspast.common.capabiltiies.projectile;
 
-public class IProjectileData {
+import java.util.UUID;
+
+public interface IProjectileData {
+
+
+    UUID shooterItemID();
+
+
+
+
 
 
 

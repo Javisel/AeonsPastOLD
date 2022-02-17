@@ -43,8 +43,8 @@
     "aeonspast:fireproof"
   ],
   "spells": [
-    "aeonspast:cleave",
+    "aeonspast:true_strike",
     "aeonspast:uppercut",
-    "aeonspast:double_strike"
+    "aeonspast:chuck"
   ]
 }

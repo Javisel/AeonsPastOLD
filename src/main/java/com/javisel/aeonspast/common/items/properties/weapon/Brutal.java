@@ -23,9 +23,9 @@ public class Brutal extends WeaponProperty {
 
             if (doesproc) {
 
-                damageInstance.preMitigationsAmount*=1.10;
-                CombatEngine.applyCrits(attacker,victim,damageInstance);
-                applyBrutalCooldown(attacker);
+                damageInstance.preMitigationsAmount*=1.25;
+               // CombatEngine.applyCrits(attacker,victim,damageInstance);
+                //applyBrutalCooldown(attacker);
             }
 
 

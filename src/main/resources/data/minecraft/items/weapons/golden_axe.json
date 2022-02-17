@@ -39,11 +39,11 @@
   "properties": [
      "aeonspast:versatile",
     "aeonspast:brutal",
-    "aeonspast:gilded"
+    "aeonspast:gilded_weapon"
   ],
   "spells": [
-    "aeonspast:cleave",
+    "aeonspast:true_strike",
     "aeonspast:uppercut",
-    "aeonspast:double_strike"
+    "aeonspast:chuck"
   ]
 }

@@ -1,9 +1,12 @@
 package com.javisel.aeonspast.common.items.properties.weapon;
 
+import com.javisel.aeonspast.common.combat.CombatEngine;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
 import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -15,9 +18,15 @@ import net.minecraft.world.item.enchantment.Enchantments;
 public class Sweeping extends WeaponProperty {
 
 
+    private static final String PROCED_SWEEP = "proced_sweep";
+
     @Override
     public boolean onHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
        if  (super.onHitEntityInHand(attacker, victim, damageInstance, stack)) {
+
+           if (damageInstance.flags.contains(PROCED_SWEEP)) {
+               return  true;
+           }
 
            double sweepScaling = 0.10f + (0.10f * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SWEEPING_EDGE, stack));
 
@@ -38,12 +47,21 @@ public class Sweeping extends WeaponProperty {
 
                        DamageInstance procDamage = new DamageInstance(DamageTypeEnum.SLASH, bonusPhysicalDamage);
 
+                       procDamage.flags.add(PROCED_SWEEP);
+                       procDamage.doesProcWeaponHitEffects=true;
+                       procDamage.procPower=0.33f;
+
                        APEntityDamageSource entityDamageSource = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", procDamage, attacker);
+                       CombatEngine.cycleAllHitEffects(attacker,livingentity,entityDamageSource);
+
+
                        livingentity.hurt(entityDamageSource, (float) bonusPhysicalDamage);
 
 
                    }
 
+
+                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.NEUTRAL, 1, 1, true);
 
                     if (attacker instanceof Player) {
 
