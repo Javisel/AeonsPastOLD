@@ -17,7 +17,7 @@ public class DamageInstance {
     public boolean doesProcWeaponHitEffects = false;
     public boolean doesProcTrinketEffects = true;
     public boolean doesProcInventoryItemEffects = true;
-    public boolean doesProcStatusEffect = false;
+    public boolean canStatus = false;
     public boolean isCritical = false;
     public boolean isSpecial = false;
     public boolean isArea = false;
@@ -34,8 +34,7 @@ public class DamageInstance {
     public double postMitigationsAmount = 0;
     public boolean cancel = false;
     public boolean isMagic = false;
-
-    public ArrayList<String> flags = new ArrayList<>();
+      public ArrayList<String> flags = new ArrayList<>();
     public DamageInstance(DamageTypeEnum damageTypes, double amount, boolean doesProcSpellEffects, boolean doesProcWeaponHitEffects, boolean doesProcTrinketEffects, boolean doesProcInventoryItemEffects, boolean isCritical, boolean isSpecial, boolean isArea, int procPower) {
         this.preMitigationsAmount = amount;
         this.damage_type = damageTypes;
@@ -80,20 +79,39 @@ public class DamageInstance {
     }
     //Damage applied by Weapons.
 
-    public DamageInstance(ItemStack device, DamageTypeEnum subType, double amount, boolean isArea, boolean isCritical, boolean isMelee) {
+
+
+    public DamageInstance (ItemStack device, DamageTypeEnum subType, double amount, boolean isArea, boolean isCritical, boolean isMelee) {
 
 
 
         this.damage_type=subType;
         this.preMitigationsAmount =amount;
         doesProcWeaponHitEffects = true;
+        canStatus =true;
         this.canCritical=true;
         this.isArea = isArea;
         this.isCritical = isCritical;
         damageDevice = device;
        this.isMelee = isMelee;
+       this.canStatus=true;
+    }
+
+
+    public static DamageInstance getBleedDamage(double amount) {
+
+        DamageInstance instance =  getGenericProcDamage(DamageTypeEnum.BLEED,amount);
+
+        instance.isOverTime=true;
+
+        return  instance;
 
     }
+
+
+
+
+
 
 
     private static final String CAN_CRIT = "can_crit";

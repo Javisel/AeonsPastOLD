@@ -25,6 +25,11 @@
     "min": 1248,
     "max": 1873
   },
+  "status_chance" : {
+    "min": 20,
+    "max" :40
+
+  },
   "enchantability": {
     "min": 15,
     "max": 15

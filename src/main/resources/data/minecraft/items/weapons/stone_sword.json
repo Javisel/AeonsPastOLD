@@ -21,6 +21,13 @@
     "min": 2,
     "max": 2
   },
+
+  "status_chance" : {
+    "min": 10,
+    "max" :20
+
+  },
+
   "durability": {
     "min": 48,
     "max": 78

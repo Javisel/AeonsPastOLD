@@ -58,7 +58,6 @@ public class AttributeRegistration {
 
   //Offensive - Status Chances
     public static final RegistryObject<Attribute> STATUS_CHANCE = ATTRIBUTES.register("status_chance", () -> new RangedAttribute("generic.status_chance", 0, -100, 100).setSyncable(true));
-    public static final RegistryObject<Attribute> BLEED_CHANCE = ATTRIBUTES.register("bleed_chance", () -> new RangedAttribute("generic.bleed_chance", 0, -100, 100).setSyncable(true));
 
 
 

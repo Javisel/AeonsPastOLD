@@ -10,11 +10,12 @@ public class ComplexEffectInstance {
 
 
 
-    protected final UUID instanceID;
-    protected final UUID source;
-   protected float power;
-    protected  float duration;
-    protected  float initialDuration;
+    public final UUID instanceID;
+    public final UUID source;
+   public float power;
+    public  float duration;
+    public  float initialDuration;
+    public float tickRate = 20;
     public boolean remove = false;
 
     ArrayList<StatusFlags> statusFlags = new ArrayList<>();

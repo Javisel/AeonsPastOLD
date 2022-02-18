@@ -27,6 +27,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -98,69 +99,14 @@ public class GameEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void newAttackEntityEvent(LivingAttackEvent event) {
-
-        LivingEntity victim = event.getEntityLiving();
-        Entity directEntity = event.getSource().getDirectEntity();
-        Entity sourceEntity = event.getSource().getEntity();
-        net.minecraft.world.level.Level level = event.getEntityLiving().level;
-        DamageSource source = event.getSource();
-
-
-        if (level.isClientSide) {
-
-            return;
-        }
-
-        if (!(source instanceof APDamageSource)) {
-
-            APDamageSource newDamageSource = null;
-
-
-            if (source instanceof IndirectEntityDamageSource) {
-
-                IndirectEntityDamageSource indirectEntityDamageSource = (IndirectEntityDamageSource) source;
-
-                if (indirectEntityDamageSource.isProjectile()) {
-
-
-
-
-
-
-
-                }
-
-
-
-
-
-
-
-            }
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-        }
 
 
     @SubscribeEvent
     public static void attackEntityEvent(LivingAttackEvent event) {
 
         LivingEntity victim = event.getEntityLiving();
+        Entity attacker = event.getSource().getEntity();
+        Entity directEntity = event.getSource().getDirectEntity();
 
         net.minecraft.world.level.Level level = victim.getLevel();
         DamageSource source = event.getSource();
@@ -171,6 +117,7 @@ public class GameEventHandler {
 
         if (!(event.getSource() instanceof APDamageSource)) {
 
+            event.setCanceled(true);
 
             APDamageSource damageSource = null;
 
@@ -229,7 +176,6 @@ public class GameEventHandler {
             }
 
 
-            event.setCanceled(true);
 
             if (damageSource != null) {
 
@@ -261,46 +207,42 @@ public class GameEventHandler {
 
 
                 victim.hurt(source, (float) instance.postMitigationsAmount);
+                event.setCanceled(true);
 
                 return;
+
             } else {
 
 
 
 
                 if (instance.cancel) {
-                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, SoundSource.NEUTRAL, 1, 1, true);
+                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_NODAMAGE,SoundSource.NEUTRAL,1,1);
 
 
                     return;
                 }
 
-
                 if (instance.postMitigationsAmount / victim.getMaxHealth() > 0.4) {
 
-                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.NEUTRAL, 1, 1, true);
+                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_STRONG,SoundSource.NEUTRAL,1,1);
 
 
                 } else {
 
 
-                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.NEUTRAL, 1, 1, true);
+                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_WEAK,SoundSource.NEUTRAL,1,1);
 
 
                 }
 
                 if (instance.isCritical) {
 
-                    victim.getLevel().playLocalSound(victim.getX(), victim.getY(), victim.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.NEUTRAL, 1, 1, true);
+
+                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_CRIT,SoundSource.NEUTRAL,1,1);
 
                 }
 
-                net.minecraft.world.entity.LivingEntity attacker = null;
-
-
-                if (apsource.getEntity() != null) {
-
-                     attacker = (net.minecraft.world.entity.LivingEntity) apsource.getEntity();
 
 
                      if (attacker instanceof Player) {
@@ -328,9 +270,9 @@ public class GameEventHandler {
                      }
 
 
-                }
 
-                CombatEngine.cycleAllPostHitEffects(attacker,victim,apsource);
+
+                CombatEngine.cycleAllPostHitEffects(attacker instanceof  LivingEntity ? (LivingEntity) attacker : null,victim,apsource);
 
 
             }

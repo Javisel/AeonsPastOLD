@@ -7,14 +7,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.util.UUID;
 
-public class ComplexStatChangeEffect extends ComplexEffect{
+public class ComplexStatChangeEffect extends StatusEffect{
 
 
     private final Attribute attribute;
     private final UUID effectId;
     private final AttributeModifier.Operation operation;
     public ComplexStatChangeEffect(Attribute attribute, UUID effectId, MobEffectCategory effectCategory, int colorCode, AttributeModifier.Operation operation) {
-        super(effectCategory, colorCode);
+        super(effectCategory,colorCode);
         this.attribute=attribute;
         this.effectId = effectId;
         this.operation=operation;

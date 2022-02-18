@@ -24,7 +24,7 @@ import static com.javisel.aeonspast.utilities.StringKeys.*;
 
 public class WeaponData {
 
-    public static final WeaponData UNARMED = new WeaponData(WeaponType.UNARMED,new StatisticPair(5,5),new StatisticPair(1,1),new StatisticPair(5,5),new StatisticPair(2,2), new StatisticPair(0,0),   new StatisticPair(4,4), new ArrayList<>(),new ArrayList<>(),false, ItemRarity.COMMON);
+    public static final WeaponData UNARMED = new WeaponData(WeaponType.UNARMED,new StatisticPair(5,5),new StatisticPair(1,1),new StatisticPair(5,5),new StatisticPair(2,2), new StatisticPair(0,0),   new StatisticPair(4,4), new ArrayList<>(),new ArrayList<>(),false, ItemRarity.COMMON, new StatisticPair(10,10));
 
     public static final String WEAPON_MOD_ID = "4703e862-a7ae-4697-aeea-f58ac8697e10";
 
@@ -38,6 +38,8 @@ public class WeaponData {
     private final StatisticPair attack_speed;
     private final StatisticPair critical_chance;
     private final StatisticPair critical_damage;
+    private final StatisticPair status_chance;
+
     private final StatisticPair durability;
      private final StatisticPair range;
      private final List<String> properties = new ArrayList<>();
@@ -51,7 +53,7 @@ public class WeaponData {
 
 
 
-    public WeaponData(WeaponType item_type, StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged, ItemRarity item_rarity) {
+    public WeaponData(WeaponType item_type, StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged, ItemRarity item_rarity, StatisticPair status_chance) {
         this.weapon_type = item_type;
 
         this.attack_damage = attack_damage;
@@ -63,6 +65,7 @@ public class WeaponData {
          this.range = range;
          this.is_ranged = is_ranged;
         this.rarity = item_rarity;
+        this.status_chance = status_chance;
 
 
         for (String property : properties) {
@@ -146,6 +149,7 @@ public class WeaponData {
         StatisticPair crit_dmg = StatisticPair.fromNBT(statTag.getCompound(CRITICAL_DAMAGE));
         StatisticPair durability = StatisticPair.fromNBT(statTag.getCompound(DURABILITY));
         StatisticPair range = StatisticPair.fromNBT(statTag.getCompound(RANGE));
+        StatisticPair stat_chance = StatisticPair.fromNBT(statTag.getCompound(STATUS_CHANCE));
 
         ArrayList<String> props = new ArrayList<>(tag.getCompound(ITEM_PROPERTIES).getAllKeys());
 
@@ -156,7 +160,7 @@ public class WeaponData {
 
 
         WeaponType type =WeaponType.valueOf(tag.getString(WEAPON_TYPE));
-        WeaponData weaponData = new WeaponData(type,weapon_power,attacks_speed,crit_chance,crit_dmg,durability,range,props,spells,tag.getBoolean(IS_RANGED), rarity);
+        WeaponData weaponData = new WeaponData(type,weapon_power,attacks_speed,crit_chance,crit_dmg,durability,range,props,spells,tag.getBoolean(IS_RANGED), rarity, stat_chance);
 
         return  weaponData;
 
@@ -205,6 +209,8 @@ public class WeaponData {
 
 
         stack.addAttributeModifier(AttributeRegistration.CRITICAL_DAMAGE.get(), new AttributeModifier(id, BASE_STATS, -2+critical_damage.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
+
+         stack.addAttributeModifier(AttributeRegistration.STATUS_CHANCE.get(), new AttributeModifier(id, BASE_STATS, status_chance.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
 
 
         stack.addAttributeModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(id, BASE_STATS, -5 + range.roll(luck, random), AttributeModifier.Operation.ADDITION), EquipmentSlot.MAINHAND);
@@ -298,5 +304,9 @@ public class WeaponData {
 
     public StatisticPair getDps() {
         return dps;
+    }
+
+    public StatisticPair getStatus_chance() {
+        return status_chance;
     }
 }

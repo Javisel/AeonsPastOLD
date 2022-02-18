@@ -3,6 +3,7 @@ package com.javisel.aeonspast.common.combat;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.config.WeaponData;
 import com.javisel.aeonspast.common.effects.ComplexEffect;
+import com.javisel.aeonspast.common.effects.DamageStatusDebuff;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
@@ -10,31 +11,69 @@ import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.server.ServerHandler;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.UUID;
 
 public class CombatEngine {
 
 
-    public static boolean attemptCriticalHit(LivingEntity critter) {
+    public static boolean attemptCriticalHit(LivingEntity roller) {
 
-        Random random = critter.getRandom();
+        Random random = roller.getRandom();
 
 
         float chance = random.nextFloat(101);
 
 
-        return chance <= critter.getAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get());
+        return chance <= roller.getAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get());
 
 
     }
+    
+
+    public static boolean attemptStatus(LivingEntity applier, boolean excludeWeapon   ) {
+
+        Random random = applier.getRandom();
+
+
+        float attempt = random.nextFloat(101);
+
+        double chance = applier.getAttributeValue(AttributeRegistration.STATUS_CHANCE.get());
+
+        if (excludeWeapon) {
+
+
+            chance-=applier.getAttribute(AttributeRegistration.STATUS_CHANCE.get()).getModifier(UUID.fromString(WeaponData.WEAPON_MOD_ID)).getAmount();
+
+
+
+        }
+
+
+
+
+        return attempt <= chance;
+    }
+    
+    
+    
+    public static void applyDamageStatusEffect(LivingEntity source, LivingEntity target, DamageInstance instance, DamageStatusDebuff effect) {
+        
+        
+                
+        effect.applyFromDamage(source,target,instance);
+        
+        
+        
+        
+    }
+    
 
     public static void applyCrits(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
@@ -272,10 +311,7 @@ public class CombatEngine {
     }
 
 
-    public void doDamageCalculations(APDamageSource damageSource, LivingEntity victim) {
 
-
-    }
 
 
     
@@ -283,6 +319,32 @@ public class CombatEngine {
 
 
         boolean result = true;
+
+        if (damageSource.getInstance().canCritical && CombatEngine.attemptCriticalHit(attacker)) {
+
+
+            CombatEngine.applyCrits(attacker, victim, damageSource.instance);
+        }
+
+
+        if (damageSource.getInstance().canStatus && CombatEngine.attemptCriticalHit(attacker)) {
+
+
+            CombatEngine.applyCrits(attacker, victim, damageSource.instance);
+        }
+
+
+
+
+        if (EventFactory.onDamageHit(attacker, victim, damageSource)) {
+
+            return false;
+
+        }
+
+
+
+
 
 
         DamageInstance instance = damageSource.instance;
@@ -405,14 +467,38 @@ return  result;
 
 
 
-    public static void cycleAllHitEffects(LivingEntity attacker, LivingEntity victim, APDamageSource damageSource) {
-
-
-
+    public  static void cycleAllHitEffects(LivingEntity attacker, LivingEntity victim, APDamageSource damageSource) {
         DamageInstance instance = damageSource.instance;
 
 
         Object device = instance.damageDevice;
+
+        if (EventFactory.onDamageHit(attacker, victim, damageSource)) {
+
+            return;
+
+        }
+
+        if (damageSource.getInstance().canCritical && CombatEngine.attemptCriticalHit(attacker)) {
+
+
+            CombatEngine.applyCrits(attacker, victim, damageSource.instance);
+        }
+
+        victim.hurt(damageSource, (float) damageSource.instance.getPreMitigationsAmount());
+
+        if (damageSource.getInstance().canStatus && instance.getDamage_type().getStatusEffect() !=null && attemptStatus(attacker,(damageSource.instance.damageDevice !=null &&  attacker.getMainHandItem() != damageSource.instance.damageDevice))) {
+
+            System.out.println("APPLY!");
+            
+            
+            applyDamageStatusEffect(attacker,victim,damageSource.instance, (DamageStatusDebuff) instance.getDamage_type().getStatusEffect());
+            
+            
+            
+            
+        }
+
 
 
         if (device != null) {
@@ -524,6 +610,7 @@ return  result;
 
 
 
+        return; 
 
     }
 

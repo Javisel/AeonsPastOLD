@@ -62,6 +62,7 @@ public class StringKeys {
     public static final String ATTACK_SPEED = "attack_speed";
     public static final String CRITICAL_DAMAGE = "critical_damage";
     public static final String CRITICAL_CHANCE = "critical_chance";
+    public static final String STATUS_CHANCE = "status_chance";
 
     public static final String DURABILITY = "durability";
     public static final String ENCHANTABILITY = "enchantability";

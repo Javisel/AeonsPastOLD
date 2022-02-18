@@ -1,6 +1,7 @@
 package com.javisel.aeonspast.common.effects;
 
 import com.javisel.aeonspast.ModBusEventHandler;
+import com.javisel.aeonspast.common.capabiltiies.entity.EntityData;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.utilities.Utilities;
@@ -9,6 +10,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.RegistryObject;
@@ -23,43 +25,55 @@ public class ComplexEffect extends MobEffect{
 
 
     //TODO Color codes for all Effects
-    public ComplexEffect(MobEffectCategory p_19451_, int p_19452_) {
-        super(p_19451_, p_19452_);
+    public ComplexEffect(MobEffectCategory effectCate, int effectColour) {
+        super(effectCate, effectColour);
     }
 
 
     @Override
-    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
+    public final boolean isDurationEffectTick(int p_19455_, int p_19456_) {
         return  true;
     }
 
     @Override
-    public void applyEffectTick(LivingEntity livingEntity, int durationIn) {
+    public final void applyEffectTick(LivingEntity livingEntity, int durationIn) {
         super.applyEffectTick(livingEntity, durationIn);
 
 
-
+        System.out.println("EFFECT TICKS!");
         for (ComplexEffectInstance instance : getAllInstancesOnEntity(livingEntity)) {
 
+
+            System.out.println("There's an Instance!");
 
             instance.duration--;
 
 
             if (instance.duration==0) {
+                System.out.println("Removed it!");
 
                 instance.remove=true;
                 removeComplexInstance(instance.source,livingEntity);
             }
 
-            if (instance.duration > durationIn) {
+           if (instance.duration % instance.tickRate == 0) {
 
-
-
+               System.out.println("APPLY THE TICKS!");
+                applyTickableEffect(instance, livingEntity);
             }
 
 
         }
 
+
+
+
+
+
+    }
+
+
+    public void applyTickableEffect(ComplexEffectInstance instance, LivingEntity entity) {
 
 
 
@@ -70,16 +84,40 @@ public class ComplexEffect extends MobEffect{
     public void addnewComplexInstance(ComplexEffectInstance instance, LivingEntity user) {
 
 
+
+        System.out.println("Adding new instance!");
+
+                    IEntityData entityData = Utilities.getEntityData(user);
+
+
+                    ArrayList<ComplexEffectInstance> instances;
+                    if (entityData.getMobEffectArrayListHashMap().containsKey(this)) {
+
+
+                        instances=entityData.getMobEffectArrayListHashMap().get(this);
+
+
+
+                    } else {
+                        instances = new ArrayList<>();
+                     }
+
+                       instances.add(instance);
+
+        entityData.getMobEffectArrayListHashMap().put(this,instances);
+
+
         if (user.hasEffect(this)) {
 
+            if (user.getEffect(this).getDuration() < instance.duration) {
+                user.addEffect(new MobEffectInstance(this,0, (int) instance.duration));
 
-            MobEffectInstance mobInstance = user.getEffect(this);
-
-
-
+            }
 
 
         }
+
+
 
 
 
@@ -88,6 +126,22 @@ public class ComplexEffect extends MobEffect{
 
 
     public void removeComplexInstance(UUID id, LivingEntity user) {
+
+
+        for (ComplexEffectInstance effectInstance : getAllInstancesOnEntity(user)) {
+
+            if (effectInstance.instanceID.equals(id)) {
+
+                effectInstance.remove=true;
+
+                recalculateInstances(user);
+
+                return;
+            }
+
+
+
+        }
 
 
 
@@ -157,7 +211,13 @@ public class ComplexEffect extends MobEffect{
 
 
 
+    public void recalculateInstances(LivingEntity user) {
 
+
+
+
+
+    }
 
 
 
@@ -170,6 +230,10 @@ public void consumeEffect(LivingEntity holder) {
         entityData.getMobEffectArrayListHashMap().remove(this);
 
         holder.removeEffect(this);
+
+
+
+
 }
 
 

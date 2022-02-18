@@ -1,12 +1,12 @@
 package com.javisel.aeonspast.common.registration;
 
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.effects.Bleed;
+import com.javisel.aeonspast.common.effects.damageeffects.Bleed;
 import com.javisel.aeonspast.common.effects.BrutalCooldown;
 import com.javisel.aeonspast.common.effects.TrueStrikeSpellBuff;
 import com.javisel.aeonspast.common.effects.UppercutSpellBuff;
-import com.javisel.aeonspast.common.items.properties.ItemProperty;
-import com.javisel.aeonspast.common.items.properties.itementities.FireProof;
+import com.javisel.aeonspast.common.effects.damageeffects.Perforate;
+import com.javisel.aeonspast.common.effects.damageeffects.Stagger;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,6 +23,8 @@ public class EffectRegistration {
 
 
     public static final RegistryObject<MobEffect> BLEED = EFFECTS.register("bleed", () -> new Bleed());
+    public static final RegistryObject<MobEffect> PERFORATE = EFFECTS.register("perforated", () -> new Perforate());
+    public static final RegistryObject<MobEffect> STAGGER = EFFECTS.register("stagger", () -> new Stagger());
 
 
 

@@ -120,6 +120,9 @@ public class ToolTipHandler {
     public static void addRarityTooltip(ItemStack stack,  List<Either<FormattedText, TooltipComponent>> tooltips ) {
         CompoundTag tag = ItemEngine.getAeonsPastTag(stack);
 
+        if (!tag.contains(RARITY)) {
+            return;
+        }
         ItemRarity rarity = ItemRarity.valueOf(tag.getString(RARITY));
         MutableComponent propertycomponent = new TranslatableComponent(rarity.getUnlocalizedName());
         propertycomponent = propertycomponent.withStyle(rarity.getChatFormat());
@@ -184,6 +187,7 @@ public class ToolTipHandler {
         Multimap<Attribute, AttributeModifier> attributeMods = stack.getAttributeModifiers(EquipmentSlot.MAINHAND);
 
 
+
         double power = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.WEAPON_POWER.get(), stack, EquipmentSlot.MAINHAND);
         ;
         double dps = power;
@@ -197,7 +201,9 @@ public class ToolTipHandler {
 
         tooltips.add((Either.left(getAttributeComponent(Attributes.ATTACK_SPEED, stack, weaponData.getAttack_speed(), attack_speed, EquipmentSlot.MAINHAND))));
         double crit_chance = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get(), stack, EquipmentSlot.MAINHAND);
-        ;
+
+
+
 
 
         if (crit_chance != 0) {
@@ -205,6 +211,8 @@ public class ToolTipHandler {
 
 
         }
+
+
 
         double crit_damage = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get(), stack, EquipmentSlot.MAINHAND);
 
@@ -218,6 +226,13 @@ public class ToolTipHandler {
         }
 
 
+        double status_chance = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.STATUS_CHANCE.get(), stack, EquipmentSlot.MAINHAND);
+        if (status_chance != 0) {
+
+            tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.STATUS_CHANCE.get(), stack, weaponData.getStatus_chance(), status_chance, EquipmentSlot.MAINHAND)));
+
+
+        }
         double range = 5 + ItemEngine.getItemFlatAttributeValue(ForgeMod.REACH_DISTANCE.get(), stack, EquipmentSlot.MAINHAND);
         ;
 
@@ -374,7 +389,7 @@ public class ToolTipHandler {
                 isPercentage=true;
                 isAdditive=true;
         }
-            if (attribute == AttributeRegistration.CRITICAL_CHANCE.get()) {
+            if (attribute == AttributeRegistration.CRITICAL_CHANCE.get() || attribute == AttributeRegistration.STATUS_CHANCE.get()) {
 
                 isPercentage=true;
                 isAdditive=true;

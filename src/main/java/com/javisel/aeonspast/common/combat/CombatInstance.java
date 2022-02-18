@@ -68,19 +68,7 @@ public class CombatInstance {
     public boolean onHit() {
 
 
-        if (source.getInstance().canCritical && CombatEngine.attemptCriticalHit(attacker)) {
 
-
-            CombatEngine.applyCrits(attacker, victim, source.instance);
-        }
-
-
-        if (EventFactory.onDamageHit(attacker, victim, source)) {
-
-            return false;
-
-        }
-        victim.hurt(source, (float) source.getInstance().getPreMitigationsAmount());
 
 
         CombatEngine.cycleAllHitEffects(attacker,victim,source);
