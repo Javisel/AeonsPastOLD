@@ -226,6 +226,7 @@ public class ToolTipHandler {
         }
 
 
+        /*
         double status_chance = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.STATUS_CHANCE.get(), stack, EquipmentSlot.MAINHAND);
         if (status_chance != 0) {
 
@@ -233,6 +234,8 @@ public class ToolTipHandler {
 
 
         }
+
+         */
         double range = 5 + ItemEngine.getItemFlatAttributeValue(ForgeMod.REACH_DISTANCE.get(), stack, EquipmentSlot.MAINHAND);
         ;
 

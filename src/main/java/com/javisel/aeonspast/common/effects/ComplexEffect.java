@@ -30,28 +30,31 @@ public class ComplexEffect extends MobEffect{
 
     }
 
+    @Override
+    public boolean isInstantenous() {
+        return false;
+    }
 
     @Override
     public   boolean isDurationEffectTick(int p_19455_, int p_19456_) {
         return  true;
     }
 
+
+
     @Override
     public final void applyEffectTick(LivingEntity livingEntity, int durationIn) {
         super.applyEffectTick(livingEntity, durationIn);
 
 
-        System.out.println("EFFECT TICKS!");
-        for (ComplexEffectInstance instance : getAllInstancesOnEntity(livingEntity)) {
+         for (ComplexEffectInstance instance : getAllInstancesOnEntity(livingEntity)) {
 
 
-            System.out.println("There's an Instance!");
 
             instance.duration--;
 
 
             if (instance.duration==0) {
-                System.out.println("Removed it!");
 
                 instance.remove=true;
                 removeComplexInstance(instance.source,livingEntity);
@@ -59,8 +62,7 @@ public class ComplexEffect extends MobEffect{
 
            if (instance.duration % instance.tickRate == 0) {
 
-               System.out.println("APPLY THE TICKS!");
-                applyTickableEffect(instance, livingEntity);
+                 applyTickableEffect(instance, livingEntity);
             }
 
 
@@ -76,17 +78,12 @@ public class ComplexEffect extends MobEffect{
 
     public void applyTickableEffect(ComplexEffectInstance instance, LivingEntity entity) {
 
-
-
-
-
+        System.out.println("Tick Effect!");
     }
 
+
+
     public void addnewComplexInstance(ComplexEffectInstance instance, LivingEntity user) {
-
-
-
-        System.out.println("Adding new instance!");
 
                     IEntityData entityData = Utilities.getEntityData(user);
 
@@ -111,14 +108,14 @@ public class ComplexEffect extends MobEffect{
         if (user.hasEffect(this)) {
 
             if (user.getEffect(this).getDuration() < instance.duration) {
-                user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration),null);
+                user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration,false, this instanceof StatusEffect, this instanceof  StatusEffect),null);
 
             }
 
 
         } else {
 
-            user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration),null);
+            user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration,false, this instanceof StatusEffect, this instanceof  StatusEffect),null);
 
         }
 
@@ -132,21 +129,44 @@ public class ComplexEffect extends MobEffect{
 
     public void removeComplexInstance(UUID id, LivingEntity user) {
 
+        IEntityData entityData = Utilities.getEntityData(user);
 
-        for (ComplexEffectInstance effectInstance : getAllInstancesOnEntity(user)) {
 
-            if (effectInstance.instanceID.equals(id)) {
+        ArrayList<ComplexEffectInstance> instances;
+        if (entityData.getMobEffectArrayListHashMap().containsKey(this)) {
 
-                effectInstance.remove=true;
 
-                recalculateInstances(user);
+            instances=entityData.getMobEffectArrayListHashMap().get(this);
 
-                return;
+
+
+        } else {
+          return;
+        }
+
+
+
+
+        for (ComplexEffectInstance comp : instances) {
+
+            if (comp.instanceID.equals(id)) {
+                comp.remove=true;
+                instances.remove(comp);
             }
 
 
-
         }
+        entityData.getMobEffectArrayListHashMap().put(this,instances);
+
+        if (instances.isEmpty()) {
+
+            user.removeEffect(this);
+        }
+
+
+
+
+
 
 
 
@@ -219,12 +239,7 @@ public class ComplexEffect extends MobEffect{
     public void recalculateInstances(LivingEntity user) {
 
 
-
-
-
     }
-
-
 
 
 

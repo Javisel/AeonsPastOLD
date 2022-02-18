@@ -20,22 +20,28 @@ public class ComplexEffectInstance {
 
     ArrayList<StatusFlags> statusFlags = new ArrayList<>();
 
-    public ComplexEffectInstance(UUID instanceID, UUID source, float power, float duration, float initialDuration) {
+    public ComplexEffectInstance(UUID instanceID, UUID source, float power, float duration ) {
         this.instanceID = instanceID;
         this.source = source;
         this.power = power;
         this.duration = duration;
-        this.initialDuration = initialDuration;
+        this.initialDuration = duration;
     }
-    public ComplexEffectInstance(UUID instanceID, UUID source, float power, float duration, float initialDuration, StatusFlags... statusFlags) {
+    public ComplexEffectInstance(UUID instanceID, UUID source, float power, float duration ,  StatusFlags... statusFlags) {
         this.instanceID = instanceID;
         this.source = source;
         this.power = power;
         this.duration = duration;
-        this.initialDuration = initialDuration;
+        this.initialDuration = duration;
         this.statusFlags= new ArrayList<StatusFlags>(Arrays.asList(statusFlags));
     }
-
+    private ComplexEffectInstance(UUID instanceID, UUID source, float power, float duration, float initialDuration ) {
+        this.instanceID = instanceID;
+        this.source = source;
+        this.power = power;
+        this.duration = duration;
+        this.initialDuration = initialDuration;
+    }
     public UUID getSource() {
         return source;
     }

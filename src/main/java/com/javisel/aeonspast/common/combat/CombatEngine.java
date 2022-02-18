@@ -3,7 +3,6 @@ package com.javisel.aeonspast.common.combat;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.config.WeaponData;
 import com.javisel.aeonspast.common.effects.ComplexEffect;
-import com.javisel.aeonspast.common.effects.DamageStatusDebuff;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
@@ -62,17 +61,7 @@ public class CombatEngine {
     }
     
     
-    
-    public static void applyDamageStatusEffect(LivingEntity source, LivingEntity target, DamageInstance instance, DamageStatusDebuff effect) {
-        
-        
-                
-        effect.applyFromDamage(source,target,instance);
-        
-        
-        
-        
-    }
+
     
 
     public static void applyCrits(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
@@ -487,17 +476,7 @@ return  result;
 
         victim.hurt(damageSource, (float) damageSource.instance.getPreMitigationsAmount());
 
-        if (damageSource.getInstance().canStatus && instance.getDamage_type().getStatusEffect() !=null && attemptStatus(attacker,(damageSource.instance.damageDevice !=null &&  attacker.getMainHandItem() != damageSource.instance.damageDevice))) {
 
-            System.out.println("APPLY!");
-            
-            
-            applyDamageStatusEffect(attacker,victim,damageSource.instance, (DamageStatusDebuff) instance.getDamage_type().getStatusEffect());
-            
-            
-            
-            
-        }
 
 
 
