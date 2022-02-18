@@ -100,6 +100,15 @@ public class GameEventHandler {
     }
 
 
+    @SubscribeEvent
+    public static void attemptPot(PotionEvent.PotionApplicableEvent event) {
+
+        System.out.println(event.getEntityLiving().getName().getContents()  + "trying to get" + event.getPotionEffect().getEffect().getRegistryName().toString());
+
+
+    }
+
+
 
     @SubscribeEvent
     public static void attackEntityEvent(LivingAttackEvent event) {

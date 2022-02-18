@@ -27,11 +27,12 @@ public class ComplexEffect extends MobEffect{
     //TODO Color codes for all Effects
     public ComplexEffect(MobEffectCategory effectCate, int effectColour) {
         super(effectCate, effectColour);
+
     }
 
 
     @Override
-    public final boolean isDurationEffectTick(int p_19455_, int p_19456_) {
+    public   boolean isDurationEffectTick(int p_19455_, int p_19456_) {
         return  true;
     }
 
@@ -110,10 +111,14 @@ public class ComplexEffect extends MobEffect{
         if (user.hasEffect(this)) {
 
             if (user.getEffect(this).getDuration() < instance.duration) {
-                user.addEffect(new MobEffectInstance(this,0, (int) instance.duration));
+                user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration),null);
 
             }
 
+
+        } else {
+
+            user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration),null);
 
         }
 
