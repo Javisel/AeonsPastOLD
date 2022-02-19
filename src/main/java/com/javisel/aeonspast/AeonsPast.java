@@ -1,13 +1,12 @@
 package com.javisel.aeonspast;
 
 import com.javisel.aeonspast.client.InputHandler;
-import com.javisel.aeonspast.client.OverlayRegistration;
+import com.javisel.aeonspast.client.main.OverlayRegistration;
 import com.javisel.aeonspast.client.main.ClientProxy;
 import com.javisel.aeonspast.common.items.AeonsPastItemGroup;
 import com.javisel.aeonspast.common.registration.*;
 import com.javisel.aeonspast.server.ServerHandler;
 import com.javisel.aeonspast.utilities.StringKeys;
-import com.javisel.aeonspast.utilities.Tags;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.InterModComms;
@@ -46,7 +45,7 @@ public class AeonsPast {
 
         EffectRegistration.EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         EntityTraitRegistration.ENTITY_TRAITS.register(FMLJavaModLoadingContext.get().getModEventBus());
-
+    SoundEventRegistration.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
@@ -95,10 +94,10 @@ public class AeonsPast {
 
 
         //Amulets ( 2 Actives )
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.AMULET_IDENTIFIER).priority(2).size(2).build());
+        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.ACTIVE_SLOT_IDENTIFIERS).priority(2).size(2).build());
         //Relic - Ultimate
 
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.RELIC_IDENTIFIER).priority(3).size(1).build());
+        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder(StringKeys.ULTIMATE_SLOT_IDENTIFIER).priority(3).size(1).build());
 
     }
 

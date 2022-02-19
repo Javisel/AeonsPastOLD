@@ -96,8 +96,7 @@ public class WorldTextParticle extends Particle {
         public Particle createParticle(WorldTextOptions worldTextOptions, ClientLevel level, double xo, double yo, double zo, double xd, double yd, double zd) {
 
 
-            System.out.println("Particle Created at " + xo + "," + yo + "," + zo);
-            return  new WorldTextParticle(worldTextOptions.getComponent(),level,xo,yo,zo,xd,yd,zd);
+             return  new WorldTextParticle(worldTextOptions.getComponent(),level,xo,yo,zo,xd,yd,zd);
         }
     }
 

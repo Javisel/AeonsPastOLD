@@ -131,21 +131,6 @@ public class EntityData implements IEntityData {
         ticks++;
 
 
-        for (MobEffect complexEffect : mobEffectArrayListHashMap.keySet())  {
-
-
-            ArrayList<ComplexEffectInstance> instanceArrayList = mobEffectArrayListHashMap.get(complexEffect);
-
-
-            instanceArrayList.removeIf(instance -> instance.remove);
-
-
-
-
-
-
-
-        }
 
 
 

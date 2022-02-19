@@ -47,6 +47,7 @@ public class ComplexEffect extends MobEffect{
         super.applyEffectTick(livingEntity, durationIn);
 
 
+
          for (ComplexEffectInstance instance : getAllInstancesOnEntity(livingEntity)) {
 
 
@@ -57,7 +58,7 @@ public class ComplexEffect extends MobEffect{
             if (instance.duration==0) {
 
                 instance.remove=true;
-                removeComplexInstance(instance.source,livingEntity);
+                 removeComplexInstance(instance.instanceID,livingEntity);
             }
 
            if (instance.duration % instance.tickRate == 0) {
@@ -78,8 +79,7 @@ public class ComplexEffect extends MobEffect{
 
     public void applyTickableEffect(ComplexEffectInstance instance, LivingEntity entity) {
 
-        System.out.println("Tick Effect!");
-    }
+     }
 
 
 
@@ -108,16 +108,17 @@ public class ComplexEffect extends MobEffect{
         if (user.hasEffect(this)) {
 
             if (user.getEffect(this).getDuration() < instance.duration) {
-                user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration,false, this instanceof StatusEffect, this instanceof  StatusEffect),null);
+                user.forceAddEffect(new MobEffectInstance(this, (int) instance.duration, 0,false, this instanceof StatusEffect, this instanceof  StatusEffect),null);
 
             }
 
 
         } else {
 
-            user.forceAddEffect(new MobEffectInstance(this,0, (int) instance.duration,false, this instanceof StatusEffect, this instanceof  StatusEffect),null);
+            user.forceAddEffect(new MobEffectInstance(this, (int) instance.duration, 0,false, this instanceof StatusEffect, this instanceof  StatusEffect),null);
 
         }
+        recalculateInstances(user);
 
 
 
@@ -141,7 +142,8 @@ public class ComplexEffect extends MobEffect{
 
 
         } else {
-          return;
+
+           return;
         }
 
 
@@ -150,13 +152,21 @@ public class ComplexEffect extends MobEffect{
         for (ComplexEffectInstance comp : instances) {
 
             if (comp.instanceID.equals(id)) {
-                comp.remove=true;
+
+
+
+                 comp.remove=true;
+
                 instances.remove(comp);
+
+                recalculateInstances(user);
+
             }
 
 
         }
-        entityData.getMobEffectArrayListHashMap().put(this,instances);
+
+
 
         if (instances.isEmpty()) {
 
@@ -166,6 +176,7 @@ public class ComplexEffect extends MobEffect{
 
 
 
+        recalculateInstances(user);
 
 
 

@@ -7,6 +7,7 @@ import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.server.ServerHandler;
 import com.javisel.aeonspast.utilities.StringKeys;
 import com.javisel.aeonspast.utilities.Tags;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -125,7 +127,9 @@ public class ItemEngine {
           else if (isTrinket(stack)) {
 
 
-              //TODO Trinket stuff
+              if (ServerHandler.TRINKET_DATA_LOADER.getTrinketData(stack.getItem()) !=null) {
+                  ServerHandler.TRINKET_DATA_LOADER.getTrinketData(stack.getItem()).loadToTrinket(entity, stack);
+              }
             }
 
 
@@ -198,15 +202,35 @@ public class ItemEngine {
 
     public static Spell getSpellFromItem(ItemStack stack) {
 
-        CompoundTag tag = getAeonsPastTag(stack);
+
+        Player player = Minecraft.getInstance().player;
+
+        if (stack.getItem() instanceof TrinketItem) {
+
+            TrinketItem trinketItem = (TrinketItem) stack.getItem();
+
+            if (trinketItem.getSpell(player,stack) !=null) {
+
+                return  trinketItem.getSpell(player,stack).get();
 
 
-        String key = tag.getString(SPELL);
 
 
-        return Spell.getSpellByResourceLocation(new ResourceLocation(key));
+            }
+
+        }
+         else {
+            CompoundTag tag = getAeonsPastTag(stack);
 
 
+            String key = tag.getString(SPELL);
+
+
+            return Spell.getSpellByResourceLocation(new ResourceLocation(key));
+
+        }
+
+         return  null;
     }
 
 

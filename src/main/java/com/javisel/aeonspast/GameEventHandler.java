@@ -1,6 +1,7 @@
 package com.javisel.aeonspast;
 
 
+import com.javisel.aeonspast.common.capabiltiies.entity.EntityData;
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityProvider;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
@@ -8,31 +9,24 @@ import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.combat.CombatEngine;
-import com.javisel.aeonspast.common.combat.CombatInstance;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
+import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
 import com.javisel.aeonspast.common.combat.damagesource.VanillaAPDamageSourceMap;
-import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.items.ItemEngine;
-import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.particles.WorldTextOptions;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.Utilities;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,6 +38,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
@@ -60,7 +55,6 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 
@@ -72,6 +66,7 @@ public class GameEventHandler {
     @SubscribeEvent
     public static void playerAttack(AttackEntityEvent event) {
 
+        event.setCanceled(true);
         Player player = event.getPlayer();
 
         if (!(event.getTarget() instanceof net.minecraft.world.entity.LivingEntity)) {
@@ -88,13 +83,11 @@ public class GameEventHandler {
 
         net.minecraft.world.entity.LivingEntity victim = (net.minecraft.world.entity.LivingEntity) event.getTarget();
 
-        CombatInstance combatInstance = new CombatInstance(player, victim);
 
-        if (combatInstance.onPreHit()) {
-            if (combatInstance.onHit()) {
-
-                return;
-            }
+        DamageInstance instance = CombatEngine.calculateMeleeDamage(player,player.getMainHandItem());
+        APEntityDamageSource entityDamageSource = new APEntityDamageSource("player",instance,player);
+        if (CombatEngine.cycleAllPreHitEffects(player,victim,entityDamageSource)) {
+              CombatEngine.cycleAllHitEffects(player,victim,entityDamageSource);
 
         }
     }
@@ -149,9 +142,14 @@ public class GameEventHandler {
                     }
 
 
-                    CombatInstance combatInstance = new CombatInstance(livingEntity, projectile, victim, power);
+                    DamageInstance instance = CombatEngine.calculateRangedDamage(livingEntity,livingEntity.getMainHandItem(),power);
 
-                    damageSource = combatInstance.source;
+
+                    APEntityDamageSource entityDamageSource = new APEntityDamageSource("mob",instance,livingEntity);
+                    if (CombatEngine.cycleAllPreHitEffects(livingEntity,victim,entityDamageSource)) {
+                        CombatEngine.cycleAllHitEffects(livingEntity,victim,entityDamageSource);
+
+                    }
 
                 }
 
@@ -162,10 +160,13 @@ public class GameEventHandler {
                 if (!(event.getSource().getEntity() instanceof Player)) {
 
                     net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) source.getEntity();
-                    CombatInstance combatInstance = new CombatInstance(livingEntity, victim);
 
+                    DamageInstance instance = CombatEngine.calculateMeleeDamage(livingEntity,livingEntity.getMainHandItem());
+                    APEntityDamageSource entityDamageSource = new APEntityDamageSource("mob",instance,livingEntity);
+                    if (CombatEngine.cycleAllPreHitEffects(livingEntity,victim,entityDamageSource)) {
+                        CombatEngine.cycleAllHitEffects(livingEntity,victim,entityDamageSource);
 
-                    damageSource = combatInstance.source;
+                    }
                 }
             } else {
 
@@ -370,13 +371,13 @@ public class GameEventHandler {
 
 
         if (!event.getEntity().level.isClientSide) {
-            if (event.getEntity() instanceof Player) {
+            if (event.getEntity() instanceof LivingEntity) {
 
-                Player player = (Player) event.getEntity();
+                LivingEntity entity = (LivingEntity) event.getEntity();
 
-                if (player.getAttributeBaseValue(Attributes.ATTACK_SPEED) != 1) {
+                if (entity.getAttributeBaseValue(Attributes.ATTACK_SPEED) != 1) {
 
-                    player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1);
+                    entity.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1);
                 }
 
 
@@ -705,34 +706,58 @@ public class GameEventHandler {
 
 
 
+    @SubscribeEvent
+    public static void playerDeath(LivingDeathEvent event) {
+
+        if (event.getEntity() instanceof Player) {
+
+            Player player = (Player) event.getEntity();
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    }
 
     @SubscribeEvent
     public static void playerDeathDataTransfer(PlayerEvent.Clone event) {
 
 
 
-        if (event.getOriginal().level.isClientSide) {
+        if (event.getOriginal().level.isClientSide || !event.isWasDeath()) {
             return;
         }
 
 
-        IEntityData oldEnt = Utilities.getEntityData(event.getOriginal());
-        IEntityData newDat = Utilities.getEntityData(event.getPlayer());
-
-        newDat.readNBT(oldEnt.writeNBT());
-
-
-
-
-        IPlayerData originalData = Utilities.getPlayerData(event.getOriginal());
+        Utilities.getEntityDataOptional(event.getOriginal()).ifPresent(oldData ->
+                Utilities.getEntityDataOptional(event.getPlayer()).ifPresent(newData ->
+                        newData.readNBT(oldData.writeNBT())
+                )
+        );
 
 
-        IPlayerData newData = Utilities.getPlayerData(event.getPlayer());
-
-            newData.readNBT(originalData.writeNBT());
-
+        Utilities.getPlayerDataOptional(event.getOriginal()).ifPresent(oldData ->
+                Utilities.getPlayerDataOptional(event.getPlayer()).ifPresent(newData ->
+                        newData.readNBT(oldData.writeNBT())
+                )
+        );
 
     }
+
 
 
 

@@ -2,7 +2,7 @@ package com.javisel.aeonspast.client.spell;
 
 import com.javisel.aeonspast.client.RenderUtilities;
 import com.javisel.aeonspast.client.main.ClientProxy;
-import com.javisel.aeonspast.client.overlays.AbilityBar;
+import com.javisel.aeonspast.client.ui.AbilityBar;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.spell.ICustomUseRequirement;
@@ -19,10 +19,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,7 +29,6 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
-import java.util.Random;
 
 import static com.javisel.aeonspast.common.registration.SpellRegistration.SPELLS;
 @OnlyIn(Dist.CLIENT)

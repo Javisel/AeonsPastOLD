@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.combat;
 
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
-import com.javisel.aeonspast.common.config.WeaponData;
+import com.javisel.aeonspast.common.config.weapon.WeaponData;
 import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.events.EventFactory;
 import com.javisel.aeonspast.common.items.ItemEngine;

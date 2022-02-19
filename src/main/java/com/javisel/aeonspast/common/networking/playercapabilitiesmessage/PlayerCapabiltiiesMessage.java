@@ -1,13 +1,8 @@
 package com.javisel.aeonspast.common.networking.playercapabilitiesmessage;
 
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
-import com.javisel.aeonspast.common.capabiltiies.player.APPlayerCapability;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 import org.apache.logging.log4j.Level;
 

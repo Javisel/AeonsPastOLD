@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.networking.playercapabilitiesmessage;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
-import com.javisel.aeonspast.common.capabiltiies.player.APPlayerCapability;
+import com.javisel.aeonspast.common.capabiltiies.player.PlayerCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -22,7 +22,7 @@ public class PlayerCapabilitiesMessageHandler {
 
             Minecraft minecraft = Minecraft.getInstance();
             minecraft.player.getCapability(EntityCapability.ENTITY_DATA_CAP, null).orElseThrow(NullPointerException::new).readNBT(mes.entityDataTag);
-            minecraft.player.getCapability(APPlayerCapability.PLAYER_DATA_CAPABILITY, null).orElseThrow(NullPointerException::new).readNBT(mes.playerDataTag);
+            minecraft.player.getCapability(PlayerCapability.PLAYER_DATA_CAPABILITY, null).orElseThrow(NullPointerException::new).readNBT(mes.playerDataTag);
 
         });
 

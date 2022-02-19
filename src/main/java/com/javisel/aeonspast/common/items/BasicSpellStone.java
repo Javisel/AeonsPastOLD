@@ -5,7 +5,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BasicSpellStone extends TrinketItem {
 
-    public BasicSpellStone(TrinketEnums type, RegistryObject<Spell> spell) {
+    public BasicSpellStone(TrinketTypes type, RegistryObject<Spell> spell) {
         super(type, new Properties().stacksTo(1), spell);
     }
 

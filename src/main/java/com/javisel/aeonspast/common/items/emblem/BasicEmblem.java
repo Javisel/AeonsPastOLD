@@ -2,7 +2,7 @@ package com.javisel.aeonspast.common.items.emblem;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.items.TrinketEnums;
+import com.javisel.aeonspast.common.items.TrinketTypes;
 import com.javisel.aeonspast.common.items.TrinketItem;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.spell.Spell;
@@ -19,7 +19,7 @@ public class BasicEmblem extends TrinketItem {
 
 
     public BasicEmblem(RegistryObject<PlayerGameClass> gameClass, RegistryObject<Spell> spell) {
-        super(TrinketEnums.EMBLEM, new Properties().stacksTo(1).setNoRepair(), spell);
+        super(TrinketTypes.EMBLEM, new Properties().stacksTo(1).setNoRepair(), spell);
 
 
         this.gameClass = gameClass;

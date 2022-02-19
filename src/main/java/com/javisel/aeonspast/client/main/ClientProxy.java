@@ -3,12 +3,13 @@ package com.javisel.aeonspast.client.main;
 import com.google.common.collect.ImmutableMap;
 import com.javisel.aeonspast.client.particles.WorldTextParticle;
 import com.javisel.aeonspast.client.world.InWorldRenderer;
-import com.javisel.aeonspast.client.overlays.SpellAtlasHolder;
+import com.javisel.aeonspast.client.spell.SpellAtlasHolder;
 import com.javisel.aeonspast.client.spell.SpellRenderer;
-import com.javisel.aeonspast.common.config.ArmorData;
-import com.javisel.aeonspast.common.config.WeaponData;
-import com.javisel.aeonspast.common.config.EntityStatisticalData;
-import com.javisel.aeonspast.common.playerclasses.ClassData;
+import com.javisel.aeonspast.common.config.armor.ArmorData;
+import com.javisel.aeonspast.common.config.trinket.TrinketData;
+import com.javisel.aeonspast.common.config.weapon.WeaponData;
+import com.javisel.aeonspast.common.config.entity.EntityStatisticalData;
+import com.javisel.aeonspast.common.config.playerclasses.ClassData;
 import com.javisel.aeonspast.common.registration.ParticleTypeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
@@ -41,6 +42,7 @@ public class ClientProxy {
     public static Map<ResourceLocation, ClassData> classStatisticsMap = ImmutableMap.of();
     public static Map<ResourceLocation, ArmorData> armorStatisticsMap = ImmutableMap.of();
     public static Map<ResourceLocation, EntityStatisticalData> entityStatisticsMap = ImmutableMap.of();
+    public static Map<ResourceLocation, TrinketData> trinketDataMap = ImmutableMap.of();
 
 
 

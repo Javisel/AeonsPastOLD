@@ -1,5 +1,6 @@
 package com.javisel.aeonspast.common.effects;
 
+import com.javisel.aeonspast.utilities.StringKeys;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.ArrayList;
@@ -60,15 +61,18 @@ public class ComplexEffectInstance {
 
 
     public static final String STATUS_FLAGS = "status_flags";
+
+
     public CompoundTag toNBT() {
 
 
         CompoundTag tag = new CompoundTag();
 
-        tag.putUUID("source",source);
-        tag.putFloat("power",power);
-        tag.putFloat("duration",duration);
-        tag.putFloat("initialduration",initialDuration);
+        tag.putUUID(StringKeys.SOURCE,source);
+        tag.putFloat(StringKeys.POWER,power);
+        tag.putFloat(StringKeys.DURATION,duration);
+        tag.putFloat(StringKeys.INITIAL_DURATION,initialDuration);
+        tag.putBoolean(StringKeys.REMOVE,remove);
 
         CompoundTag statusFlagTag = new CompoundTag();
 
@@ -92,8 +96,9 @@ public class ComplexEffectInstance {
 
 
 
-      ComplexEffectInstance instance = new ComplexEffectInstance(tag.getUUID("instanceid"), tag.getUUID("source"),tag.getFloat("power"),tag.getFloat("duration"),tag.getFloat("initialduration"));
+      ComplexEffectInstance instance = new ComplexEffectInstance(tag.getUUID(StringKeys.INSTANCE_ID), tag.getUUID(StringKeys.SOURCE_ID),tag.getFloat(StringKeys.POWER),tag.getFloat(StringKeys.DURATION),tag.getFloat(StringKeys.INITIAL_DURATION));
 
+      instance.remove=tag.getBoolean(StringKeys.REMOVE);
        CompoundTag flags =  tag.getCompound(STATUS_FLAGS);
 
        for (String key : flags.getAllKeys())  {

@@ -36,8 +36,8 @@ public class StringKeys {
 
     public static final String COST = "cost";
     public static final String EMBLEM_IDENTIFIER = AeonsPast.MODID + ".emblem";
-    public static final String RELIC_IDENTIFIER = AeonsPast.MODID + ".relic";
-    public static final String AMULET_IDENTIFIER = AeonsPast.MODID + ".amulet";
+    public static final String ULTIMATE_SLOT_IDENTIFIER = AeonsPast.MODID + ".relic";
+    public static final String ACTIVE_SLOT_IDENTIFIERS = AeonsPast.MODID + ".actives";
     public static final String TRINKET_IDENTIFIER = AeonsPast.MODID + ".trinket";
     public static final String CLASSES = "classes";
 
@@ -82,5 +82,19 @@ public class StringKeys {
     public static final String UNIQUE_ID = "unique_id";
 
     public static final String FLAGS = "flags";
+
+    public static final String INSTANCE_ID = "instance_id";
+    public static final String SOURCE_ID = "source_id";
+
+    public static final String SOURCE = "source";
+    public static final String POWER = "power";
+    public static final String DURATION = "duration";
+    public static final String INITIAL_DURATION = "initial_duration";
+    public static final String REMOVE = "remove";
+
+
+    public static final String NAME = "name";
+    public static final String AMOUNT = "amount";
+    public static final String TRINKET_TYPE = "trinket_type";
 
 }

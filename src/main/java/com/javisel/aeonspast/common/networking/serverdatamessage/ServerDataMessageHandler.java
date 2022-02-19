@@ -2,8 +2,9 @@ package com.javisel.aeonspast.common.networking.serverdatamessage;
 
 import com.google.common.collect.ImmutableMap;
 import com.javisel.aeonspast.client.main.ClientProxy;
-import com.javisel.aeonspast.common.config.ArmorData;
-import com.javisel.aeonspast.common.config.WeaponData;
+import com.javisel.aeonspast.common.config.armor.ArmorData;
+import com.javisel.aeonspast.common.config.trinket.TrinketData;
+import com.javisel.aeonspast.common.config.weapon.WeaponData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -55,6 +56,22 @@ public class ServerDataMessageHandler {
 
 
 
+        ImmutableMap.Builder<ResourceLocation, TrinketData> trinketDataBuilder = ImmutableMap.builder();
+
+
+        for (String key : mes.trinketDataTag.getAllKeys()) {
+
+            ResourceLocation location = new ResourceLocation(key);
+
+            TrinketData data = TrinketData.fromNBT(mes.trinketDataTag.getCompound(key));
+
+
+            trinketDataBuilder.put(location,data);
+
+
+
+        }
+        ClientProxy.trinketDataMap=trinketDataBuilder.build();
 
 
     }

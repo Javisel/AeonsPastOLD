@@ -3,6 +3,8 @@ package com.javisel.aeonspast.common.spell;
 public enum SpellRank {
 
     EMPTY,
+
+    CAST_OPTION,
     CLASS_SPELL,
     WEAPON_SPELL,
     SKILL_BASIC,

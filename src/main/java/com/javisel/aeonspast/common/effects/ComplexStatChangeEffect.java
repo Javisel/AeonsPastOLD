@@ -3,6 +3,7 @@ package com.javisel.aeonspast.common.effects;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.util.UUID;
@@ -24,7 +25,6 @@ public class ComplexStatChangeEffect extends StatusEffect{
     public void addnewComplexInstance(ComplexEffectInstance instance,LivingEntity user) {
         super.addnewComplexInstance(instance,user);
 
-            recalculateInstances(user);
 
 
     }
@@ -32,15 +32,19 @@ public class ComplexStatChangeEffect extends StatusEffect{
 
 
 
+    @Override
     public void recalculateInstances(LivingEntity user) {
 
 
+        AttributeInstance attributeInstance = user.getAttribute(attribute);
 
-        user.getAttribute(attribute).removeModifier(effectId);
 
-        double power = 0;
+        attributeInstance.removeModifier(effectId);
 
-        for (ComplexEffectInstance inst : getAllInstancesOnEntity(user)) {
+
+         double power = 0;
+
+         for (ComplexEffectInstance inst : getAllInstancesOnEntity(user)) {
 
             power+=inst.power;
 

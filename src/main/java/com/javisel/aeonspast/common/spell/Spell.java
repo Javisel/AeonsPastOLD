@@ -28,12 +28,12 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
 
 
-    /* Use this constructor fpr spells with charges.
+    /* Use this constructor for spells with charges.
      * @Param defaultMaxCharges - The maximum amount of charges this spell can have
-     * @Param defaultChargeTime - the amount of time it takes to generate one charges
+     * @Param defaultChargeTime - the amount of time it takes to generate one charge
      * @Param defaultCooldown - the time you must wait between spell casts
-     * @param defaultCost the (typically) mana cost you must spend to cast this
-     * @param SpellRank - The rank of this spell. Skills use Skill_Basic or Skill_Ultimate
+     * @param defaultCost the resource cost you must spend to cast this
+     * @param SpellRank - The rank of this spell.
 
      */
 
@@ -48,8 +48,8 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
 
     /* Use this constructor if your spell does not use multiple charges.
      * defaultChargeTime  - how long it takes for the spell to recharge.
-     * @Param defaultCost - the (typically) mana cost of this spell.
-     *  @Param spellRank - the SpellRank. Skills use Skill_Basic or Skill_Ultimate.
+     * @Param defaultCost - the cost of this spell.
+     *  @Param spellRank - the rank of this spell.
      */
     public Spell(int defaultChargeTime, float defaultCost, SpellRank spellRank) {
         this.defaultMaxCharges = 1;
@@ -503,4 +503,20 @@ public abstract class Spell extends net.minecraftforge.registries.ForgeRegistryE
         entityData.getOrCreateSpellStack(this);
 
     }
+
+
+    public SpellStack createNewSpellStack(LivingEntity creator) {
+
+
+
+
+        SpellStack stack = new SpellStack(this);
+
+
+        return  stack;
+    }
+
+
+
+
 }

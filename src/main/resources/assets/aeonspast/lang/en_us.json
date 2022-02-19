@@ -1,17 +1,18 @@
 {
-  "curios.identifier.aeonspast.relic": "Relic Slot",
+  "curios.identifier.aeonspast.relic": "Ultimate Trinket Slot",
   "curios.identifier.aeonspast.trinket": "Trinket Slot",
-  "curios.identifier.aeonspast.amulet": "Amulet Slot",
-  "curios.identifier.aeonspast.emblem": "Emblem Slot",
-  "curios.modifiers.relic": "Relic Stats",
-  "curios.modifiers.emblem": "Emblem Stats",
-  "curios.modifiers.amulet": "Amulet Stats",
+  "curios.identifier.aeonspast.active": "Active Trinket Slot",
+  "curios.identifier.aeonspast.emblem": "Class Emblem Slot",
+  "curios.modifiers.relic": "Trinket Stats",
+  "curios.modifiers.emblem": "Trinket Stats",
+  "curios.modifiers.amulet": "Trinket Stats",
   "curios.modifiers.trinket": "Trinket Stats",
+
+
   "item.aeonspast.warrior_emblem": "Warrior's Emblem",
-  "spell.aeonspast.warrior_class_spell": "Indomitable",
-  "spell.aeonspast.warrior_class_spell.desc": "The unique skill of warriors",
-  "item.aeonspast.red_kama": "Red Kama",
-  "item.aeonspast.blood_chalice": "Blood Chalice",
+  "item.aeonspast.swift_strikes_spell_stone": "Swift Strikes Spell Stone",
+
+
   "generic.lifesteal": "Lifesteal",
   "generic.magic_power": "Magic Power",
   "generic.maximum_resource": "Maximum Mana",
@@ -19,15 +20,13 @@
   "generic.magic_resistance": "Magic Resistance",
   "generic.armor": "Armor",
   "generic.weapon_power": "Weapon Power",
-  "aeonspast:weapon_power" : "Weapon Power",
   "generic.critical_damage": "Critical Damage",
   "generic.critical_chance": "Critical Chance",
   "generic.status_chance": "Status Chance",
 
   "aeonspast:sword.desc" : "Highly versatile melee weapons with consistent damage and a wide variety of special effects.",
   "aeonspast:axe.desc" : "Potent melee weapons with extremely high damage and one-shot potential.",
-  "aeonspast:dps" : "DPS",
-  "aeonspast:common" : "Common",
+   "aeonspast:common" : "Common",
   "aeonspast:rare" : "Rare",
   "aeonspast:epic": "Epic",
   "aeonspst:fabled": "Fabled",
@@ -36,6 +35,10 @@
   "aeonspast:gilded_weapon" :"Gilded",
   "aeonspast:gilded_armour" :"Gilded",
 
+
+
+
+
   "aeonspast:fireproof": "Fireproof",
   "aeonspast:sweeping" : "Sweeper",
   "aeonspast:versatile" : "Versatile",
@@ -43,17 +46,32 @@
   "aeonspast:brutal" : "Brutal",
   "aeonspast:dyeable" : "Dyeable",
   "aeonspast:nimble" : "Nimble",
+
+  "tooltip.sleepingweapon.desc": "You need a closer look...",
+   "tooltip.weaponspell": "Weapon Spell",
+  "tooltip.swift_strikes.desc.simple": "Gain %f Attack Speed for %f seconds.",
+  "aeonspast:dps" : "DPS",
+
+  "effect.aeonspast.uppercut_spell_buff": "Uppercut",
+  "itemGroup.aeonspast": "Aeon's Past",
+
+
+
+
+
+  "spell.aeonspast.warrior_class_spell": "Indomitable",
+  "spell.aeonspast.warrior_class_spell.desc.generic": "Passive: Reduced Crowd Control. Active: Heal.",
+  "spell.aeonspast.warrior_class_spell.desc.simple": "Passive: Reduces all Crowd Control by %f percent, before other reduction effects. Active: Heal %f.",
+  "spell.aeonspast.warrior_class_spell.desc.expanded": "Passive: Reduces all Crowd Control by (%f + %f+%s) percent, before other reduction effects. Active: Heal (%f + %f+%s).",
+  "aeonspast:true_strike.simpledesc": "Next weapon hit deals %f bonus true damage",
+  "aeonspast:none.simpledesc": "Uh oh, this should be here...",
+
+
   "aeonspast:uppercut" : "Uppercut",
   "aeonspast:uppercut.simpledesc" : "Attack Reset. Next attack Knocks Up.",
   "aeonspast:cleave": "Cleave",
   "aeonspast:cleave.simpledesc": "Deal weapon damage in a cone",
   "aeonspast:double_slash": "Double Slash",
   "aeonspast:double_strike.simpledesc": "Swing twice dealing Weapon Damage",
-  "aeonspast:true_strike": "True Strike",
-
-  "aeonspast:true_strike.simpledesc": "Next weapon hit deals 60% bonus true damage",
-  "aeonspast:none.simpledesc": "Uh oh, this should be here...",
-  "tooltip.sleepingweapon.desc": "You need a closer look...",
-  "tooltip.weaponspell": "Weapon Spell",
-  "effect.aeonspast.uppercut_spell_buff": "Uppercut"
+  "aeonspast:true_strike": "True Strike"
 }

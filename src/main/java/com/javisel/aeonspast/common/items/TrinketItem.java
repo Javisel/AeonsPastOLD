@@ -26,14 +26,14 @@ import java.util.UUID;
 public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer {
 
 
-    private final TrinketEnums TRINKET_TYPE;
+    private final TrinketTypes TRINKET_TYPE;
     protected Multimap<Attribute, AttributeModifier> defaultModifiers;
     private ArrayList<AttributeContainer> attributeList;
 
     private RegistryObject<Spell> spell;
 
 
-    public TrinketItem(TrinketEnums type, Item.Properties properties, RegistryObject<Spell> spell, @Nullable AttributeContainer... attributeContainers) {
+    public TrinketItem(TrinketTypes type, Item.Properties properties, RegistryObject<Spell> spell, @Nullable AttributeContainer... attributeContainers) {
         super(properties);
 
 
@@ -52,7 +52,7 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
 
     }
 
-    public TrinketItem(TrinketEnums type, Item.Properties properties, RegistryObject<Spell> spell) {
+    public TrinketItem(TrinketTypes type, Item.Properties properties, RegistryObject<Spell> spell) {
         super(properties);
 
 
@@ -63,7 +63,7 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
 
     }
 
-    public TrinketItem(TrinketEnums type, Item.Properties itemProperties) {
+    public TrinketItem(TrinketTypes type, Item.Properties itemProperties) {
         super(itemProperties);
 
 
@@ -72,7 +72,7 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
     }
 
 
-    public TrinketItem(TrinketEnums type, Item.Properties properties, ArrayList<AttributeContainer> attributeContainers) {
+    public TrinketItem(TrinketTypes type, Item.Properties properties, ArrayList<AttributeContainer> attributeContainers) {
         super(properties);
 
 
@@ -103,23 +103,23 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
             IPlayerData playerData = Utilities.getPlayerData(player);
             int index = -1;
 
-            if (TRINKET_TYPE == TrinketEnums.TRINKET) {
+            if (TRINKET_TYPE == TrinketTypes.TRINKET) {
 
                 return;
             }
-            if (TRINKET_TYPE == TrinketEnums.EMBLEM) {
+            if (TRINKET_TYPE == TrinketTypes.EMBLEM) {
 
                 index = 0;
 
 
             }
 
-            if (TRINKET_TYPE == TrinketEnums.AMULET) {
+            if (TRINKET_TYPE == TrinketTypes.ACTIVE) {
 
 
                 index = 1 + slotContext.index();
             }
-            if (TRINKET_TYPE == TrinketEnums.RELIC) {
+            if (TRINKET_TYPE == TrinketTypes.ULTIMATE) {
 
 
                 index = 3;
@@ -183,19 +183,19 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
             IPlayerData playerData = Utilities.getPlayerData(player);
             int index = -1;
 
-            if (TRINKET_TYPE == TrinketEnums.EMBLEM) {
+            if (TRINKET_TYPE == TrinketTypes.EMBLEM) {
 
                 index = 0;
 
 
             }
 
-            if (TRINKET_TYPE == TrinketEnums.AMULET) {
+            if (TRINKET_TYPE == TrinketTypes.ACTIVE) {
 
 
                 index = 1 + slotContext.index();
             }
-            if (TRINKET_TYPE == TrinketEnums.RELIC) {
+            if (TRINKET_TYPE == TrinketTypes.ULTIMATE) {
 
 
                 index = 3;
@@ -228,4 +228,8 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
     public RegistryObject<Spell> getSpell(LivingEntity caster, ItemStack stack) {
         return spell;
     }
+
+
+
+
 }

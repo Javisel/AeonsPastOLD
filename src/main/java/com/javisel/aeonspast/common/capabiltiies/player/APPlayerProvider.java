@@ -20,7 +20,7 @@ public class APPlayerProvider implements ICapabilitySerializable<CompoundTag> {
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
 
 
-        if (cap == APPlayerCapability.PLAYER_DATA_CAPABILITY) {
+        if (cap == PlayerCapability.PLAYER_DATA_CAPABILITY) {
             return apOptional.cast();
         } else {
             return LazyOptional.empty();

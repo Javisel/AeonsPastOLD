@@ -16,20 +16,28 @@ public class SpellRegistration {
 
     public static final RegistryObject<Spell> NONE = SPELLS.register("none", () -> new NoneSpell());
     public static final RegistryObject<Spell> WARRIOR_CLASS_SPELL = SPELLS.register("warrior_class_spell", () -> new WarriorClassSpell());
-    public static final RegistryObject<Spell> BATTLE_FRENZY = SPELLS.register("battle_frenzy", () -> new BattleFrenzy());
-    public static final RegistryObject<Spell> ASSAULT_GUARD = SPELLS.register("assault_guard", () -> new BattleDance());
-    public static final RegistryObject<Spell> WARRIOR_SHOUT = SPELLS.register("warrior_shout", () -> new WarriorsShout());
-    public static final RegistryObject<Spell> STORM_STRIKE = SPELLS.register("storm_strike", () -> new StormStrike());
-    public static final RegistryObject<Spell> BLADESTORM = SPELLS.register("bladestorm", () -> new Bladestorm());
-    public static final RegistryObject<Spell> LIGHT_OF_GOD = SPELLS.register("light_of_god", () -> new LightOfGod());
-    public static final RegistryObject<Spell> HOP = SPELLS.register("hop", () -> new Hop());
+
+    //Weapon Spells - Generic
+    public static final RegistryObject<Spell> TRUE_STRIKE = SPELLS.register("true_strike", () -> new TrueStrike());
+
+
+    //Weapon Spells - Sword
     public static final RegistryObject<Spell> CLEAVE = SPELLS.register("cleave", () -> new Cleave());
-    public static final RegistryObject<Spell> UPPERCUT = SPELLS.register("uppercut", () -> new Uppercut());
-    public static final RegistryObject<Spell> DOUBLE_SLASH = SPELLS.register("double_slash", () -> new DoubleSlash());
+     public static final RegistryObject<Spell> DOUBLE_SLASH = SPELLS.register("double_slash", () -> new DoubleSlash());
+
+
+     //Weapon Spells - Axe
     public static final RegistryObject<Spell> CHUCK = SPELLS.register("chuck", () -> new Chuck());
+    public static final RegistryObject<Spell> UPPERCUT = SPELLS.register("uppercut", () -> new Uppercut());
+
+    //Weapon Spells - Bow
     public static final RegistryObject<Spell> VENGEFUL_ASSAULT = SPELLS.register("vengeful_assault", () -> new VengefulAssault());
     public static final RegistryObject<Spell> ARROW_STORM = SPELLS.register("arrow_storm", () -> new ArrowStorm());
-    public static final RegistryObject<Spell> TRUE_STRIKE = SPELLS.register("true_strike", () -> new TrueStrike());
+
+
+
+
+    public static final RegistryObject<Spell> SWIFT_STRIKE = SPELLS.register("swift_strikes", () -> new SwiftStrikes());
 
 
 }

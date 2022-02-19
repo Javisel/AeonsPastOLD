@@ -1,8 +1,7 @@
 {
   "replace": false,
   "values": [
-    "aeonspast:storm_strike_stone",
-    "aeonspast:bladestorm_stone",
-    "aeonspast:debug_spell_item"
+
+    "aeonspast:swift_strikes_stone"
   ]
 }

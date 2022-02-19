@@ -11,6 +11,7 @@ import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.registration.ParticleTypeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.common.spell.spellproperty.SpellProperty;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -36,6 +37,8 @@ public class ModBusEventHandler {
 
     public static final ResourceLocation CLASS_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "classes");
     public static final ResourceLocation SPELL_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "spells");
+    public static final ResourceLocation SPELL_PROPERTY_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "spell_properties");
+
     public static final ResourceLocation RESOURCE_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "resources");
     public static final ResourceLocation ITEM_PROPERTY_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "item_property");
     public static final ResourceLocation ENTITY_TRAIT_REGISTRY_NAME = new ResourceLocation(AeonsPast.MODID, "entity_trait");
@@ -105,6 +108,11 @@ public class ModBusEventHandler {
         RegistryBuilder<EntityTrait> EntityTraitBuilder = new RegistryBuilder<>();
 
         EntityTraitBuilder.setName(ENTITY_TRAIT_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(EntityTrait.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
+
+
+        RegistryBuilder<SpellProperty> spellPropertyRegistryBuilder = new RegistryBuilder<>();
+
+        spellPropertyRegistryBuilder.setName(SPELL_PROPERTY_REGISTRY_NAME).setMaxID(Integer.MAX_VALUE).setType(SpellProperty.class).allowModification().setDefaultKey(new ResourceLocation(AeonsPast.MODID, "none")).create();
 
 
     }
