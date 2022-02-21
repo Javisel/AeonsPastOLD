@@ -1,8 +1,6 @@
 {
-
   "weapon_type": "SWORD",
   "rarity": "EPIC",
-
   "attack_damage": {
     "min": 15,
     "max": 55
@@ -11,11 +9,9 @@
     "min": 1.52,
     "max": 2.4
   },
-
-  "critical_chance" : {
+  "critical_chance": {
     "min": 0,
-    "max" :0
-
+    "max": 0
   },
   "critical_damage": {
     "min": 2,
@@ -25,13 +21,10 @@
     "min": 1421.7,
     "max": 2640.3
   },
-
-  "status_chance" : {
+  "status_chance": {
     "min": 20,
-    "max" :40
-
+    "max": 40
   },
-
   "enchantability": {
     "min": 5,
     "max": 5
@@ -40,12 +33,10 @@
     "min": 4,
     "max": 4
   },
-
-  "is_ranged" : "false",
-
-  "secondarydata" : [],
+  "is_ranged": "false",
+  "secondarydata": [],
   "properties": [
-     "aeonspast:fireproof",
+    "aeonspast:fireproof",
     "aeonspast:versatile",
     "aeonspast:sweeping",
     "aeonspast:kinetic",

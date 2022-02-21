@@ -26,7 +26,6 @@ public class StringKeys {
     public static final String ARMOR_TYPE = "armor_type";
 
 
-
     public static final String CHARGES = "charges";
     public static final String COOLDOWN = "cooldown";
     public static final String CHARGE_TIMER = "chargetimer";
@@ -37,7 +36,7 @@ public class StringKeys {
     public static final String COST = "cost";
     public static final String EMBLEM_IDENTIFIER = AeonsPast.MODID + ".emblem";
     public static final String ULTIMATE_SLOT_IDENTIFIER = AeonsPast.MODID + ".relic";
-    public static final String ACTIVE_SLOT_IDENTIFIERS = AeonsPast.MODID + ".actives";
+    public static final String ACTIVE_SLOT_IDENTIFIER = AeonsPast.MODID + ".active";
     public static final String TRINKET_IDENTIFIER = AeonsPast.MODID + ".trinket";
     public static final String CLASSES = "classes";
 
@@ -96,5 +95,6 @@ public class StringKeys {
     public static final String NAME = "name";
     public static final String AMOUNT = "amount";
     public static final String TRINKET_TYPE = "trinket_type";
+    public static final String ATTRIBUTE_MODIFIERS = "attribute_modifiers";
 
 }

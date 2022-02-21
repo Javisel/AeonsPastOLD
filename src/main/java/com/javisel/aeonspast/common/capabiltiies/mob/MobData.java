@@ -28,7 +28,7 @@ public class MobData implements IMobData {
     public void fromNBT(CompoundTag tag) {
 
 
-        experienceReward=tag.getFloat(EXPERIENCE);
+        experienceReward = tag.getFloat(EXPERIENCE);
 
 
         if (tag.contains(ENTITY_TRAITS)) {
@@ -63,7 +63,7 @@ public class MobData implements IMobData {
 
         CompoundTag tag = new CompoundTag();
 
-        tag.putFloat(EXPERIENCE,experienceReward);
+        tag.putFloat(EXPERIENCE, experienceReward);
         if (!traits.isEmpty()) {
 
 

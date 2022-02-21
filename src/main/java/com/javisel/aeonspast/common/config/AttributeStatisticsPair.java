@@ -5,30 +5,32 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryManager;
 
-public class AttributeStatisticsPair extends StatisticPair{
+public class AttributeStatisticsPair extends StatisticPair {
 
     private String attribute;
     private AttributeModifier.Operation operation;
 
-    public AttributeStatisticsPair(String attribute,AttributeModifier.Operation operation, float min, float max) {
+    public AttributeStatisticsPair(String attribute, AttributeModifier.Operation operation, float min, float max) {
         super(min, max);
-        this.attribute=attribute;
-        this.operation=operation;
+        this.attribute = attribute;
+        this.operation = operation;
     }
 
+    public static AttributeStatisticsPair getPairFromNBT(CompoundTag tag) {
 
-    public Attribute getAttribute(){
-
-
-
+        StatisticPair pair = StatisticPair.fromNBT(tag);
 
 
+        return new AttributeStatisticsPair(tag.getString("attribute"), AttributeModifier.Operation.fromValue(tag.getInt("operation")), pair.getmin(), pair.getMax());
+
+
+    }
+
+    public Attribute getAttribute() {
 
 
         return ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(attribute));
-
 
 
     }
@@ -37,28 +39,15 @@ public class AttributeStatisticsPair extends StatisticPair{
         return operation;
     }
 
-
-
-
-    public  static AttributeStatisticsPair getPairFromNBT(CompoundTag tag) {
-
-        StatisticPair pair = StatisticPair.fromNBT(tag);
-
-
-       return new AttributeStatisticsPair(tag.getString("attribute"), AttributeModifier.Operation.fromValue(tag.getInt("operation")) ,pair.getmin(),pair.getMax()  );
-
-
-    }
-
     @Override
     public CompoundTag toNBT() {
-        CompoundTag tag  = super.toNBT();
+        CompoundTag tag = super.toNBT();
 
         tag.putString("attribute", attribute);
-        tag.putInt("operation",operation.toValue());
+        tag.putInt("operation", operation.toValue());
 
 
-        return  tag;
+        return tag;
     }
 }
 

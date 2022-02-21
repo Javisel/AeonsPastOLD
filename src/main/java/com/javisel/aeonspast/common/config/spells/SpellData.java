@@ -7,20 +7,12 @@ import java.util.ArrayList;
 public class SpellData {
 
 
-
-        ArrayList<JsonObject> jsonObjects;
+    ArrayList<JsonObject> jsonObjects;
 
 
     public SpellData(ArrayList<JsonObject> jsonObjects) {
         this.jsonObjects = jsonObjects;
     }
-
-
-
-
-
-
-
 
 
 }

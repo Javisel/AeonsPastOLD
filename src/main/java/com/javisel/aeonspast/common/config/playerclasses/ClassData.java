@@ -99,12 +99,10 @@ public class ClassData {
         attributeContainers.add(AttributeContainer.withUUID(Attributes.ATTACK_SPEED, UUID.fromString(LEVEL_BONUS_STATISTICS), attack_speed_scaling, AttributeModifier.Operation.ADDITION));
 
 
-
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGICAL_POWER.get(), UUID.fromString(BASE_STATISTICS), magical_power, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGICAL_POWER.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), magical_power_scaling, AttributeModifier.Operation.ADDITION));
 
-        
-        
+
         attributeContainers.add(AttributeContainer.withUUID(Attributes.MAX_HEALTH, UUID.fromString(BASE_STATISTICS), max_health, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(Attributes.MAX_HEALTH, UUID.fromString(LEVEL_BONUS_STATISTICS), max_health_scaling, AttributeModifier.Operation.ADDITION));
         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.HEALTH_REGENERATION.get(), UUID.fromString(BASE_STATISTICS), health_regeneration, AttributeModifier.Operation.ADDITION));
@@ -141,32 +139,28 @@ public class ClassData {
 
         ArrayList<AttributeContainer> attributeContainers = new ArrayList<>();
 
-         attributeContainers.add(AttributeContainer.withUUID(Attributes.MAX_HEALTH, UUID.fromString(LEVEL_BONUS_STATISTICS), max_health_scaling * (level-1), AttributeModifier.Operation.ADDITION));
-         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.HEALTH_REGENERATION.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), health_regeneration_scaling* (level-1), AttributeModifier.Operation.ADDITION));
-         attributeContainers.add(AttributeContainer.withUUID(Attributes.ARMOR, UUID.fromString(LEVEL_BONUS_STATISTICS), armor_scaling* (level-1), AttributeModifier.Operation.ADDITION));
-         attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGIC_RESISTANCE.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), magic_resist_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(Attributes.MAX_HEALTH, UUID.fromString(LEVEL_BONUS_STATISTICS), max_health_scaling * (level - 1), AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.HEALTH_REGENERATION.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), health_regeneration_scaling * (level - 1), AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(Attributes.ARMOR, UUID.fromString(LEVEL_BONUS_STATISTICS), armor_scaling * (level - 1), AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(AttributeRegistration.MAGIC_RESISTANCE.get(), UUID.fromString(LEVEL_BONUS_STATISTICS), magic_resist_scaling * (level - 1), AttributeModifier.Operation.ADDITION));
 
 
         if (resource != null) {
 
 
+            attributeContainers.add(AttributeContainer.withUUID(resource.getResourceMaxAttribute().get(), UUID.fromString(LEVEL_BONUS_STATISTICS), max_resource_scaling * (level - 1), AttributeModifier.Operation.ADDITION));
 
-            attributeContainers.add(AttributeContainer.withUUID(resource.getResourceMaxAttribute().get(), UUID.fromString(LEVEL_BONUS_STATISTICS), max_resource_scaling* (level-1), AttributeModifier.Operation.ADDITION));
 
-
-             attributeContainers.add(AttributeContainer.withUUID(resource.getResourceRegenAttribute().get(), UUID.fromString(LEVEL_BONUS_STATISTICS), resource_regeneration_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+            attributeContainers.add(AttributeContainer.withUUID(resource.getResourceRegenAttribute().get(), UUID.fromString(LEVEL_BONUS_STATISTICS), resource_regeneration_scaling * (level - 1), AttributeModifier.Operation.ADDITION));
 
         }
 
 
-         attributeContainers.add(AttributeContainer.withUUID(Attributes.MOVEMENT_SPEED, UUID.fromString(LEVEL_BONUS_STATISTICS), movement_speed_scaling* (level-1), AttributeModifier.Operation.ADDITION));
+        attributeContainers.add(AttributeContainer.withUUID(Attributes.MOVEMENT_SPEED, UUID.fromString(LEVEL_BONUS_STATISTICS), movement_speed_scaling * (level - 1), AttributeModifier.Operation.ADDITION));
 
 
         return attributeContainers;
     }
-
-
-
 
 
     public void addAttributeToEntity(Player entity, Attribute attribute, double baseValue, double scaleValue) {
@@ -174,8 +168,6 @@ public class ClassData {
 
         double appliedBase = baseValue;
         double appliedScale = scaleValue;
-
-
 
 
         entity.getAttribute(attribute).removeModifier(UUID.fromString(BASE_STATISTICS));
@@ -186,17 +178,7 @@ public class ClassData {
         entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(UUID.fromString(LEVEL_BONUS_STATISTICS), LEVEL_ID, appliedScale * (level - 1), AttributeModifier.Operation.ADDITION));
 
 
-
     }
-
-
-
-
-
-
-
-
-
 
 
     public double getMax_health() {

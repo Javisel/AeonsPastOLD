@@ -12,28 +12,27 @@ public class ItemProperty extends net.minecraftforge.registries.ForgeRegistryEnt
 
 
     private boolean isDisplayed = false;
+
     public ItemProperty() {
 
 
     }
 
-
-    public void setDisplayed(){
-
-
-        isDisplayed=true;
-    }
-
-    public boolean isDisplayed(){
-
-        return isDisplayed;
-    }
-
-
     public static ItemProperty getPropertyByLocation(ResourceLocation resourceLocation) {
 
 
         return resourceLocation == null ? null : (ItemProperty) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.ITEM_PROPERTY_REGISTRY_NAME).getValue(resourceLocation);
+    }
+
+    public void setDisplayed() {
+
+
+        isDisplayed = true;
+    }
+
+    public boolean isDisplayed() {
+
+        return isDisplayed;
     }
 
     public void applyToItem(ItemStack stack) {
@@ -44,62 +43,62 @@ public class ItemProperty extends net.minecraftforge.registries.ForgeRegistryEnt
 
     }
 
-    public boolean onPreHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
-        return  true;
+    public boolean onPreHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance) {
+        return true;
 
     }
 
     //When the wielder is hit, before the hit is processed
-    public boolean onOwnerPreHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+    public boolean onOwnerPreHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance) {
 
-        return  true;
+        return true;
 
     }
 
     //when the hit applies
-    public boolean onOwnerHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+    public boolean onOwnerHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance) {
 
-        return  true;
+        return true;
 
     }
 
     //After the hit applies.
-    public boolean onOwnerPostHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+    public boolean onOwnerPostHit(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance) {
 
-        return  true;
+        return true;
 
     }
 
 
-    public boolean onPreHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack ) {
+    public boolean onPreHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
 
-        return  true;
+        return true;
 
     }
 
 
     public boolean onHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance) {
 
-     return  true;
+        return true;
 
     }
 
 
     public boolean onHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
 
-        return  true;
+        return true;
     }
-    public boolean postHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance ) {
+
+    public boolean postHitEntity(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance) {
 
 
         return true;
 
     }
+
     public boolean postHitEntityInHand(LivingEntity attacker, LivingEntity victim, DamageInstance damageInstance, ItemStack stack) {
 
-        return  true;
-
-
+        return true;
 
 
     }

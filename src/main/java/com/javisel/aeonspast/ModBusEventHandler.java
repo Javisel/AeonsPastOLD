@@ -3,29 +3,24 @@ package com.javisel.aeonspast;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.entities.entitytraits.EntityTrait;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
-import com.javisel.aeonspast.common.registration.ParticleTypeRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.spellproperty.SpellProperty;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -51,7 +46,6 @@ public class ModBusEventHandler {
         event.register(IMobData.class);
 
     }
-
 
 
     @SubscribeEvent
@@ -116,7 +110,6 @@ public class ModBusEventHandler {
 
 
     }
-
 
 
 }

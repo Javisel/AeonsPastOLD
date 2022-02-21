@@ -2,8 +2,8 @@ package com.javisel.aeonspast.common.items.emblem;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
-import com.javisel.aeonspast.common.items.TrinketTypes;
 import com.javisel.aeonspast.common.items.TrinketItem;
+import com.javisel.aeonspast.common.items.TrinketTypes;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.Utilities;
@@ -40,10 +40,9 @@ public class BasicEmblem extends TrinketItem {
 
 
             IPlayerData playerData = Utilities.getPlayerData(player);
-            IEntityData entityData = Utilities.getEntityData(player);
 
-            playerData.getActiveSpells().add(super.getSpell(player, stack).get());
-            playerData.getSpellBar().getSpellList().set(0, super.getSpell(player, stack).get());
+            playerData.getActiveSpells().add(super.getSpell(player, stack));
+            playerData.getSpellBar().getSpellList().set(0, super.getSpell(player, stack));
             getGameClass().get().activateOnPlayer(player);
 
         }

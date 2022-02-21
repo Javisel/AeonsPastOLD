@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public  abstract class WeaponSpell  extends Spell {
+public abstract class WeaponSpell extends Spell {
     public WeaponSpell(int defaultMaxCharges, int defaultChargeTime, int defaultCooldown, float defaultCost, SpellRank spellRank) {
         super(defaultMaxCharges, defaultChargeTime, defaultCooldown, defaultCost, spellRank);
     }
@@ -20,21 +20,21 @@ public  abstract class WeaponSpell  extends Spell {
         super(defaultChargeTime, defaultCost, spellRank);
     }
 
+    public static void attackReset(LivingEntity entity) {
+
+        entity.attackStrengthTicker = 40;
+
+    }
 
     @Override
     public void onFinishCooldown(Player entity, SpellStack stack) {
         super.onFinishCooldown(entity, stack);
 
 
-
-            deEquipWeaponSpell((Player) entity);
-
-
-
+        deEquipWeaponSpell((Player) entity);
 
 
     }
-
 
     public void deEquipWeaponSpell(Player player) {
 
@@ -46,7 +46,7 @@ public  abstract class WeaponSpell  extends Spell {
         IEntityData entityData = Utilities.getEntityData(player);
         ItemStack weapon = player.getMainHandItem();
 
-        if (ItemEngine.getSpellFromItem(weapon) !=null && ItemEngine.getSpellFromItem(weapon) == this) {
+        if (ItemEngine.getSpellFromItem(player,weapon) != null && ItemEngine.getSpellFromItem(player,weapon) == this) {
 
             return;
 
@@ -55,8 +55,8 @@ public  abstract class WeaponSpell  extends Spell {
 
             playerData.setActiveWeaponSpell(Spell.getDefaultSpell());
             playerData.removeSpellStack(this);
-            if (ItemEngine.getSpellFromItem(weapon) !=null) {
-                Spell newSpell = ItemEngine.getSpellFromItem(weapon);
+            if (ItemEngine.getSpellFromItem(player,weapon) != null) {
+                Spell newSpell = ItemEngine.getSpellFromItem(player,weapon);
 
 
                 newSpell.equipWeaponSpell(player);
@@ -67,19 +67,6 @@ public  abstract class WeaponSpell  extends Spell {
 
         }
 
-
-
-
-
-
-
-
-
-    }
-
-    public static void attackReset(LivingEntity entity) {
-
-        entity.attackStrengthTicker=40;
 
     }
 

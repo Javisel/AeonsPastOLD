@@ -8,5 +8,4 @@ public class NumericProperty extends SpellProperty {
     }
 
 
-
 }

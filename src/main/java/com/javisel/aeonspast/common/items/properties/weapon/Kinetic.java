@@ -15,7 +15,6 @@ public class Kinetic extends WeaponProperty {
             double i = attacker.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
 
-
             if (attacker.isSprinting()) {
                 if (victim != null) {
                     victim.knockback((float) i * 0.5F, Mth.sin(attacker.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(attacker.getYRot() * ((float) Math.PI / 180F)));
@@ -29,6 +28,6 @@ public class Kinetic extends WeaponProperty {
             return true;
         }
 
-        return  false;
+        return false;
     }
 }

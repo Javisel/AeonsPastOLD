@@ -16,7 +16,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import static com.javisel.aeonspast.utilities.StringKeys.*;
 
@@ -26,7 +29,6 @@ public class ArmorData {
     public static final String ITEM_MOD_ID = "4703e862-a7ae-4697-aeea-f58ac8697e10";
 
     public static final String BASE_STATS = "aeonspast:armorstats";
-
 
 
     private final ArmorType armor_type;
@@ -41,51 +43,6 @@ public class ArmorData {
         this.rarity = rarity;
     }
 
-    public CompoundTag toNBT() {
-
-        CompoundTag tag = new CompoundTag();
-
-
-        tag.putString(ARMOR_TYPE,armor_type.toString());
-        tag.putString(RARITY,rarity.toString());
-
-        CompoundTag stattag = new CompoundTag();
-        int i = 0;
-
-        for (AttributeStatisticsPair pair : statistics) {
-
-            stattag.put("entry"+i, pair.toNBT());
-
-            i++;
-
-        }
-
-        tag.put(STATISTICS,stattag);
-
-        CompoundTag props = new CompoundTag();
-        for  (String prop : properties) {
-
-
-            props.putString(prop,"");
-
-
-
-
-        }
-
-
-
-        tag.putString(RARITY,rarity.name());
-
-        tag.put(ITEM_PROPERTIES,props);
-
-
-
-        return tag;
-
-
-    }
-
     public static ArmorData fromNBT(CompoundTag tag) {
 
 
@@ -96,28 +53,60 @@ public class ArmorData {
 
         for (String key : stats.getAllKeys()) {
 
-            AttributeStatisticsPair pair =  AttributeStatisticsPair.getPairFromNBT(stats.getCompound(key));
+            AttributeStatisticsPair pair = AttributeStatisticsPair.getPairFromNBT(stats.getCompound(key));
 
-
-             data.statistics.add(pair);
+            data.statistics.add(pair);
 
         }
 
 
-
-         data.properties.addAll(tag.getCompound(ITEM_PROPERTIES).getAllKeys());
-
+        data.properties.addAll(tag.getCompound(ITEM_PROPERTIES).getAllKeys());
 
 
-
-
-        return  data;
+        return data;
 
     }
 
+    public CompoundTag toNBT() {
+
+        CompoundTag tag = new CompoundTag();
 
 
+        tag.putString(ARMOR_TYPE, armor_type.toString());
+        tag.putString(RARITY, rarity.toString());
 
+        CompoundTag stattag = new CompoundTag();
+        int i = 0;
+
+        for (AttributeStatisticsPair pair : statistics) {
+
+            stattag.put("entry" + i, pair.toNBT());
+
+            i++;
+
+        }
+
+        tag.put(STATISTICS, stattag);
+
+        CompoundTag props = new CompoundTag();
+        for (String prop : properties) {
+
+
+            props.putString(prop, "");
+
+
+        }
+
+
+        tag.putString(RARITY, rarity.name());
+
+        tag.put(ITEM_PROPERTIES, props);
+
+
+        return tag;
+
+
+    }
 
     public void loadToArmor(@Nullable LivingEntity entity, ItemStack stack) {
 
@@ -133,9 +122,6 @@ public class ArmorData {
         }
 
 
-
-
-
         for (String property : properties) {
 
 
@@ -145,37 +131,19 @@ public class ArmorData {
         }
 
 
-
-
-
-
         for (AttributeStatisticsPair statisticsPair : statistics) {
-
-
 
 
             Attribute attribute = statisticsPair.getAttribute();
 
 
-
-
-            stack.addAttributeModifier(attribute, new AttributeModifier(UUID.randomUUID(), BASE_STATS, statisticsPair.roll(luck,random), statisticsPair.getOperation()),getEquipmentSlot());
-
-
-
-
-
-
-
-
-
+            stack.addAttributeModifier(attribute, new AttributeModifier(UUID.randomUUID(), BASE_STATS, statisticsPair.roll(luck, random), statisticsPair.getOperation()), getEquipmentSlot());
 
 
         }
         ItemEngine.getAeonsPastTag(stack).putString(RARITY, rarity.name());
 
-        ItemEngine.getAeonsPastTag(stack).putUUID(UNIQUE_ID,UUID.randomUUID());
-
+        ItemEngine.getAeonsPastTag(stack).putUUID(UNIQUE_ID, UUID.randomUUID());
 
 
     }
@@ -188,16 +156,16 @@ public class ArmorData {
     public StatisticPair getStatisticPair(Attribute attribute) {
 
 
-        for (AttributeStatisticsPair statisticsPair : statistics){
+        for (AttributeStatisticsPair statisticsPair : statistics) {
             if (statisticsPair.getAttribute() == attribute) {
 
-                return  statisticsPair;
+                return statisticsPair;
             }
 
 
         }
 
-        return  null;
+        return null;
     }
 
 
@@ -206,17 +174,13 @@ public class ArmorData {
     }
 
 
-
     public EquipmentSlot getEquipmentSlot() {
 
 
-        return  armor_type.getEquipmentSlot();
+        return armor_type.getEquipmentSlot();
 
 
     }
-
-
-
 
 
 }

@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "aeonspast.refmap.json",
   "mixins": [
-
   ],
   "client": [
   ],

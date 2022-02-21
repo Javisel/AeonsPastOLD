@@ -6,7 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.config.trinket.TrinketData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -39,7 +38,7 @@ public class TrinketDataLoader extends SimpleJsonResourceReloadListener {
 
         ImmutableMap.Builder<ResourceLocation, TrinketData> builder = ImmutableMap.builder();
 
-        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "tags/items/trinkets/trinkets.json");
+        ResourceLocation resourceLocation = new ResourceLocation(AeonsPast.MODID, "tags/items/trinkets/all_trinkets.json");
         ArrayList<ResourceLocation> finalLocations = new ArrayList<ResourceLocation>();
 
 
@@ -47,9 +46,7 @@ public class TrinketDataLoader extends SimpleJsonResourceReloadListener {
             for (Resource resource : resourceManager.getResources(resourceLocation)) {
 
 
-
-                 InputStream stream = resource.getInputStream();
-
+                InputStream stream = resource.getInputStream();
 
 
                 Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
@@ -156,17 +153,13 @@ public class TrinketDataLoader extends SimpleJsonResourceReloadListener {
         for (Map.Entry trinketEntry : trinketStatisticsMap.entrySet()) {
 
 
-
             tag.put(trinketEntry.getKey().toString(), ((TrinketData) trinketEntry.getValue()).toNBT());
-
 
 
         }
 
 
-
-        return  tag;
-
+        return tag;
 
 
     }

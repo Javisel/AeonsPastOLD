@@ -1,11 +1,10 @@
 {
-
   "weapon_power": 5,
   "weapon_power_scaling": 1,
   "physical_power": 0,
   "physical_power_scaling": 0,
   "magical_power": 0,
-  "magical_power_scaling":0,
+  "magical_power_scaling": 0,
   "attack_speed": 0,
   "attack_speed_scaling": 0.012,
   "max_health": 150,

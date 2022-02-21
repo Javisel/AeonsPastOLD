@@ -49,7 +49,6 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
                 InputStream stream = resource.getInputStream();
 
 
-
                 Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
 
                 JsonObject jsonobject = GsonHelper.fromJson(GSON_INSTANCE, reader, JsonObject.class);
@@ -154,20 +153,16 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
     public CompoundTag toNBT() {
 
         CompoundTag tag = new CompoundTag();
-      for (Map.Entry armorEntry : armorStatisticsMap.entrySet()) {
+        for (Map.Entry armorEntry : armorStatisticsMap.entrySet()) {
 
 
-
-          tag.put(armorEntry.getKey().toString(), ((ArmorData) armorEntry.getValue()).toNBT());
-
+            tag.put(armorEntry.getKey().toString(), ((ArmorData) armorEntry.getValue()).toNBT());
 
 
         }
 
 
-
-        return  tag;
-
+        return tag;
 
 
     }

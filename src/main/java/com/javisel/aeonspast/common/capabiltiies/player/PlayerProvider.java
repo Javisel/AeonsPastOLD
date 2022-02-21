@@ -9,7 +9,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class APPlayerProvider implements ICapabilitySerializable<CompoundTag> {
+public class PlayerProvider implements ICapabilitySerializable<CompoundTag> {
 
 
     private final PlayerData apPlayerData = new PlayerData();

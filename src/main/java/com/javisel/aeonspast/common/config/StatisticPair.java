@@ -1,7 +1,6 @@
 package com.javisel.aeonspast.common.config;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.stats.Stat;
 
 import java.util.Random;
 
@@ -18,11 +17,18 @@ public class StatisticPair {
 
     }
 
+    public static StatisticPair fromNBT(CompoundTag tag) {
+
+
+        return new StatisticPair(tag.getFloat("min"), tag.getFloat("max"));
+
+
+    }
 
     public float roll(float luck, Random random) {
 
 
-         float rng = min + random.nextFloat() * (max - min);
+        float rng = min + random.nextFloat() * (max - min);
 
 
         if (luck < 0) {
@@ -59,7 +65,7 @@ public class StatisticPair {
         }
 
 
-         return rng;
+        return rng;
     }
 
     public float getmin() {
@@ -70,52 +76,22 @@ public class StatisticPair {
         return max;
     }
 
-
     public float getAverage() {
 
 
         return (min + max) / 2;
     }
 
-
-    public static StatisticPair fromNBT(CompoundTag tag) {
-
-
-
-
-        return  new StatisticPair(tag.getFloat("min"),tag.getFloat("max"));
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-
-
     public CompoundTag toNBT() {
 
 
-
         CompoundTag tag = new CompoundTag();
-        tag.putFloat("min",min);
-        tag.putFloat("max",max);
+        tag.putFloat("min", min);
+        tag.putFloat("max", max);
 
 
-
-
-
-
-return  tag;
+        return tag;
     }
-
-
 
 
 }

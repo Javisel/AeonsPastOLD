@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.networking.abilitymessage;
 
-import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.utilities.Utilities;
@@ -13,9 +12,7 @@ import java.util.function.Supplier;
 public class WeaponAbilityMessage {
 
 
-
-    public WeaponAbilityMessage( ) {
-
+    public WeaponAbilityMessage() {
 
 
     }
@@ -27,7 +24,7 @@ public class WeaponAbilityMessage {
 
     public static WeaponAbilityMessage decode(FriendlyByteBuf buf) {
 
-        return new WeaponAbilityMessage( );
+        return new WeaponAbilityMessage();
     }
 
 
@@ -45,12 +42,12 @@ public class WeaponAbilityMessage {
                 IPlayerData playerData = Utilities.getPlayerData(player);
 
 
-                if ( Spell.isSpellDefault( playerData.getActiveWeaponSpell())) {
+                if (Spell.isSpellDefault(playerData.getActiveWeaponSpell())) {
                     return;
                 }
 
 
-                playerData.getActiveWeaponSpell().attemptCast(player, Utilities.getPlayerData(player).getSpellStackRaw(playerData.getActiveWeaponSpell()));
+                playerData.getActiveWeaponSpell().attemptCast(player, Utilities.getPlayerData(player).getSpellStack(playerData.getActiveWeaponSpell()));
 
             });
 

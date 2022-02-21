@@ -23,7 +23,6 @@ public class AttributeRegistration {
 
 
     //Defensive
-    //  public static final RegistryObject<Attribute> HEALTH = ATTRIBUTES.register("health", () -> new RangedAttribute("generic.health", 0, 0, 20000).setSyncable(true));
     public static final RegistryObject<Attribute> HEALTH_REGENERATION = ATTRIBUTES.register("health_regeneration", () -> new RangedAttribute("generic.health_regeneration", 1, 0, 100).setSyncable(true));
 
     public static final RegistryObject<Attribute> ARMOR = ATTRIBUTES.register("armor", () -> new RangedAttribute("generic.armor", 0, 0, 100000).setSyncable(true));
@@ -46,7 +45,7 @@ public class AttributeRegistration {
     //Offensive
     public static final RegistryObject<Attribute> SPELL_LIFESTEAL = ATTRIBUTES.register("spell_lifesteal", () -> new RangedAttribute("generic.spell_lifesteal", 0, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> WEAPON_POWER = ATTRIBUTES.register("weapon_power", () -> new RangedAttribute("generic.weapon_power", 0, 0, 100).setSyncable(true));
-    public static final RegistryObject<Attribute> WEAPON_LIFESTEAL = ATTRIBUTES.register("weapon_lifesteal", () -> new RangedAttribute("generic.weapon_lifesteal", 15, 0, 100).setSyncable(true));
+    public static final RegistryObject<Attribute> WEAPON_LIFESTEAL = ATTRIBUTES.register("weapon_lifesteal", () -> new RangedAttribute("generic.weapon_lifesteal", 0, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> MAGICAL_POWER = ATTRIBUTES.register("magical_power", () -> new RangedAttribute("generic.magical_power", 0, 0, 1000).setSyncable(true));
     public static final RegistryObject<Attribute> PHYSICAL_POWER = ATTRIBUTES.register("physical_power", () -> new RangedAttribute("generic.physical_power", 0, 0, 1000).setSyncable(true));
     public static final RegistryObject<Attribute> MELEE_POWER = ATTRIBUTES.register("melee_power", () -> new RangedAttribute("generic.melee_power", 0, 0, 1000).setSyncable(true));
@@ -56,11 +55,8 @@ public class AttributeRegistration {
     public static final RegistryObject<Attribute> CRITICAL_DAMAGE = ATTRIBUTES.register("critical_damage", () -> new RangedAttribute("generic.critical_damage", 2, 0, 100).setSyncable(true));
     public static final RegistryObject<Attribute> ATTACK_RANGE = ATTRIBUTES.register("attack_range", () -> new RangedAttribute("generic.attack_range", 2, 0, 100).setSyncable(true));
 
-  //Offensive - Status Chances
+    //Offensive - Status Chances
     public static final RegistryObject<Attribute> STATUS_CHANCE = ATTRIBUTES.register("status_chance", () -> new RangedAttribute("generic.status_chance", 0, -100, 100).setSyncable(true));
-
-
-
 
 
     //Resources

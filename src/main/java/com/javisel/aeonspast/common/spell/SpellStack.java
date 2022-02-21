@@ -1,9 +1,12 @@
 package com.javisel.aeonspast.common.spell;
 
 import com.javisel.aeonspast.ModBusEventHandler;
+import com.javisel.aeonspast.utilities.StringKeys;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryManager;
+
+import java.util.UUID;
 
 import static com.javisel.aeonspast.utilities.StringKeys.*;
 
@@ -12,7 +15,7 @@ public final class SpellStack {
     protected int charges = 1;
     protected int cooldown = 0;
     protected int chargeTime = 0;
-
+    protected  final UUID spellInstanceId;
 
     protected Spell spell;
     protected CompoundTag spellData;
@@ -24,6 +27,7 @@ public final class SpellStack {
         this.spell = spell;
         spellState = SpellState.OFF;
         charges = spell.getDefaultMaxCharges();
+        spellInstanceId = UUID.randomUUID();
     }
 
 
@@ -42,7 +46,7 @@ public final class SpellStack {
 
         ResourceLocation resourceLocation = new ResourceLocation(tag.getString(SPELL));
         spell = (Spell) RegistryManager.ACTIVE.getRegistry(ModBusEventHandler.SPELL_REGISTRY_NAME).getValue(resourceLocation);
-
+        spellInstanceId=tag.getUUID(UNIQUE_ID);
     }
 
 
@@ -66,7 +70,7 @@ public final class SpellStack {
             tag.put(SPELL_DATA, spellData);
         }
         tag.putString(SPELL, spell.getRegistryName().toString());
-
+        tag.putUUID(UNIQUE_ID,spellInstanceId);
 
         return tag;
     }
@@ -132,4 +136,7 @@ public final class SpellStack {
         this.spellState = state;
     }
 
+    public UUID getSpellInstanceId() {
+        return spellInstanceId;
+    }
 }

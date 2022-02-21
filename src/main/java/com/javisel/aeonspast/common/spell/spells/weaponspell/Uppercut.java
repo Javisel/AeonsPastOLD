@@ -18,19 +18,14 @@ public class Uppercut extends WeaponSpell {
         if (entity.level.isClientSide) {
 
 
-
-
-
-
         } else {
-
 
 
         }
 
 
-            attackReset(entity);
-            entity.addEffect(new MobEffectInstance(EffectRegistration.UPPERCUT_SPELL_BUFF.get(),100,0));
+        attackReset(entity);
+        entity.addEffect(new MobEffectInstance(EffectRegistration.UPPERCUT_SPELL_BUFF.get(), 100, 0));
 
     }
 }

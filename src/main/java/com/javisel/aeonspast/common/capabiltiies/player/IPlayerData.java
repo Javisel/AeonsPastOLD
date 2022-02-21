@@ -49,7 +49,6 @@ public interface IPlayerData {
 
     HashMap<Resource, Float> getResourceMap();
 
-    SpellStack getSpellStackRaw(Spell spell);
-
-    SpellStack getOrCreateSpellStack(Spell spell);
+    SpellStack getSpellStack(Spell spell);
+    void setSpellstack(Spell spell, SpellStack stack);
 }

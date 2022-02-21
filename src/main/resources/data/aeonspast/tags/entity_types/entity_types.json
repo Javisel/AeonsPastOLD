@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-
     "minecraft:zombie",
     "minecraft:skeleton",
     "minecraft:creeper",
@@ -18,14 +17,5 @@
     "minecraft:vindicator",
     "minecraft:husk",
     "minecraft:stray"
-
-
-
-
-
-
-
-
-
   ]
 }

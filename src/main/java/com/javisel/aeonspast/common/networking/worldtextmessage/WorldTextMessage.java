@@ -34,8 +34,6 @@ public class WorldTextMessage {
     }
 
 
-
-
     public static class Handler {
 
         public static void handle(final WorldTextMessage mes, Supplier<NetworkEvent.Context> ctx) {

@@ -58,7 +58,7 @@ public class PlayerData implements IPlayerData {
 
         CompoundTag tag = new CompoundTag();
         CompoundTag classes = new CompoundTag();
-         CompoundTag spellBarTag = spellBar.writeNBT();
+        CompoundTag spellBarTag = spellBar.writeNBT();
 
         if (activeClass != null) {
             tag.putString(ACTIVE_CLASS, activeClass.getRegistryName().toString());
@@ -174,9 +174,9 @@ public class PlayerData implements IPlayerData {
 
             activeWeaponSpell = Spell.getSpellByResourceLocation(new ResourceLocation(key));
 
-                if (activeWeaponSpell ==Spell.getDefaultSpell()) {
-                    activeWeaponSpell=null;
-                }
+            if (activeWeaponSpell == Spell.getDefaultSpell()) {
+                activeWeaponSpell = null;
+            }
         }
         if (tag.contains(StringKeys.SPELL_DATA)) {
 
@@ -308,14 +308,11 @@ public class PlayerData implements IPlayerData {
     }
 
 
+    @Override
+    public void addActiveSpell(Spell spell) {
 
 
-
-     @Override
-     public void addActiveSpell(Spell spell) {
-
-
-        if (activeSpells==null) {
+        if (activeSpells == null) {
             activeSpells = new ArrayList<>();
         }
         for (Spell index : activeSpells) {
@@ -340,6 +337,7 @@ public class PlayerData implements IPlayerData {
 
 
     }
+
     @Override
     public void removeActiveSpell(Spell spell) {
 
@@ -348,12 +346,14 @@ public class PlayerData implements IPlayerData {
 
 
     }
+
     @Override
     public ArrayList<Spell> getActiveSpells() {
 
 
         return activeSpells;
     }
+
     @Override
     public Float getResourceAmountRaw(Resource resource) {
 
@@ -396,7 +396,7 @@ public class PlayerData implements IPlayerData {
     @Override
     public HashMap<Resource, Float> getResourceMap() {
 
-        if (resourceMap ==null) {
+        if (resourceMap == null) {
 
             resourceMap = new HashMap<>();
         }
@@ -405,7 +405,7 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public SpellStack getSpellStackRaw(Spell spell) {
+    public SpellStack getSpellStack(Spell spell) {
 
 
         if (spellStackHashMap == null) {
@@ -423,8 +423,9 @@ public class PlayerData implements IPlayerData {
         return null;
 
     }
+
     @Override
-    public SpellStack getOrCreateSpellStack(Spell spell) {
+    public void setSpellstack(Spell spell, SpellStack stack) {
 
 
         if (spellStackHashMap == null) {
@@ -433,18 +434,6 @@ public class PlayerData implements IPlayerData {
 
         }
 
-
-        if (!spellStackHashMap.containsKey(spell)) {
-
-            SpellStack spellStack = new SpellStack(spell);
-
-            spellStackHashMap.put(spell, spellStack);
-        }
-
-
-        return spellStackHashMap.get(spell);
+        spellStackHashMap.put(spell,stack);
     }
-
-
-
 }

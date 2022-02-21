@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 import static com.javisel.aeonspast.AeonsPast.MODID;
 import static com.javisel.aeonspast.ModBusEventHandler.SPELL_REGISTRY_NAME;
+
 @OnlyIn(Dist.CLIENT)
 public class SpellAtlasHolder extends TextureAtlasHolder {
 

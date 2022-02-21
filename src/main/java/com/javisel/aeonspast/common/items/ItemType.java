@@ -7,9 +7,6 @@ public enum ItemType {
     GENERIC_ITEM("aeonspast:generic_item", 2);
 
 
-
-
-
     private final String unlocalizedName;
     private final String descriptionKey;
     private final int id;

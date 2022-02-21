@@ -6,12 +6,6 @@ import net.minecraftforge.common.capabilities.CapabilityProvider;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 
 
-
-
-
-
-
-
 public class EntityCapability extends CapabilityProvider {
 
 

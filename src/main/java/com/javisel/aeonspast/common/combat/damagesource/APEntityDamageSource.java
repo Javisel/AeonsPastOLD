@@ -4,25 +4,25 @@ import com.javisel.aeonspast.common.combat.DamageInstance;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
-public class APEntityDamageSource extends  APDamageSource {
+public class APEntityDamageSource extends APDamageSource {
 
 
-     private Entity directEntity;
-     private Entity sourceEntity;
+    private Entity directEntity;
+    private Entity sourceEntity;
 
 
-     //Melee Instances
+    //Melee Instances
     public APEntityDamageSource(String id, DamageInstance instance, Entity sourceEntity) {
-        super(id,instance );
-         this.directEntity =sourceEntity;
-        this.sourceEntity=directEntity;
+        super(id, instance);
+        this.directEntity = sourceEntity;
+        this.sourceEntity = directEntity;
     }
 
     //Ranged Instances
     public APEntityDamageSource(String id, DamageInstance instance, Entity directEntity, Entity sourceEntity) {
-        super(id,instance );
-        this.directEntity =directEntity;
-        this.sourceEntity=sourceEntity;
+        super(id, instance);
+        this.directEntity = directEntity;
+        this.sourceEntity = sourceEntity;
     }
 
     @Nullable

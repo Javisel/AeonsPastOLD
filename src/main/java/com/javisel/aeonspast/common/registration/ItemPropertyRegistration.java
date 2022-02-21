@@ -2,7 +2,6 @@ package com.javisel.aeonspast.common.registration;
 
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
-import com.javisel.aeonspast.common.items.properties.ItemRarity;
 import com.javisel.aeonspast.common.items.properties.armor.Dyeable;
 import com.javisel.aeonspast.common.items.properties.armor.Nimble;
 import com.javisel.aeonspast.common.items.properties.armor.Sturdy;
@@ -26,10 +25,6 @@ public class ItemPropertyRegistration {
     public static final RegistryObject<ItemProperty> VERSATILE = ITEM_PROPERTIES.register("versatile", () -> new Versatile());
     public static final RegistryObject<ItemProperty> BRUTAL = ITEM_PROPERTIES.register("brutal", () -> new Brutal());
     public static final RegistryObject<ItemProperty> KINETIC = ITEM_PROPERTIES.register("kinetic", () -> new Kinetic());
-
-
-
-
 
 
     public static final RegistryObject<ItemProperty> NIMBLE = ITEM_PROPERTIES.register("nimble", () -> new Nimble());

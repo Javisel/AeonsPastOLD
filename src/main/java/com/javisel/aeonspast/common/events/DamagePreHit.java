@@ -2,7 +2,6 @@ package com.javisel.aeonspast.common.events;
 
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
 public class DamagePreHit extends LivingEvent {
@@ -15,10 +14,8 @@ public class DamagePreHit extends LivingEvent {
         super(entity);
         this.attacker = attacker;
 
-        this.instance=instance;
+        this.instance = instance;
     }
-
-
 
 
 }

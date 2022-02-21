@@ -110,11 +110,7 @@ public class EntityStatisticalData {
 
         }
 
-        mobData.setExperienceReward((float) (base_experience + (experience_scaling * (1-entityData.getLevel()))));
-
-
-
-
+        mobData.setExperienceReward((float) (base_experience + (experience_scaling * (1 - entityData.getLevel()))));
 
 
     }
@@ -129,11 +125,10 @@ public class EntityStatisticalData {
             Slime slime = (Slime) entity;
 
 
-             appliedBase =   baseValue * ((double) slime.getSize());
-            appliedScale  =  scaleValue *  ((double) slime.getSize());
+            appliedBase = baseValue * ((double) slime.getSize());
+            appliedScale = scaleValue * ((double) slime.getSize());
 
         }
-
 
 
         entity.getAttribute(attribute).addPermanentModifier(new AttributeModifier(BASE_STAT_ID, BASE_STRING, appliedBase, AttributeModifier.Operation.ADDITION));

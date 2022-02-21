@@ -3,13 +3,13 @@ package com.javisel.aeonspast.client.ui;
 
 import com.google.common.collect.Multimap;
 import com.javisel.aeonspast.client.main.ClientProxy;
-import com.javisel.aeonspast.common.config.armor.ArmorData;
 import com.javisel.aeonspast.common.config.StatisticPair;
+import com.javisel.aeonspast.common.config.armor.ArmorData;
 import com.javisel.aeonspast.common.config.trinket.TrinketData;
+import com.javisel.aeonspast.common.config.weapon.WeaponData;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.properties.ItemRarity;
-import com.javisel.aeonspast.common.config.weapon.WeaponData;
 import com.javisel.aeonspast.common.networking.stacksyncmessage.StackSyncMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
@@ -38,8 +38,8 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -56,6 +56,10 @@ import static com.javisel.aeonspast.utilities.StringKeys.TRINKET_TYPE;
 public class ToolTipHandler {
 
 
+    public static final DecimalFormat ATTRIBUTE_MODIFIER_FORMAT = Util.make(new DecimalFormat("#.##"), (p_41704_) -> {
+        p_41704_.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
+    });
+
     @SubscribeEvent
     public static void overrideToolTip(RenderTooltipEvent.GatherComponents event) {
 
@@ -63,6 +67,7 @@ public class ToolTipHandler {
             return;
         }
 
+        Player player = Minecraft.getInstance().player;
         ItemStack stack = event.getItemStack();
         Item item = stack.getItem();
 
@@ -91,9 +96,16 @@ public class ToolTipHandler {
                     adjustArmorTooltip(stack, tooltips);
                 }
 
-                if (ItemEngine.getSpellFromItem(stack) !=null) {
+                else if (ItemEngine.isTrinket(stack)) {
 
-                    addspellTooltip(stack,tooltips);
+
+                    adjustTrinketTooltips(stack, tooltips);
+                }
+
+
+                if (ItemEngine.getSpellFromItem(player,stack) != null) {
+
+                    addspellTooltip(stack, tooltips);
                 }
 
 
@@ -113,7 +125,6 @@ public class ToolTipHandler {
 
     }
 
-
     public static void clearAllKeepName(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
 
@@ -123,7 +134,6 @@ public class ToolTipHandler {
         tooltips.add(Either.left(stack.getHoverName()));
 
     }
-
 
     public static void addRarityTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
         CompoundTag tag = ItemEngine.getAeonsPastTag(stack);
@@ -225,16 +235,16 @@ public class ToolTipHandler {
         }
 
 
-        /*
+
         double status_chance = ItemEngine.getItemFlatAttributeValue(AttributeRegistration.STATUS_CHANCE.get(), stack, EquipmentSlot.MAINHAND);
         if (status_chance != 0) {
 
-            tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.STATUS_CHANCE.get(), stack, weaponData.getStatus_chance(), status_chance, EquipmentSlot.MAINHAND)));
+            tooltips.add(Either.left(getAttributeComponent(AttributeRegistration.STATUS_CHANCE.get(), stack, weaponData.getStatus_chance(), status_chance)));
 
 
         }
 
-         */
+
         double range = 5 + ItemEngine.getItemFlatAttributeValue(ForgeMod.REACH_DISTANCE.get(), stack, EquipmentSlot.MAINHAND);
         ;
 
@@ -251,8 +261,9 @@ public class ToolTipHandler {
         component = component.copy().append(numbercomponent).withStyle(ChatFormatting.ITALIC);
         tooltips.add(Either.left(component));
 
+        Player player = Minecraft.getInstance().player;
 
-        Spell spell = ItemEngine.getSpellFromItem(stack);
+        Spell spell = ItemEngine.getSpellFromItem(player,stack);
 
         if (spell != null) {
             Component spellcomponent = new TranslatableComponent("tooltip.weaponspell").withStyle(ChatFormatting.BOLD);
@@ -262,7 +273,6 @@ public class ToolTipHandler {
         }
 
     }
-
 
     public static void adjustArmorTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
@@ -291,16 +301,16 @@ public class ToolTipHandler {
 
     }
 
-
     public static void adjustTrinketTooltips(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
         TrinketData trinketData = ClientProxy.trinketDataMap.get(stack.getItem().getRegistryName());
 
 
-
         Player player = Minecraft.getInstance().player;
-        SlotContext context = new SlotContext(ItemEngine.getAeonsPastTag(stack).getString(TRINKET_TYPE),player,0,false,true);
-        Multimap<Attribute, AttributeModifier> attributeMods = CuriosApi.getCuriosHelper().getAttributeModifiers(context,TrinketData.TRINKET_UUID,stack);
+        SlotContext context = new SlotContext(ItemEngine.getAeonsPastTag(stack).getString(TRINKET_TYPE), player, 0, false, true);
+
+        ICurioItem curioItem = (ICurioItem) stack.getItem();
+        Multimap<Attribute, AttributeModifier> attributeMods =   curioItem.getAttributeModifiers(context,TrinketData.TRINKET_UUID,stack);
 
 
         for (Map.Entry entry : attributeMods.entries()) {
@@ -321,6 +331,7 @@ public class ToolTipHandler {
 
 
     }
+
     public static MutableComponent applyColourFormattings(double min, double max, double value, Component component) {
 
 
@@ -406,10 +417,6 @@ public class ToolTipHandler {
         return component;
     }
 
-    public static final DecimalFormat ATTRIBUTE_MODIFIER_FORMAT = Util.make(new DecimalFormat("#.##"), (p_41704_) -> {
-        p_41704_.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
-    });
-
     public static Component getAttributeComponent(Attribute attribute, ItemStack stack, StatisticPair pair, double value) {
 
         boolean isminute = false;
@@ -466,12 +473,14 @@ public class ToolTipHandler {
     public static void addspellTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
 
 
-        Spell spell = ItemEngine.getSpellFromItem(stack);
+        Player player = Minecraft.getInstance().player;
+
+        Spell spell = ItemEngine.getSpellFromItem(player,stack);
 
         if (!Spell.isSpellDefault(spell)) {
             tooltips.add(Either.left(new TranslatableComponent(spell.getRegistryName().toString())));
 
-            tooltips.add(Either.left(new TranslatableComponent(spell.getSimpleDescription())));
+            tooltips.add(Either.left(new TranslatableComponent(spell.getGenericDescription())));
         }
 
     }

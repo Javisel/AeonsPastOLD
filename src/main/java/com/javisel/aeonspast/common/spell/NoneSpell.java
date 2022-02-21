@@ -2,7 +2,6 @@ package com.javisel.aeonspast.common.spell;
 
 import com.javisel.aeonspast.AeonsPast;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import org.apache.logging.log4j.Level;
 
 public class NoneSpell extends Spell {

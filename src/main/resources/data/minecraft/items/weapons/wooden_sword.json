@@ -1,8 +1,6 @@
 {
-
   "weapon_type": "SWORD",
   "rarity": "COMMON",
-
   "attack_damage": {
     "min": 5,
     "max": 25
@@ -11,11 +9,9 @@
     "min": 1.44,
     "max": 1.76
   },
-
-  "critical_chance" : {
+  "critical_chance": {
     "min": 0,
-    "max" :0
-
+    "max": 0
   },
   "critical_damage": {
     "min": 2,
@@ -25,14 +21,10 @@
     "min": 48,
     "max": 78
   },
-
-
-  "status_chance" : {
+  "status_chance": {
     "min": 5,
-    "max" :15
-
+    "max": 15
   },
-
   "enchantability": {
     "min": 15,
     "max": 15
@@ -41,12 +33,10 @@
     "min": 4,
     "max": 4
   },
-
-  "is_ranged" : "false",
-
-  "secondarydata" : [],
+  "is_ranged": "false",
+  "secondarydata": [],
   "properties": [
-      "aeonspast:versatile",
+    "aeonspast:versatile",
     "aeonspast:sweeping",
     "aeonspast:kinetic",
     "aeonspast:brutal"

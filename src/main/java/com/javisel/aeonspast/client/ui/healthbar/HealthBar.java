@@ -122,7 +122,6 @@ public class HealthBar implements IIngameOverlay {
         Gui.drawCenteredString(mStack, gui.getFont(), healthdata, stringx, stringy, -1);
 
 
-
         mStack.popPose();
 
 

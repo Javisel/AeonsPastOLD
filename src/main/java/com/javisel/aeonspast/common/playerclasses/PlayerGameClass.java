@@ -47,7 +47,7 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
     public void activateOnPlayer(Player player) {
 
 
-            IPlayerData playerData = Utilities.getPlayerData(player);
+        IPlayerData playerData = Utilities.getPlayerData(player);
         IEntityData entityData = Utilities.getEntityData(player);
 
         playerData.setActiveGameClass(this);
@@ -55,18 +55,17 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
         for (AttributeContainer container : getClassData().getAttributeModifiers(castResource.get())) {
 
 
+            player.getAttribute(container.getAttribute()).removeModifier(container.getModifier());
 
-                player.getAttribute(container.getAttribute()).removeModifier(container.getModifier());
 
-
-             player.getAttribute(container.getAttribute()).addPermanentModifier(container.getModifier());
+            player.getAttribute(container.getAttribute()).addPermanentModifier(container.getModifier());
 
 
         }
 
         playerData.getResourceMap().put(getCastResource(), (float) player.getAttributeValue(castResource.get().getResourceMaxAttribute().get()));
         player.heal(player.getMaxHealth());
-         if (!player.getLevel().isClientSide) {
+        if (!player.getLevel().isClientSide) {
 
             Utilities.syncTotalPlayerData(player);
 
@@ -76,15 +75,13 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
     }
 
 
-
-
     public void deActivateOnPlayer(Player player) {
 
 
         IPlayerData playerData = Utilities.getPlayerData(player);
         playerData.getOrCreatePlayerClass(this);
 
-         playerData.setActiveGameClass(null);
+        playerData.setActiveGameClass(null);
 
 
         for (AttributeContainer container : getClassData().getAttributeModifiers(castResource.get())) {
@@ -112,9 +109,8 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
 
         IPlayerData playerData = Utilities.getPlayerData(player);
-        int level  =playerData.getOrCreatePlayerClass(this).getLevel();
-      ArrayList<AttributeContainer> containers= classData.getLevelModifiers(getCastResource(),level);
-
+        int level = playerData.getOrCreatePlayerClass(this).getLevel();
+        ArrayList<AttributeContainer> containers = classData.getLevelModifiers(getCastResource(), level);
 
 
         for (AttributeContainer container : containers) {
@@ -128,8 +124,6 @@ public class PlayerGameClass extends net.minecraftforge.registries.ForgeRegistry
 
 
     }
-
-
 
 
     public Resource getCastResource() {

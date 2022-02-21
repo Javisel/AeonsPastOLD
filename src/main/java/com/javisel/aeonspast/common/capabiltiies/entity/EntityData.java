@@ -1,43 +1,33 @@
 package com.javisel.aeonspast.common.capabiltiies.entity;
 
-import com.javisel.aeonspast.ModBusEventHandler;
-import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.effects.ComplexEffectInstance;
-import com.javisel.aeonspast.common.resource.Resource;
-import com.javisel.aeonspast.common.spell.Spell;
-import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.utilities.StringKeys;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.javisel.aeonspast.utilities.StringKeys.*;
+import static com.javisel.aeonspast.utilities.StringKeys.EFFECTS;
 
 public class EntityData implements IEntityData {
 
 
-     int ticks = 0;
+    int ticks = 0;
     int level = 1;
 
 
     //TODO move spell and resource stuff out of EntityData into PlayerData!
 
-    HashMap<MobEffect,ArrayList<ComplexEffectInstance>> mobEffectArrayListHashMap = new HashMap<>();
+    HashMap<MobEffect, ArrayList<ComplexEffectInstance>> mobEffectArrayListHashMap = new HashMap<>();
 
     @Override
     public CompoundTag writeNBT() {
         CompoundTag tag = new CompoundTag();
-         tag.putInt(StringKeys.LEVEL, level);
-
-
-
-
+        tag.putInt(StringKeys.LEVEL, level);
 
 
         CompoundTag effects = new CompoundTag();
@@ -48,18 +38,18 @@ public class EntityData implements IEntityData {
             CompoundTag effect = new CompoundTag();
 
             int i = 0;
-            for (ComplexEffectInstance instance : entry.getValue()){
+            for (ComplexEffectInstance instance : entry.getValue()) {
 
-                effect.put("entry_"+i, instance.toNBT());
+                effect.put("entry_" + i, instance.toNBT());
 
                 i++;
             }
-        effects.put(entry.getKey().getRegistryName().toString(), effect);
+            effects.put(entry.getKey().getRegistryName().toString(), effect);
 
         }
 
 
-        tag.put(EFFECTS,effects);
+        tag.put(EFFECTS, effects);
 
 
         return tag;
@@ -67,7 +57,6 @@ public class EntityData implements IEntityData {
 
     @Override
     public void readNBT(CompoundTag tag) {
-
 
 
         level = tag.getInt(StringKeys.LEVEL);
@@ -83,25 +72,23 @@ public class EntityData implements IEntityData {
                 ResourceLocation entryLocation = new ResourceLocation(key);
 
 
-
                 CompoundTag effect = effects.getCompound(key);
                 ArrayList<ComplexEffectInstance> effectInstances = new ArrayList<>();
 
+
+                if (effect.isEmpty()) {
+                    continue;
+                }
                 for (String entry : effect.getAllKeys()) {
 
 
+                    System.out.println("Entry: " + entry);
                     effectInstances.add(ComplexEffectInstance.fromNBT(effect.getCompound(entry)));
 
 
                 }
 
-                mobEffectArrayListHashMap.put(ForgeRegistries.MOB_EFFECTS.getValue(entryLocation),effectInstances);
-
-
-
-
-
-
+                mobEffectArrayListHashMap.put(ForgeRegistries.MOB_EFFECTS.getValue(entryLocation), effectInstances);
 
 
             }
@@ -131,13 +118,6 @@ public class EntityData implements IEntityData {
         ticks++;
 
 
-
-
-
-
-
-
-
     }
 
 
@@ -145,9 +125,6 @@ public class EntityData implements IEntityData {
     public int getLevel() {
         return level;
     }
-
-
-
 
 
     @Override

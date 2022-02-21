@@ -1,7 +1,8 @@
-package com.javisel.aeonspast.client.spell;
+package com.javisel.aeonspast.client.ui;
 
 import com.javisel.aeonspast.client.RenderUtilities;
 import com.javisel.aeonspast.client.main.ClientProxy;
+import com.javisel.aeonspast.client.spell.SpellModelShaper;
 import com.javisel.aeonspast.client.ui.AbilityBar;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
@@ -31,9 +32,10 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 
 import static com.javisel.aeonspast.common.registration.SpellRegistration.SPELLS;
+
 @OnlyIn(Dist.CLIENT)
 
-public class SpellRenderer {
+public class UISpellRenderer {
 
 
     private final SpellModelShaper spellModelShaper;
@@ -41,7 +43,7 @@ public class SpellRenderer {
 
     private final RenderType SPELL_RENDER_TYPE = RenderType.translucent();
 
-    public SpellRenderer(TextureManager textureManager, ModelManager modelManager) {
+    public UISpellRenderer(TextureManager textureManager, ModelManager modelManager) {
         this.spellModelShaper = new SpellModelShaper(modelManager);
         this.textureManager = textureManager;
 
@@ -83,7 +85,7 @@ public class SpellRenderer {
         IPlayerData playerData = Utilities.getPlayerData(player);
         IEntityData entityData = Utilities.getEntityData(player);
 
-        if (spellStack==null) {
+        if (spellStack == null) {
             return;
         }
         Spell spell = spellStack.getSpell();
@@ -258,7 +260,7 @@ public class SpellRenderer {
 
                         z++;
                         RenderSystem.setShaderColor(1, (float) 215 / 255, 0, 1.0f);
-                        RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f, xpos, ypos + 16, z, 76, 9, 16, 16);
+                        RenderUtilities.renderTextureFromSprite(poseStack, AbilityBar.ABILITY_BAR_TEXTURES, 16f, 16f, xpos, ypos, z, 76, 9, 16, 16);
 
 
                     }
@@ -274,7 +276,6 @@ public class SpellRenderer {
 
 
     }
-
 
 
     public void renderQuadList(PoseStack poseStack, VertexConsumer vertexConsumer, List<BakedQuad> p_115165_, SpellStack spellStack, int x, int y) {

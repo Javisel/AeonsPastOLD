@@ -6,7 +6,7 @@ public enum TrinketTypes {
 
     EMBLEM(StringKeys.EMBLEM_IDENTIFIER, 0),
     TRINKET(StringKeys.TRINKET_IDENTIFIER, 1),
-    ACTIVE(StringKeys.ACTIVE_SLOT_IDENTIFIERS, 2),
+    ACTIVE(StringKeys.ACTIVE_SLOT_IDENTIFIER, 2),
     ULTIMATE(StringKeys.ULTIMATE_SLOT_IDENTIFIER, 3);
 
 
@@ -26,7 +26,7 @@ public enum TrinketTypes {
 
         return switch (name) {
             case StringKeys.EMBLEM_IDENTIFIER -> EMBLEM;
-            case StringKeys.ACTIVE_SLOT_IDENTIFIERS -> ACTIVE;
+            case StringKeys.ACTIVE_SLOT_IDENTIFIER -> ACTIVE;
             case StringKeys.ULTIMATE_SLOT_IDENTIFIER -> ULTIMATE;
             case StringKeys.TRINKET_IDENTIFIER -> TRINKET;
             default -> null;

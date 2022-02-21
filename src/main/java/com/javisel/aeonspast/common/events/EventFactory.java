@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.events;
 
-import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -42,13 +42,13 @@ public class EventFactory {
     public static boolean onDamagePreHit(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
 
-        DamagePreHit preHitEvent = new DamagePreHit(attacker, victim, instance );
+        DamagePreHit preHitEvent = new DamagePreHit(attacker, victim, instance);
 
         return MinecraftForge.EVENT_BUS.post(preHitEvent);
 
     }
 
-    public static boolean onDamageHit(LivingEntity attacker, LivingEntity victim, APDamageSource source ) {
+    public static boolean onDamageHit(LivingEntity attacker, LivingEntity victim, APDamageSource source) {
 
         onDamageHit directHitEvent = new onDamageHit(victim, source, attacker);
 
@@ -56,6 +56,13 @@ public class EventFactory {
 
 
     }
+    public static boolean onDamageKnockup( DamageInstance  instance,LivingEntity victim, float strength, float ratioX, float ratioZ) {
 
+        DamageKnockbackEvent damageKnockbackEvent = new DamageKnockbackEvent( instance,victim,strength,ratioX,ratioZ);
+
+        return MinecraftForge.EVENT_BUS.post(damageKnockbackEvent);
+
+
+    }
 
 }

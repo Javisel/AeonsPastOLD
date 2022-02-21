@@ -7,14 +7,11 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 public class OnDamageCalculationEvent extends LivingEvent {
 
     DamageInstance instance;
-    public OnDamageCalculationEvent(DamageInstance instance,LivingEntity entity) {
+
+    public OnDamageCalculationEvent(DamageInstance instance, LivingEntity entity) {
         super(entity);
-        this.instance=instance;
+        this.instance = instance;
     }
-
-
-
-
 
 
 }

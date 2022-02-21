@@ -9,8 +9,6 @@ import java.util.function.Supplier;
 public class ResourceMessageHandler {
 
 
-
-
     public static void handle(final ResourceMessage mes, Supplier<NetworkEvent.Context> ctx) {
 
 
@@ -29,7 +27,6 @@ public class ResourceMessageHandler {
         ctx.get().setPacketHandled(true);
 
     }
-
 
 
 }

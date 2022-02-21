@@ -13,15 +13,15 @@ public class ServerDataMessage {
     public CompoundTag armorDataTag;
     public CompoundTag trinketDataTag;
 
-    public ServerDataMessage(CompoundTag weaponDataTag, CompoundTag armorDataTag, CompoundTag trinketDataTag ) {
+    public ServerDataMessage(CompoundTag weaponDataTag, CompoundTag armorDataTag, CompoundTag trinketDataTag) {
         this.weaponDataTag = weaponDataTag;
         this.armorDataTag = armorDataTag;
-        this.trinketDataTag=trinketDataTag;
+        this.trinketDataTag = trinketDataTag;
 
     }
 
     public static void encode(ServerDataMessage pkt, FriendlyByteBuf buf) {
-      buf.writeNbt(pkt.weaponDataTag);
+        buf.writeNbt(pkt.weaponDataTag);
         buf.writeNbt(pkt.armorDataTag);
         buf.writeNbt(pkt.trinketDataTag);
 
@@ -31,9 +31,8 @@ public class ServerDataMessage {
     public static ServerDataMessage decode(FriendlyByteBuf buf) {
 
 
-        return  new ServerDataMessage(buf.readNbt(),buf.readNbt(),buf.readNbt() );
+        return new ServerDataMessage(buf.readNbt(), buf.readNbt(), buf.readNbt());
     }
-
 
 
     public static class Handler {
@@ -41,10 +40,7 @@ public class ServerDataMessage {
         public static void handle(final ServerDataMessage mes, Supplier<NetworkEvent.Context> ctx) {
 
 
-
-
-
-          ServerDataMessageHandler.handle(mes,ctx);
+            ServerDataMessageHandler.handle(mes, ctx);
 
 
         }

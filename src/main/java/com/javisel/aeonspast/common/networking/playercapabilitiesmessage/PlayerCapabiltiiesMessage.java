@@ -10,14 +10,14 @@ import java.util.function.Supplier;
 
 public class PlayerCapabiltiiesMessage {
 
-    public   CompoundTag entityDataTag;
-    public   CompoundTag playerDataTag;
+    public CompoundTag entityDataTag;
+    public CompoundTag playerDataTag;
 
 
     public PlayerCapabiltiiesMessage(CompoundTag entityDataTag, CompoundTag playerDataTag) {
 
-         this.entityDataTag = entityDataTag;
-       this.playerDataTag = playerDataTag;
+        this.entityDataTag = entityDataTag;
+        this.playerDataTag = playerDataTag;
     }
 
 
@@ -38,7 +38,7 @@ public class PlayerCapabiltiiesMessage {
         public static void handle(final PlayerCapabiltiiesMessage mes, Supplier<NetworkEvent.Context> ctx) {
 
 
-            PlayerCapabilitiesMessageHandler.handle(mes,ctx);
+            PlayerCapabilitiesMessageHandler.handle(mes, ctx);
 
         }
     }

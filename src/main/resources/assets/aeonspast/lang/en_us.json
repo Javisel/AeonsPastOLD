@@ -7,12 +7,8 @@
   "curios.modifiers.emblem": "Trinket Stats",
   "curios.modifiers.amulet": "Trinket Stats",
   "curios.modifiers.trinket": "Trinket Stats",
-
-
   "item.aeonspast.warrior_emblem": "Warrior's Emblem",
   "item.aeonspast.swift_strikes_spell_stone": "Swift Strikes Spell Stone",
-
-
   "generic.lifesteal": "Lifesteal",
   "generic.magic_power": "Magic Power",
   "generic.maximum_resource": "Maximum Mana",
@@ -23,55 +19,59 @@
   "generic.critical_damage": "Critical Damage",
   "generic.critical_chance": "Critical Chance",
   "generic.status_chance": "Status Chance",
-
-  "aeonspast:sword.desc" : "Highly versatile melee weapons with consistent damage and a wide variety of special effects.",
-  "aeonspast:axe.desc" : "Potent melee weapons with extremely high damage and one-shot potential.",
-   "aeonspast:common" : "Common",
-  "aeonspast:rare" : "Rare",
+  "aeonspast:sword.desc": "Highly versatile melee weapons with consistent damage and a wide variety of special effects.",
+  "aeonspast:axe.desc": "Potent melee weapons with extremely high damage and one-shot potential.",
+  "aeonspast:common": "Common",
+  "aeonspast:rare": "Rare",
   "aeonspast:epic": "Epic",
   "aeonspst:fabled": "Fabled",
-  "aeonspast:legendary":"Legendary",
-  "aeonspast:mythic" : "Mythical",
-  "aeonspast:gilded_weapon" :"Gilded",
-  "aeonspast:gilded_armour" :"Gilded",
-
-
-
-
-
+  "aeonspast:legendary": "Legendary",
+  "aeonspast:mythic": "Mythical",
+  "aeonspast:emblem": "Emblem",
+  "aeonspast:gilded_weapon": "Gilded",
+  "aeonspast:gilded_armour": "Gilded",
   "aeonspast:fireproof": "Fireproof",
-  "aeonspast:sweeping" : "Sweeper",
-  "aeonspast:versatile" : "Versatile",
-  "aeonspast:kinetic" : "Kinetic",
-  "aeonspast:brutal" : "Brutal",
-  "aeonspast:dyeable" : "Dyeable",
-  "aeonspast:nimble" : "Nimble",
-
+  "aeonspast:sweeping": "Sweeper",
+  "aeonspast:versatile": "Versatile",
+  "aeonspast:kinetic": "Kinetic",
+  "aeonspast:brutal": "Brutal",
+  "aeonspast:dyeable": "Dyeable",
+  "aeonspast:nimble": "Nimble",
   "tooltip.sleepingweapon.desc": "You need a closer look...",
-   "tooltip.weaponspell": "Weapon Spell",
+  "tooltip.weaponspell": "Weapon Spell",
   "tooltip.swift_strikes.desc.simple": "Gain %f Attack Speed for %f seconds.",
-  "aeonspast:dps" : "DPS",
-
+  "aeonspast:dps": "DPS",
   "effect.aeonspast.uppercut_spell_buff": "Uppercut",
   "itemGroup.aeonspast": "Aeon's Past",
-
-
-
-
-
-  "spell.aeonspast.warrior_class_spell": "Indomitable",
-  "spell.aeonspast.warrior_class_spell.desc.generic": "Passive: Reduced Crowd Control. Active: Heal.",
+  "aeonspast:warrior_class_spell": "Indomitable",
+  "aeonspast.warrior_class_spell.desc.generic": "Passive: Reduced Crowd Control. Active: Heal. Has two charges.",
   "spell.aeonspast.warrior_class_spell.desc.simple": "Passive: Reduces all Crowd Control by %f percent, before other reduction effects. Active: Heal %f.",
   "spell.aeonspast.warrior_class_spell.desc.expanded": "Passive: Reduces all Crowd Control by (%f + %f+%s) percent, before other reduction effects. Active: Heal (%f + %f+%s).",
+
+
+
+
   "aeonspast:true_strike.simpledesc": "Next weapon hit deals %f bonus true damage",
   "aeonspast:none.simpledesc": "Uh oh, this should be here...",
-
-
-  "aeonspast:uppercut" : "Uppercut",
-  "aeonspast:uppercut.simpledesc" : "Attack Reset. Next attack Knocks Up.",
+  "aeonspast:uppercut": "Uppercut",
+  "aeonspast:uppercut.desc.generic": "Attack Reset. Next attack Knocks Up.",
   "aeonspast:cleave": "Cleave",
   "aeonspast:cleave.simpledesc": "Deal weapon damage in a cone",
   "aeonspast:double_slash": "Double Slash",
   "aeonspast:double_strike.simpledesc": "Swing twice dealing Weapon Damage",
-  "aeonspast:true_strike": "True Strike"
+  "aeonspast:true_strike": "True Strike",
+  "spell.aeonspast.true_strike.desc.generic": "Next attack deals bonus true damage.",
+
+
+
+
+
+  "aeonspast:swift_strikes": "Swift Strikes",
+  "spell.aeonspast.swift_strikes.desc.generic": "Increases Attack Speed.",
+  "spell.aeonspast.swift_strikes.desc.simple": "Passive: Reduces all Crowd Control by %f percent, before other reduction effects. Active: Heal %f.",
+  "spell.aeonspast.swift_strikes.desc.expanded": "Passive: Reduces all Crowd Control by (%f + %f+%s) percent, before other reduction effects. Active: Heal (%f + %f+%s).",
+
+  "aeonspast.stagger.application" : "Staggered",
+  "aeonspast.perforate.application": "Perforated"
+
 }

@@ -30,8 +30,6 @@ public class StackSyncMessage {
     }
 
 
-
-
     public static class Handler {
 
         public static void handle(final StackSyncMessage mes, Supplier<NetworkEvent.Context> ctx) {
@@ -43,7 +41,6 @@ public class StackSyncMessage {
                 Player player = ctx.get().getSender();
 
 
-                IPlayerData playerData = Utilities.getPlayerData(player);
 
 
                 for (ItemStack stack : player.getInventory().items) {

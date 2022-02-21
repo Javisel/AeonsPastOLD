@@ -3,13 +3,10 @@ package com.javisel.aeonspast.common.particles;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;
 
-public class WorldTextType extends ParticleType  {
+public class WorldTextType extends ParticleType {
 
 
-
-
-
-    public WorldTextType(  ) {
+    public WorldTextType() {
         super(true, WorldTextOptions.DESERIALIZER);
 
     }
@@ -18,16 +15,9 @@ public class WorldTextType extends ParticleType  {
     public Codec<WorldTextOptions> codec() {
 
 
-        return  WorldTextOptions.codec();
+        return WorldTextOptions.codec();
 
     }
-
-
-
-
-
-
-
 
 
 }

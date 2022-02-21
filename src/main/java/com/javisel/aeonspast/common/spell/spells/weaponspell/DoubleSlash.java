@@ -20,16 +20,7 @@ public class DoubleSlash extends WeaponSpell {
             Player player = (Player) entity;
 
 
-
-
-
-
         }
-
-
-
-
-
 
 
     }

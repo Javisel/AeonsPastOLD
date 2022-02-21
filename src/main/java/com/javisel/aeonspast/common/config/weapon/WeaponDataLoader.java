@@ -130,10 +130,7 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
     public WeaponData getWeaponData(ItemStack stack) {
 
 
-
         ResourceLocation location = stack.getItem().getRegistryName();
-
-
 
 
         for (ResourceLocation test : weaponStatisticsMap.keySet()) {
@@ -159,17 +156,13 @@ public class WeaponDataLoader extends SimpleJsonResourceReloadListener {
         for (Map.Entry weaponEntry : weaponStatisticsMap.entrySet()) {
 
 
-
             tag.put(weaponEntry.getKey().toString(), ((WeaponData) weaponEntry.getValue()).toNBT());
-
 
 
         }
 
 
-
-        return  tag;
-
+        return tag;
 
 
     }

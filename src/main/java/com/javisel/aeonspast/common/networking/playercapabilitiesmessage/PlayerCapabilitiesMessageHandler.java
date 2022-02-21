@@ -10,11 +10,6 @@ import java.util.function.Supplier;
 public class PlayerCapabilitiesMessageHandler {
 
 
-
-
-
-
-
     public static void handle(final PlayerCapabiltiiesMessage mes, Supplier<NetworkEvent.Context> ctx) {
 
 

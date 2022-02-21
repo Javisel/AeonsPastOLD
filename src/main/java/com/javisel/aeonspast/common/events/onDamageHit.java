@@ -10,11 +10,10 @@ public class onDamageHit extends LivingDamageEvent {
     private final LivingEntity attacker;
 
 
-    public onDamageHit(LivingEntity victim, APDamageSource source, LivingEntity attacker ) {
+    public onDamageHit(LivingEntity victim, APDamageSource source, LivingEntity attacker) {
         super(victim, source, (float) source.instance.getPreMitigationsAmount());
-         this.attacker = attacker;
+        this.attacker = attacker;
     }
-
 
 
 }

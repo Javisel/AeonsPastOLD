@@ -23,18 +23,15 @@ public class ServerDataMessageHandler {
             WeaponData data = WeaponData.fromNBT(mes.weaponDataTag.getCompound(key));
 
 
-
             ResourceLocation location = new ResourceLocation(key);
 
 
             weaponDataBuilder.put(location, data);
 
 
-
-
         }
 
-        ClientProxy.weaponStatisticsMap=weaponDataBuilder.build();
+        ClientProxy.weaponStatisticsMap = weaponDataBuilder.build();
 
 
         ImmutableMap.Builder<ResourceLocation, ArmorData> armorDataBuilder = ImmutableMap.builder();
@@ -47,13 +44,11 @@ public class ServerDataMessageHandler {
             ArmorData data = ArmorData.fromNBT(mes.armorDataTag.getCompound(key));
 
 
-                armorDataBuilder.put(location,data);
-
+            armorDataBuilder.put(location, data);
 
 
         }
-        ClientProxy.armorStatisticsMap=armorDataBuilder.build();
-
+        ClientProxy.armorStatisticsMap = armorDataBuilder.build();
 
 
         ImmutableMap.Builder<ResourceLocation, TrinketData> trinketDataBuilder = ImmutableMap.builder();
@@ -66,12 +61,11 @@ public class ServerDataMessageHandler {
             TrinketData data = TrinketData.fromNBT(mes.trinketDataTag.getCompound(key));
 
 
-            trinketDataBuilder.put(location,data);
-
+            trinketDataBuilder.put(location, data);
 
 
         }
-        ClientProxy.trinketDataMap=trinketDataBuilder.build();
+        ClientProxy.trinketDataMap = trinketDataBuilder.build();
 
 
     }

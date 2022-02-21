@@ -5,7 +5,7 @@ import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.resources.ResourceLocation;
- import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.RegistryObject;
@@ -62,7 +62,7 @@ public class Resource extends net.minecraftforge.registries.ForgeRegistryEntry<R
 
         resourceAmountChange(entity, old, amount);
 
-         if (sync && !entity.level.isClientSide) {
+        if (sync && !entity.level.isClientSide) {
 
 
             Utilities.syncResourceData((Player) entity, this);

@@ -1,14 +1,14 @@
-package com.javisel.aeonspast.common.items;
+package com.javisel.aeonspast.common.items.weapons;
 
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
 
-public enum  WeaponType {
+public enum WeaponType {
     UNARMED("aeonspast:unarmed", DamageTypeEnum.IMPACT, 0),
     SWORD("aeonspast:sword", DamageTypeEnum.SLASH, 1),
     AXE("aeonspast:axe", DamageTypeEnum.SLASH, 2),
     SPEAR("aeonspast:spear", DamageTypeEnum.PUNCTURE, 3),
     DAGGER("aeonspast:dagger", DamageTypeEnum.PUNCTURE, 4),
-    BOW("aeonspast:bow", DamageTypeEnum.IMPACT, 5),
+    BOW("aeonspast:bow", DamageTypeEnum.PUNCTURE, 5),
     CROSSBOW("aeonspast:crossbow", DamageTypeEnum.IMPACT, 6);
 
 

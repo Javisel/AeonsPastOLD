@@ -1,6 +1,6 @@
 package com.javisel.aeonspast.common.config.spells;
 
-public class SpellProperty  {
+public class SpellProperty {
 
 
     String name;

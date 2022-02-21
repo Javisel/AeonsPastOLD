@@ -1,15 +1,15 @@
 package com.javisel.aeonspast;
 
 
-import com.javisel.aeonspast.common.capabiltiies.entity.EntityData;
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityProvider;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
-import com.javisel.aeonspast.common.capabiltiies.player.APPlayerProvider;
+import com.javisel.aeonspast.common.capabiltiies.player.PlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.combat.CombatEngine;
 import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.DamageTypeEnum;
 import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
 import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
 import com.javisel.aeonspast.common.combat.damagesource.VanillaAPDamageSourceMap;
@@ -38,7 +38,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
@@ -84,14 +83,15 @@ public class GameEventHandler {
         net.minecraft.world.entity.LivingEntity victim = (net.minecraft.world.entity.LivingEntity) event.getTarget();
 
 
-        DamageInstance instance = CombatEngine.calculateMeleeDamage(player,player.getMainHandItem());
-        APEntityDamageSource entityDamageSource = new APEntityDamageSource("player",instance,player);
-        if (CombatEngine.cycleAllPreHitEffects(player,victim,entityDamageSource)) {
-              CombatEngine.cycleAllHitEffects(player,victim,entityDamageSource);
+        DamageInstance instance = CombatEngine.calculateMeleeDamage(player, player.getMainHandItem());
+        APEntityDamageSource entityDamageSource = new APEntityDamageSource("player", instance, player);
+        instance.doesKnockback=true;
+
+        if (CombatEngine.cycleAllPreHitEffects(player, victim, entityDamageSource)) {
+            CombatEngine.cycleAllHitEffects(player, victim, entityDamageSource);
 
         }
     }
-
 
 
     @SubscribeEvent
@@ -107,6 +107,8 @@ public class GameEventHandler {
         if (level.isClientSide) {
             return;
         }
+
+
 
         if (!(event.getSource() instanceof APDamageSource)) {
 
@@ -142,12 +144,12 @@ public class GameEventHandler {
                     }
 
 
-                    DamageInstance instance = CombatEngine.calculateRangedDamage(livingEntity,livingEntity.getMainHandItem(),power);
+                    DamageInstance instance = CombatEngine.calculateFiredRangedDamage(livingEntity,projectile , livingEntity.getMainHandItem(), power);
 
 
-                    APEntityDamageSource entityDamageSource = new APEntityDamageSource("mob",instance,livingEntity);
-                    if (CombatEngine.cycleAllPreHitEffects(livingEntity,victim,entityDamageSource)) {
-                        CombatEngine.cycleAllHitEffects(livingEntity,victim,entityDamageSource);
+                    APEntityDamageSource entityDamageSource = new APEntityDamageSource("mob", instance, livingEntity);
+                    if (CombatEngine.cycleAllPreHitEffects(livingEntity, victim, entityDamageSource)) {
+                        CombatEngine.cycleAllHitEffects(livingEntity, victim, entityDamageSource);
 
                     }
 
@@ -161,10 +163,11 @@ public class GameEventHandler {
 
                     net.minecraft.world.entity.LivingEntity livingEntity = (net.minecraft.world.entity.LivingEntity) source.getEntity();
 
-                    DamageInstance instance = CombatEngine.calculateMeleeDamage(livingEntity,livingEntity.getMainHandItem());
-                    APEntityDamageSource entityDamageSource = new APEntityDamageSource("mob",instance,livingEntity);
-                    if (CombatEngine.cycleAllPreHitEffects(livingEntity,victim,entityDamageSource)) {
-                        CombatEngine.cycleAllHitEffects(livingEntity,victim,entityDamageSource);
+                    DamageInstance instance = CombatEngine.calculateMeleeDamage(livingEntity, livingEntity.getMainHandItem());
+                    APEntityDamageSource entityDamageSource = new APEntityDamageSource("mob", instance, livingEntity);
+                    instance.doesKnockback=true;
+                    if (CombatEngine.cycleAllPreHitEffects(livingEntity, victim, entityDamageSource)) {
+                        CombatEngine.cycleAllHitEffects(livingEntity, victim, entityDamageSource);
 
                     }
                 }
@@ -175,7 +178,6 @@ public class GameEventHandler {
 
 
             }
-
 
 
             if (damageSource != null) {
@@ -198,14 +200,26 @@ public class GameEventHandler {
 
             DamageInstance instance = apsource.getInstance();
 
-            if (!instance.isMitigated) {
 
+            if (victim instanceof Player) {
+                Player player = (Player) victim;
+
+
+
+                if (player.isCreative() && instance.getDamage_type()!= DamageTypeEnum.VOID) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+
+            if (!instance.isMitigated) {
 
 
                 double mitigate = CombatEngine.getMitigatedDamage(victim, instance);
 
                 instance.setMitigateDamage((float) mitigate);
 
+                instance.savedMotion=victim.getDeltaMovement();
 
                 victim.hurt(source, (float) instance.postMitigationsAmount);
                 event.setCanceled(true);
@@ -215,24 +229,36 @@ public class GameEventHandler {
             } else {
 
 
-
-
                 if (instance.cancel) {
-                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_NODAMAGE,SoundSource.NEUTRAL,1,1);
+                    victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_NODAMAGE, SoundSource.NEUTRAL, 1, 1);
 
 
                     return;
                 }
 
+
+                if (!instance.doesKnockback ){
+
+                    System.out.println("shouldn't knockback!");
+
+                    if (instance.savedMotion!=null) {
+                        System.out.println("There's a saved motion!");
+                        victim.setDeltaMovement(0,0,0);
+                    }
+                }
+
+
+
+
                 if (instance.postMitigationsAmount / victim.getMaxHealth() > 0.4) {
 
-                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_STRONG,SoundSource.NEUTRAL,1,1);
+                    victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.NEUTRAL, 1, 1);
 
 
                 } else {
 
 
-                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_WEAK,SoundSource.NEUTRAL,1,1);
+                    victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.NEUTRAL, 1, 1);
 
 
                 }
@@ -240,40 +266,61 @@ public class GameEventHandler {
                 if (instance.isCritical) {
 
 
-                    victim.getLevel().playSound(null,victim, SoundEvents.PLAYER_ATTACK_CRIT,SoundSource.NEUTRAL,1,1);
+                    victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.NEUTRAL, 1, 1);
 
                 }
 
 
 
-                     if (attacker instanceof Player) {
-
-                         Player player = (Player) attacker;
-
-                         ServerLevel serverLevel = (ServerLevel) level;
-
-                         WorldTextOptions textOptions = WorldTextOptions.getWorldNumberOptionByDamage(instance.damage_type, (float) instance.postMitigationsAmount,instance.isCritical);
 
 
-                         Random random =serverLevel.getRandom();
-                         double xpos = victim.getX();
-                         double ypos = victim.getY() + victim.getBbHeight()+0.1;
-                         double zpos = victim.getZ();
+                if (attacker!=null && attacker instanceof LivingEntity) {
 
-                         double xd = 0;
-                         double yd=0;
-                         double zd =0;
+                    LivingEntity livingAttacker = (LivingEntity) attacker;
 
 
-                          serverLevel.sendParticles((ServerPlayer)player, textOptions,true,xpos,ypos,zpos,1,xd,yd,zd,0d);
-
-
-                     }
+                    CombatEngine.attemptStatusHit(livingAttacker,victim,instance);
 
 
 
 
-                CombatEngine.cycleAllPostHitEffects(attacker instanceof  LivingEntity ? (LivingEntity) attacker : null,victim,apsource);
+
+
+
+
+
+                }
+
+
+
+
+                if (attacker instanceof Player) {
+
+                    Player player = (Player) attacker;
+
+                    ServerLevel serverLevel = (ServerLevel) level;
+
+                    WorldTextOptions textOptions = WorldTextOptions.getWorldNumberOptionByDamage(instance.damage_type, (float) instance.postMitigationsAmount, instance.isCritical);
+
+
+                    Random random = serverLevel.getRandom();
+                    double xpos = victim.getX();
+                    double ypos = victim.getY() + victim.getBbHeight() + 0.1;
+                    double zpos = victim.getZ();
+
+                    double xd = 0;
+                    double yd = 0;
+                    double zd = 0;
+
+
+
+                    serverLevel.sendParticles((ServerPlayer) player, textOptions, true, xpos, ypos, zpos, 1, xd, yd, zd, 0d);
+
+
+                }
+
+
+                CombatEngine.cycleAllPostHitEffects(attacker instanceof LivingEntity ? (LivingEntity) attacker : null, victim, apsource);
 
 
             }
@@ -309,7 +356,7 @@ public class GameEventHandler {
             if (event.getObject() instanceof Player) {
 
 
-                APPlayerProvider playerProvider = new APPlayerProvider();
+                PlayerProvider playerProvider = new PlayerProvider();
 
                 event.addCapability(new ResourceLocation(AeonsPast.MODID, "playerdata"), playerProvider);
 
@@ -458,13 +505,11 @@ public class GameEventHandler {
         if (event.phase == TickEvent.Phase.START) {
 
             Player player = event.player;
-             if (player.isDeadOrDying()) {
+            if (player.isDeadOrDying()) {
                 return;
             }
             IPlayerData playerData = Utilities.getPlayerData(player);
             IEntityData entityData = Utilities.getEntityData(player);
-
-
 
 
             entityData.tick();
@@ -476,14 +521,12 @@ public class GameEventHandler {
                 player.heal((float) player.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
 
 
-
             }
             if (playerData.getActiveClass() != null) {
 
                 Resource resource = playerData.getActiveClass().getCastResource();
 
                 if (resource != null) {
-
 
 
                     resource.tick(player);
@@ -496,7 +539,7 @@ public class GameEventHandler {
             Spell weaponSpell = playerData.getActiveWeaponSpell();
 
             if (!Spell.isSpellDefault(weaponSpell)) {
-                weaponSpell.tick(player, playerData.getSpellStackRaw(weaponSpell));
+                weaponSpell.tick(player, playerData.getSpellStack(weaponSpell));
 
             }
 
@@ -506,7 +549,7 @@ public class GameEventHandler {
 
 
                     if (!Spell.isSpellDefault(spell)) {
-                        spell.tick(player, playerData.getSpellStackRaw(spell));
+                        spell.tick(player, playerData.getSpellStack(spell));
 
                     }
                 }
@@ -541,7 +584,7 @@ public class GameEventHandler {
 
 
                 Spell activeSpell = playerData.getActiveWeaponSpell();
-                Spell weaponSpell = ItemEngine.getSpellFromItem(weaponStack);
+                Spell weaponSpell = ItemEngine.getSpellFromItem(player,weaponStack);
 
 
                 if (ItemEngine.isWeapon(weaponStack)) {
@@ -556,9 +599,9 @@ public class GameEventHandler {
 
                         } else {
 
-                            SpellStack spellStack = playerData.getOrCreateSpellStack(activeSpell);
+                            SpellStack spellStack = Utilities.getOrCreateSpellstack(player,activeSpell);
 
-                            if (spellStack.isCoolingDown()) {
+                            if (spellStack.isRecharging() && spellStack.getCharges() < 1){
 
                                 return;
                             } else {
@@ -577,10 +620,10 @@ public class GameEventHandler {
                     if (!Spell.isSpellDefault(activeSpell)) {
 
 
-                        SpellStack spellStack = playerData.getOrCreateSpellStack(activeSpell);
+                        SpellStack spellStack = Utilities.getOrCreateSpellstack(player,activeSpell);
 
 
-                        if (spellStack.isCoolingDown()) {
+                        if (spellStack.isRecharging() && spellStack.getCharges() < 1) {
 
                             return;
                         } else {
@@ -608,7 +651,12 @@ public class GameEventHandler {
     @SubscribeEvent
     public static void negateFrames(LivingDamageEvent event) {
 
-        event.getEntityLiving().hurtTime = 0;
+        event.getEntityLiving().hurtDir=0;
+        event.getEntityLiving().hurtTime=0;
+        event.getEntityLiving().hurtDuration=0;
+
+        event.getEntityLiving().invulnerableTime=0;
+
     }
 
     @SubscribeEvent
@@ -628,16 +676,17 @@ public class GameEventHandler {
                     IMobData mobData = Utilities.getMobData(mob);
                     IPlayerData playerData = Utilities.getPlayerData(player);
 
-                    playerData.getActiveClassInstance().addExperience(mobData.getExperienceReward());
+                    if (playerData.getActiveClassInstance() !=null) {
+                        playerData.getActiveClassInstance().addExperience(mobData.getExperienceReward());
 
-                    while (playerData.getActiveClassInstance().getExperience() >= Utilities.experienceForLevel(playerData.getActiveClassInstance().getLevel() + 1)) {
-
-
-                        playerData.getActiveClass().onLevelUp(player);
+                        while (playerData.getActiveClassInstance().getExperience() >= Utilities.experienceForLevel(playerData.getActiveClassInstance().getLevel() + 1)) {
 
 
+                            playerData.getActiveClass().onLevelUp(player);
+
+
+                        }
                     }
-
 
                 }
 
@@ -669,7 +718,7 @@ public class GameEventHandler {
                         continue;
                     }
 
-                     if (entity instanceof LivingEntity) {
+                    if (entity instanceof LivingEntity) {
 
 
                         LivingEntity livingEntity = (LivingEntity) entity;
@@ -684,7 +733,6 @@ public class GameEventHandler {
 
 
                             livingEntity.heal((float) livingEntity.getAttributeValue(AttributeRegistration.HEALTH_REGENERATION.get()) / 5);
-
 
 
                         }
@@ -705,7 +753,6 @@ public class GameEventHandler {
     }
 
 
-
     @SubscribeEvent
     public static void playerDeath(LivingDeathEvent event) {
 
@@ -714,28 +761,13 @@ public class GameEventHandler {
             Player player = (Player) event.getEntity();
 
 
-
-
-
-
-
-
-
-
-
         }
-
-
-
-
-
 
 
     }
 
     @SubscribeEvent
     public static void playerDeathDataTransfer(PlayerEvent.Clone event) {
-
 
 
         if (event.getOriginal().level.isClientSide || !event.isWasDeath()) {
@@ -759,20 +791,38 @@ public class GameEventHandler {
     }
 
 
+    @SubscribeEvent
+    public static void noknoc(LivingDamageEvent event) {
+
+        if (event.getSource() instanceof APDamageSource) {
+
+            APDamageSource damageSource = (APDamageSource) event.getSource();
+
+            DamageInstance instance = damageSource.instance;
+            if (event.getEntityLiving() !=null) {
+
+
+                LivingEntity victim = event.getEntityLiving();
+
+                if (!instance.doesKnockback ){
+
+                    System.out.println("shouldn't knockback! nk");
+                    System.out.println("DT: " + instance.damage_type.toString());
+
+                    if (instance.savedMotion!=null) {
+                         victim.setDeltaMovement( 0,0,0);
+                    }
+                }
+            }
 
 
 
 
 
 
+        }
 
 
-
-
-
-
-
-
-
+    }
 
 }

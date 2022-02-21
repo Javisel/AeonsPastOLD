@@ -1,6 +1,5 @@
 package com.javisel.aeonspast.common.items.properties.weapon;
 
-import com.javisel.aeonspast.common.combat.CombatEngine;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import com.javisel.aeonspast.common.registration.EffectRegistration;
@@ -23,12 +22,9 @@ public class Brutal extends WeaponProperty {
 
             if (doesproc) {
 
-                damageInstance.preMitigationsAmount*=1.25;
-               // CombatEngine.applyCrits(attacker,victim,damageInstance);
-                //applyBrutalCooldown(attacker);
+                damageInstance.preMitigationsAmount *= 1.25;
+
             }
-
-
 
 
             return true;
@@ -49,9 +45,9 @@ public class Brutal extends WeaponProperty {
 
 
         if (baseDuration < 1) {
-            baseDuration=1;
+            baseDuration = 1;
         }
-        attacker.addEffect(new MobEffectInstance(EffectRegistration.BRUTAL_COOLDOWN.get(),(int)baseDuration,0,false,false,true));
+        attacker.addEffect(new MobEffectInstance(EffectRegistration.BRUTAL_COOLDOWN.get(), (int) baseDuration, 0, false, false, true));
 
     }
 

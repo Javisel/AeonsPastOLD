@@ -76,7 +76,7 @@ public class InputHandler {
 
         if (WEAPON_SPELL.isDown()) {
 
-             attemptWeaponCast();
+            attemptWeaponCast();
 
 
         }
@@ -97,7 +97,7 @@ public class InputHandler {
 
         if (slot > playerData.getSpellBar().getSpellList().size()) {
 
-             return;
+            return;
         }
 
         Spell spell = playerData.getSpellBar().getSpellList().get(slot);
@@ -106,7 +106,7 @@ public class InputHandler {
         if (!Spell.isSpellDefault(spell)) {
 
 
-            if (spell.attemptCast(player, Utilities.getPlayerData(player).getSpellStackRaw(spell))) {
+            if (spell.attemptCast(player, Utilities.getPlayerData(player).getSpellStack(spell))) {
 
 
                 PacketRegistration.INSTANCE.sendTo(new AbilityMessage(slot), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);
@@ -131,15 +131,13 @@ public class InputHandler {
         IPlayerData playerData = Utilities.getPlayerData(player);
 
 
-
-
         Spell spell = playerData.getActiveWeaponSpell();
 
 
         if (!Spell.isSpellDefault(spell)) {
 
 
-            if (spell.attemptCast(player, Utilities.getPlayerData(player).getSpellStackRaw(spell))) {
+            if (spell.attemptCast(player, Utilities.getPlayerData(player).getSpellStack(spell))) {
 
 
                 PacketRegistration.INSTANCE.sendTo(new WeaponAbilityMessage(), minecraft.getConnection().getConnection(), NetworkDirection.PLAY_TO_SERVER);

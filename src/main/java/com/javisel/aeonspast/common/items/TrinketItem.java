@@ -2,10 +2,12 @@ package com.javisel.aeonspast.common.items;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.javisel.aeonspast.common.attributes.AttributeContainer;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.utilities.StringKeys;
 import com.javisel.aeonspast.utilities.Utilities;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -14,43 +16,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer {
 
 
     private final TrinketTypes TRINKET_TYPE;
-    protected Multimap<Attribute, AttributeModifier> defaultModifiers;
-    private ArrayList<AttributeContainer> attributeList;
 
     private RegistryObject<Spell> spell;
 
-
-    public TrinketItem(TrinketTypes type, Item.Properties properties, RegistryObject<Spell> spell, @Nullable AttributeContainer... attributeContainers) {
-        super(properties);
-
-
-        TRINKET_TYPE = type;
-
-        this.spell = spell;
-
-
-        if (attributeContainers != null) {
-
-            attributeList = new ArrayList<>();
-            attributeList.addAll(Arrays.asList(attributeContainers));
-
-
-        }
-
-    }
 
     public TrinketItem(TrinketTypes type, Item.Properties properties, RegistryObject<Spell> spell) {
         super(properties);
@@ -63,27 +42,13 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
 
     }
 
-    public TrinketItem(TrinketTypes type, Item.Properties itemProperties) {
-        super(itemProperties);
 
-
-        TRINKET_TYPE = type;
-
-    }
-
-
-    public TrinketItem(TrinketTypes type, Item.Properties properties, ArrayList<AttributeContainer> attributeContainers) {
+    public TrinketItem(TrinketTypes type, Item.Properties properties) {
         super(properties);
 
 
         TRINKET_TYPE = type;
-        if (attributeContainers != null) {
 
-            attributeList = new ArrayList<>();
-            attributeList.addAll(attributeContainers);
-
-
-        }
 
     }
 
@@ -95,11 +60,10 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
         LivingEntity entity = slotContext.entity();
 
 
-
         if (entity instanceof Player) {
 
             Player player = (Player) entity;
-            getSpell(entity, stack).get().onSpellEquipped(player, getSpellStack((Player) entity, stack));
+            getSpell(entity, stack) .onSpellEquipped(player, getSpellStack((Player) entity, stack));
             IPlayerData playerData = Utilities.getPlayerData(player);
             int index = -1;
 
@@ -126,9 +90,7 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
             }
 
 
-
-
-            playerData.getSpellBar().getSpellList().set(index, getSpell(player, stack).get());
+            playerData.getSpellBar().getSpellList().set(index, getSpell(player, stack));
 
             Utilities.syncTotalPlayerData(player);
 
@@ -143,23 +105,33 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
 
 
-        if (defaultModifiers == null) {
+        if (ItemEngine.isItemInitialized(stack)) {
 
 
+            CompoundTag aeonsPastTag = ItemEngine.getAeonsPastTag(stack);
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 
-            if (attributeList != null) {
+            Multimap<Attribute, AttributeModifier> modifierMultimap;
 
-                for (AttributeContainer container : attributeList) {
-
-                    builder.put(container.getAttribute(), container.getModifier());
+            if (aeonsPastTag.contains(StringKeys.ATTRIBUTE_MODIFIERS)) {
 
 
+                CompoundTag modTag = aeonsPastTag.getCompound(StringKeys.ATTRIBUTE_MODIFIERS);
+
+
+                for (String key : modTag.getAllKeys()) {
+
+                      Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(key));
+
+                    AttributeModifier modifier = AttributeModifier.load(modTag.getCompound(key));
+
+
+                    builder.put(attribute, modifier);
                 }
             }
-            defaultModifiers = builder.build();
+            modifierMultimap = builder.build();
 
-            return defaultModifiers;
+            return modifierMultimap;
 
         }
 
@@ -174,10 +146,8 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
         Entity entity = slotContext.entity();
 
 
-
-
         if (entity instanceof Player) {
-            getSpell(slotContext.entity(), stack).get().onSpellUnEquipped((Player) slotContext.entity(), getSpellStack((Player) slotContext.entity(), stack));
+            getSpell(slotContext.entity(), stack) .onSpellUnEquipped((Player) slotContext.entity(), getSpellStack((Player) slotContext.entity(), stack));
 
             Player player = (Player) entity;
             IPlayerData playerData = Utilities.getPlayerData(player);
@@ -218,18 +188,23 @@ public class TrinketItem extends BaseItem implements ICurioItem, ISpellContainer
 
     }
 
-
-    public void onEventTrigger(LivingEntity entity, ItemStack stack, Event event) {
-
-
-    }
-
+ 
     @Override
-    public RegistryObject<Spell> getSpell(LivingEntity caster, ItemStack stack) {
-        return spell;
+    public Spell getSpell(LivingEntity caster, ItemStack stack) {
+        
+        if (spell !=null) {
+             return spell.get() ;
+        }
+        else {
+            
+            return null;
+        }
+        
+        
+        
+        
+        
     }
-
-
 
 
 }

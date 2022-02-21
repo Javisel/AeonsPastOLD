@@ -50,21 +50,22 @@ public class RenderOverride {
     public static void renderEntityOverride(RenderLivingEvent.Post entityViewRenderEvent) {
 
 
-        ClientProxy.inWorldRenderer.addEntityToRenderQue(entityViewRenderEvent.getEntity());
-         ClientProxy.inWorldRenderer.renderBar(        entityViewRenderEvent.getPoseStack(), Minecraft.getInstance().gameRenderer.getMainCamera());
+        if ( ClientProxy.inWorldRenderer.canRender(entityViewRenderEvent.getEntity())) {
+
+            ClientProxy.inWorldRenderer.renderBar(entityViewRenderEvent.getPoseStack(), entityViewRenderEvent.getEntity(), Minecraft.getInstance().gameRenderer.getMainCamera());
 
 
+        }
+    }
 
-     }
 
-
-     @SubscribeEvent
+    @SubscribeEvent
     public static void disableRenderingOfNamePlates(RenderNameplateEvent event) {
 
         event.setResult(Event.Result.DENY);
 
 
-     }
+    }
 
 
 }

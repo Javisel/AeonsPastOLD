@@ -4,14 +4,16 @@ import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataCapability;
-import com.javisel.aeonspast.common.capabiltiies.player.PlayerCapability;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.capabiltiies.player.PlayerCapability;
 import com.javisel.aeonspast.common.items.TrinketTypes;
 import com.javisel.aeonspast.common.networking.playercapabilitiesmessage.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.networking.resourcemessage.ResourceMessage;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.common.resource.Resource;
+import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.common.spell.SpellStack;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -159,15 +161,35 @@ public class Utilities {
     public static Entity getEntityByID(ServerLevel level, UUID uuid) {
 
 
-
-     return    level.getEntities().get(uuid);
-
-
-
-
-
-
+        return level.getEntities().get(uuid);
 
 
     }
+
+
+    public  static SpellStack getOrCreateSpellstack(Player player, Spell spell) {
+
+
+
+        IPlayerData playerData  = getPlayerData(player);
+
+
+        SpellStack stack;
+        if (playerData.getSpellStack(spell) !=null) {
+            stack =  playerData.getSpellStack(spell);
+        } else {
+
+            stack = spell.createNewSpellStack(player);
+            playerData.setSpellstack(spell,stack);
+        }
+
+        return  stack;
+
+    }
+
+
+
+
+
+
 }

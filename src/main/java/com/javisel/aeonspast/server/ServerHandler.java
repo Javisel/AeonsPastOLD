@@ -2,11 +2,11 @@ package com.javisel.aeonspast.server;
 
 import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.config.armor.ArmorDataLoader;
-import com.javisel.aeonspast.common.config.playerclasses.ClassDataLoader;
 import com.javisel.aeonspast.common.config.entity.EntityDataLoader;
+import com.javisel.aeonspast.common.config.entity.EntityStatisticalData;
+import com.javisel.aeonspast.common.config.playerclasses.ClassDataLoader;
 import com.javisel.aeonspast.common.config.trinket.TrinketDataLoader;
 import com.javisel.aeonspast.common.config.weapon.WeaponDataLoader;
-import com.javisel.aeonspast.common.config.entity.EntityStatisticalData;
 import com.javisel.aeonspast.common.networking.serverdatamessage.ServerDataMessage;
 import com.javisel.aeonspast.common.registration.PacketRegistration;
 import com.javisel.aeonspast.utilities.Utilities;
@@ -21,7 +21,7 @@ import net.minecraftforge.network.NetworkDirection;
 import org.apache.logging.log4j.Level;
 
 
-@Mod.EventBusSubscriber( )
+@Mod.EventBusSubscriber()
 public class ServerHandler {
     public static ClassDataLoader CLASS_STATISTICS_LOADER;
     public static WeaponDataLoader WEAPON_STATISTICS_LOADER;
@@ -33,7 +33,7 @@ public class ServerHandler {
     public static void addDataHandlers(AddReloadListenerEvent event) {
 
 
-         ServerHandler.WEAPON_STATISTICS_LOADER = new WeaponDataLoader();
+        ServerHandler.WEAPON_STATISTICS_LOADER = new WeaponDataLoader();
         ServerHandler.ARMOR_DATA_LOADER = new ArmorDataLoader();
 
 
@@ -51,16 +51,11 @@ public class ServerHandler {
     }
 
 
-
-
-
-
     @SubscribeEvent
     public static void syncPlayerData(PlayerEvent.PlayerLoggedInEvent event) {
 
 
         if (!event.getPlayer().level.isClientSide) {
-
 
 
             Utilities.syncTotalPlayerData(event.getPlayer());
@@ -74,17 +69,11 @@ public class ServerHandler {
         }
 
 
-
     }
-
-
-
-
 
 
     @SubscribeEvent
     public static void newEntityData(EntityJoinWorldEvent event) {
-
 
 
         if (!event.getWorld().isClientSide) {
@@ -98,11 +87,9 @@ public class ServerHandler {
 
             } else {
 
-                AeonsPast.LOGGER.log(Level.TRACE, event.getEntity().getType().getRegistryName().toString() +" has no stat data!");
+                AeonsPast.LOGGER.log(Level.TRACE, event.getEntity().getType().getRegistryName().toString() + " has no stat data!");
 
             }
-
-
 
 
         }

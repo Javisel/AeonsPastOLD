@@ -6,7 +6,6 @@ import com.javisel.aeonspast.utilities.Utilities;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.RegistryObject;
 
 public interface ISpellContainer {
 
@@ -14,10 +13,10 @@ public interface ISpellContainer {
     default SpellStack getSpellStack(Player caster, ItemStack stack) {
 
 
-        return Utilities.getPlayerData(caster).getOrCreateSpellStack(getSpell(caster, stack).get());
+        return Utilities.getOrCreateSpellstack(caster,getSpell(caster,stack));
 
 
     }
 
-    RegistryObject<Spell> getSpell(LivingEntity caster, ItemStack stack);
+    Spell getSpell(LivingEntity caster, ItemStack stack);
 }
