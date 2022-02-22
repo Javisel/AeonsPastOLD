@@ -7,6 +7,7 @@ import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.PlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.capabiltiies.projectile.ProjectileDataProvider;
 import com.javisel.aeonspast.common.combat.CombatEngine;
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
@@ -42,7 +43,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -347,6 +347,15 @@ public class GameEventHandler {
     public static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
 
 
+        if (event.getObject() instanceof Projectile) {
+
+            ProjectileDataProvider provider = new ProjectileDataProvider();
+            event.addCapability(new ResourceLocation(AeonsPast.MODID, "projectiledata"), provider);
+
+
+
+        }
+
         if (event.getObject() instanceof net.minecraft.world.entity.LivingEntity) {
 
             EntityProvider provider = new EntityProvider();
@@ -489,13 +498,6 @@ public class GameEventHandler {
     }
 
 
-    @SubscribeEvent
-    public static void removeProjectile(ProjectileImpactEvent event) {
-
-
-        event.getProjectile().remove(Entity.RemovalReason.DISCARDED);
-
-    }
 
 
     @SubscribeEvent

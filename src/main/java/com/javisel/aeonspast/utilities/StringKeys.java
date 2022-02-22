@@ -96,5 +96,10 @@ public class StringKeys {
     public static final String AMOUNT = "amount";
     public static final String TRINKET_TYPE = "trinket_type";
     public static final String ATTRIBUTE_MODIFIERS = "attribute_modifiers";
+    public static final String SHOOTER_ITEM = "shooter_item_id";
+
+
+    public static final String CRITICAL_STREAK_COUNT = "critical_streak_count";
+    public static final String CRITICAL_STREAK_TYPE = "critical_streak_type";
 
 }

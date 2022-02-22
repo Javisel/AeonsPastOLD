@@ -1,6 +1,7 @@
 package com.javisel.aeonspast.client.main;
 
 import com.google.common.collect.ImmutableMap;
+import com.javisel.aeonspast.client.entity.AxeWeaponRenderer;
 import com.javisel.aeonspast.client.particles.WorldTextParticle;
 import com.javisel.aeonspast.client.spell.SpellAtlasHolder;
 import com.javisel.aeonspast.client.spell.renderers.SpellRenderer;
@@ -17,6 +18,7 @@ import com.javisel.aeonspast.common.spell.Spell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -103,9 +105,8 @@ public static HashMap<RegistryObject<Spell>, SpellRenderer> spellRendererHashMap
         @SubscribeEvent
         public static void renderAxeRenderer(EntityRenderersEvent.RegisterRenderers entityRenderersEvent) {
 
-            entityRenderersEvent.registerBlockEntityRenderer(EntityTypeRegistration.THROWN_AXE.get(), ItemEntityRenderer::new);
-
-        }
+             entityRenderersEvent.registerEntityRenderer(EntityTypeRegistration.THROWN_AXE.get(), AxeWeaponRenderer::new);
+         }
 
 
     }

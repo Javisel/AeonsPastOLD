@@ -6,6 +6,8 @@ import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.mob.MobDataCapability;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.capabiltiies.player.PlayerCapability;
+import com.javisel.aeonspast.common.capabiltiies.projectile.IProjectileData;
+import com.javisel.aeonspast.common.capabiltiies.projectile.ProjectileCapability;
 import com.javisel.aeonspast.common.items.TrinketTypes;
 import com.javisel.aeonspast.common.networking.playercapabilitiesmessage.PlayerCapabiltiiesMessage;
 import com.javisel.aeonspast.common.networking.resourcemessage.ResourceMessage;
@@ -21,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkDirection;
@@ -42,6 +45,11 @@ public class Utilities {
         return player.getCapability(PlayerCapability.PLAYER_DATA_CAPABILITY, null);
     }
 
+
+    public static LazyOptional<IProjectileData> getProjectileDataOptional(final Projectile projectile) {
+        return projectile.getCapability(ProjectileCapability.PROJECTILE_DATA_CAP, null);
+    }
+
     public static IEntityData getEntityData(LivingEntity entity) {
 
         return getEntityDataOptional(entity).orElseThrow(NullPointerException::new);
@@ -56,6 +64,12 @@ public class Utilities {
 
     }
 
+    public static IProjectileData getProjectileData(Projectile projectile) {
+
+
+        return getProjectileDataOptional(projectile).orElseThrow(NullPointerException::new);
+
+    }
     public static IMobData getMobData(Mob mob) {
 
 

@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.combat.damagesource;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
+import com.javisel.aeonspast.common.combat.DamageInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 

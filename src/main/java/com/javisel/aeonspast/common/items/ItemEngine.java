@@ -1,15 +1,12 @@
 package com.javisel.aeonspast.common.items;
 
 import com.google.common.collect.Multimap;
-import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.weapons.WeaponType;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.server.ServerHandler;
-import com.javisel.aeonspast.utilities.StringKeys;
 import com.javisel.aeonspast.utilities.Tags;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -339,12 +336,12 @@ public class ItemEngine {
     }
 
 
-    public DamageTypeEnum getItemDamageType(ItemStack stack) {
+    public  static DamageTypeEnum getItemDamageType(ItemStack stack) {
 
 
         if (!isItemInitialized(stack)) {
 
-            return  null;
+            return  DamageTypeEnum.IMPACT;
         }
 
         if (!isWeapon(stack)) {
@@ -358,7 +355,7 @@ public class ItemEngine {
     }
 
 
-    public WeaponType getWeaponType(ItemStack stack) {
+    public static WeaponType getWeaponType(ItemStack stack) {
 
 
 

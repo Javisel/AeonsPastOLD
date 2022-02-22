@@ -13,7 +13,6 @@ import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.server.ServerHandler;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -260,16 +259,15 @@ public class CombatEngine {
         double baseDamage = attacker.getAttributeValue(AttributeRegistration.WEAPON_POWER.get());
         double physicalPower = attacker.getAttributeValue(AttributeRegistration.PHYSICAL_POWER.get());
         double rangeBonus = attacker.getAttributeValue(AttributeRegistration.RANGED_POWER.get());
+        if (rangedPower < 0) {
+            rangedPower = 0;
+        }
 
         double total = (baseDamage + physicalPower) * (1 + (rangeBonus / 100));
 
+        total*=rangedPower;
 
-        if (rangedPower < 0) {
-            rangedPower = 0;
-        }
-
-        total *= rangedPower;
-        total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
+         total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
 
 
         DamageInstance instance = new DamageInstance(weapon, DamageTypeEnum.PUNCTURE, total, false, false, false);
@@ -279,38 +277,6 @@ public class CombatEngine {
 
 
     }
-
-
-
-
-    public static DamageInstance calculateThrownDamage(LivingEntity attacker, Projectile projectile, ItemStack weapon, float rangedPower) {
-
-
-
-         double baseDamage =   ItemEngine.getItemFlatAttributeValue(AttributeRegistration.WEAPON_POWER.get(), weapon,EquipmentSlot.MAINHAND);
-
-
-         double physicalPower = attacker.getAttributeValue(AttributeRegistration.PHYSICAL_POWER.get());
-        double rangeBonus = attacker.getAttributeValue(AttributeRegistration.RANGED_POWER.get());
-         double total = (baseDamage + physicalPower) * (1 + (rangeBonus / 100));
-
-
-        if (rangedPower < 0) {
-            rangedPower = 0;
-        }
-
-        total *= rangedPower;
-        total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
-
-
-        DamageInstance instance = new DamageInstance(weapon, DamageTypeEnum.PUNCTURE, total, false, false, false);
-        ;
-
-        return instance;
-
-
-    }
-
 
 
 

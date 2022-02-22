@@ -28,6 +28,8 @@ public class PlayerData implements IPlayerData {
 
     PlayerSpellBar spellBar = new PlayerSpellBar();
 
+    int critStreak = 0;
+    boolean isStreakCrits= true;
 
     PlayerGameClass activeClass;
 
@@ -58,8 +60,10 @@ public class PlayerData implements IPlayerData {
 
         CompoundTag tag = new CompoundTag();
         CompoundTag classes = new CompoundTag();
-        CompoundTag spellBarTag = spellBar.writeNBT();
 
+        CompoundTag spellBarTag = spellBar.writeNBT();
+        tag.putInt(CRITICAL_STREAK_COUNT,critStreak);
+        tag.putBoolean(CRITICAL_STREAK_TYPE,isStreakCrits);
         if (activeClass != null) {
             tag.putString(ACTIVE_CLASS, activeClass.getRegistryName().toString());
         }
@@ -253,6 +257,7 @@ public class PlayerData implements IPlayerData {
 
         }
 
+        critStreak=tag.getInt(CRITICAL_STREAK_COUNT);
         spellBar.readNBT(tag.getCompound(SPELL_BAR));
 
 

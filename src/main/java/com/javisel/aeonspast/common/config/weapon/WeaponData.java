@@ -49,8 +49,8 @@ public class WeaponData {
     private StatisticPair dps;
 
 
-    public WeaponData(WeaponType item_type, StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged, ItemRarity item_rarity, StatisticPair status_chance) {
-        this.weapon_type = item_type;
+    public WeaponData(WeaponType weapon_type, StatisticPair attack_damage, StatisticPair attack_speed, StatisticPair critical_chance, StatisticPair critical_damage, StatisticPair durability, StatisticPair range, List<String> properties, List<String> spells, boolean is_ranged, ItemRarity item_rarity, StatisticPair status_chance) {
+        this.weapon_type = weapon_type;
         this.attack_damage = attack_damage;
         this.attack_speed = attack_speed;
         this.critical_chance = critical_chance;
@@ -200,8 +200,8 @@ public class WeaponData {
         int i = spells.size();
 
         int choice = random.nextInt(i);
-        System.out.println("Rarity: " + rarity.getUnlocalizedName());
-        ItemEngine.getAeonsPastTag(stack).putString(RARITY, rarity.name());
+        ItemEngine.getAeonsPastTag(stack).putString(WEAPON_TYPE,weapon_type.toString());
+         ItemEngine.getAeonsPastTag(stack).putString(RARITY, rarity.name());
 
         ItemEngine.getAeonsPastTag(stack).putString(SPELL, spells.get(choice));
         ItemEngine.getAeonsPastTag(stack).putBoolean(IS_RANGED, is_ranged);

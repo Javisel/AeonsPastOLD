@@ -3,6 +3,7 @@ package com.javisel.aeonspast;
 import com.javisel.aeonspast.common.capabiltiies.entity.IEntityData;
 import com.javisel.aeonspast.common.capabiltiies.mob.IMobData;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
+import com.javisel.aeonspast.common.capabiltiies.projectile.IProjectileData;
 import com.javisel.aeonspast.common.entities.entitytraits.EntityTrait;
 import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.playerclasses.PlayerGameClass;
@@ -44,6 +45,7 @@ public class ModBusEventHandler {
         event.register(IEntityData.class);
         event.register(IPlayerData.class);
         event.register(IMobData.class);
+        event.register(IProjectileData.class);
 
     }
 

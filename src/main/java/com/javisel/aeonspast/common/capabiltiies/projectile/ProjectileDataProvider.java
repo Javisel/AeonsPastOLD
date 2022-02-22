@@ -1,8 +1,6 @@
 package com.javisel.aeonspast.common.capabiltiies.projectile;
 
 import com.javisel.aeonspast.common.capabiltiies.entity.EntityCapability;
-import com.javisel.aeonspast.common.capabiltiies.projectile.IProjectileData;
-import com.javisel.aeonspast.common.capabiltiies.projectile.ProjectileData;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
@@ -22,7 +20,7 @@ public class ProjectileDataProvider implements ICapabilitySerializable<CompoundT
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
 
 
-        if (cap == ProjectileCapability.PLAYER_DATA_CAPABILITY) {
+        if (cap == ProjectileCapability.PROJECTILE_DATA_CAP) {
             return apOptional.cast();
         } else {
             return LazyOptional.empty();

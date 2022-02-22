@@ -2,7 +2,6 @@ package com.javisel.aeonspast.common.effects.Debuffs;
 
 import com.javisel.aeonspast.common.combat.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
-import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.effects.ComplexEffectInstance;
 import com.javisel.aeonspast.common.effects.ComplexStatChangeEffect;
 import com.javisel.aeonspast.common.effects.IDamageStatus;
@@ -11,12 +10,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class Stagger extends ComplexStatChangeEffect  implements IDamageStatus {
