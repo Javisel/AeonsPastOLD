@@ -2,7 +2,7 @@ package com.javisel.aeonspast.common.entities.entitytraits;
 
 
 import com.javisel.aeonspast.ModBusEventHandler;
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.registries.RegistryManager;

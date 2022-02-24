@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.events;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
-import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.sources.APDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -56,13 +56,4 @@ public class EventFactory {
 
 
     }
-    public static boolean onDamageKnockup( DamageInstance  instance,LivingEntity victim, float strength, float ratioX, float ratioZ) {
-
-        DamageKnockbackEvent damageKnockbackEvent = new DamageKnockbackEvent( instance,victim,strength,ratioX,ratioZ);
-
-        return MinecraftForge.EVENT_BUS.post(damageKnockbackEvent);
-
-
-    }
-
 }

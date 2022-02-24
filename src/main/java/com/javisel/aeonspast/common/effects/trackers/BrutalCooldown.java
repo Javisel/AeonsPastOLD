@@ -1,5 +1,6 @@
-package com.javisel.aeonspast.common.effects;
+package com.javisel.aeonspast.common.effects.trackers;
 
+import com.javisel.aeonspast.common.effects.ComplexEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
 public class BrutalCooldown extends ComplexEffect {

@@ -1,11 +1,13 @@
-package com.javisel.aeonspast.common.combat.damagesource;
+package com.javisel.aeonspast.common.combat.damage.sources;
 
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageModifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static net.minecraft.world.damagesource.DamageSource.*;
 
@@ -56,25 +58,19 @@ public class VanillaAPDamageSourceMap {
             System.err.println("Damage Type " + damageSource.getMsgId() + " has no AP Equivalent!");
             return null;
         }
-        damageSource.instance.preMitigationsAmount = amount * 5;
+        damageSource.instance.setBaseAmount(amount * 5);
 
         if (entity != null) {
 
-            if (damageSource.instance.getDamage_type() == DamageTypeEnum.WITHER) {
+            if (damageSource.instance.getDamageType() == DamageTypeEnum.WITHER) {
 
 
-                damageSource.instance.preMitigationsAmount += entity.getMaxHealth() * 0.0325;
 
+                DamageModifier modifier = new DamageModifier(UUID.fromString("d50a2cbd-2e8c-4a1e-921e-f139b640c7a9"), "healthmod", DamageModifier.Operation.ADDITON,entity.getMaxHealth() * 0.0325);
 
+                damageSource.instance.addModifier(modifier);
             }
 
-            if (damageSource.instance.getDamage_type() == DamageTypeEnum.ENDER) {
-
-
-                damageSource.instance.preMitigationsAmount += entity.getMaxHealth() * 0.025;
-
-
-            }
 
         }
 

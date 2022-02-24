@@ -1,6 +1,6 @@
 package com.javisel.aeonspast.common.effects.Debuffs;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
 import com.javisel.aeonspast.common.effects.ComplexEffectInstance;
 import com.javisel.aeonspast.common.effects.ComplexStatChangeEffect;

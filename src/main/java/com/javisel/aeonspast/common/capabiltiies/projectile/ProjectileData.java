@@ -39,7 +39,7 @@ public class ProjectileData implements IProjectileData {
 
         tag.putString(DAMAGE_TYPE,damageType);
 
-        return null;
+        return tag;
     }
 
     public float getDamageAmount() {

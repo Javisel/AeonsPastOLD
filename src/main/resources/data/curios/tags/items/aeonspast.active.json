@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "aeonspast:swift_strikes_spell_stone"
+    "aeonspast:swift_strikes_spell_stone",
+    "aeonspast:taunt_spell_stone"
+
   ]
 }

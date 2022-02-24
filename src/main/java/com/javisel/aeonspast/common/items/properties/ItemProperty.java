@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.items.properties;
 
 import com.javisel.aeonspast.ModBusEventHandler;
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;

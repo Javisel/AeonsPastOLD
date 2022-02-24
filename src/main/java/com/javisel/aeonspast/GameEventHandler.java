@@ -9,11 +9,11 @@ import com.javisel.aeonspast.common.capabiltiies.player.PlayerProvider;
 import com.javisel.aeonspast.common.capabiltiies.player.IPlayerData;
 import com.javisel.aeonspast.common.capabiltiies.projectile.ProjectileDataProvider;
 import com.javisel.aeonspast.common.combat.CombatEngine;
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
-import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
-import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
-import com.javisel.aeonspast.common.combat.damagesource.VanillaAPDamageSourceMap;
+import com.javisel.aeonspast.common.combat.damage.sources.APDamageSource;
+import com.javisel.aeonspast.common.combat.damage.sources.APEntityDamageSource;
+import com.javisel.aeonspast.common.combat.damage.sources.VanillaAPDamageSourceMap;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.particles.WorldTextOptions;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
@@ -68,6 +68,9 @@ public class GameEventHandler {
         event.setCanceled(true);
         Player player = event.getPlayer();
 
+        if (player.getLevel().isClientSide) {
+            return;
+        }
         if (!(event.getTarget() instanceof net.minecraft.world.entity.LivingEntity)) {
             return;
         }
@@ -85,7 +88,6 @@ public class GameEventHandler {
 
         DamageInstance instance = CombatEngine.calculateMeleeDamage(player, player.getMainHandItem());
         APEntityDamageSource entityDamageSource = new APEntityDamageSource("player", instance, player);
-        instance.doesKnockback=true;
 
         if (CombatEngine.cycleAllPreHitEffects(player, victim, entityDamageSource)) {
             CombatEngine.cycleAllHitEffects(player, victim, entityDamageSource);
@@ -165,8 +167,7 @@ public class GameEventHandler {
 
                     DamageInstance instance = CombatEngine.calculateMeleeDamage(livingEntity, livingEntity.getMainHandItem());
                     APEntityDamageSource entityDamageSource = new APEntityDamageSource("mob", instance, livingEntity);
-                    instance.doesKnockback=true;
-                    if (CombatEngine.cycleAllPreHitEffects(livingEntity, victim, entityDamageSource)) {
+                     if (CombatEngine.cycleAllPreHitEffects(livingEntity, victim, entityDamageSource)) {
                         CombatEngine.cycleAllHitEffects(livingEntity, victim, entityDamageSource);
 
                     }
@@ -182,7 +183,7 @@ public class GameEventHandler {
 
             if (damageSource != null) {
 
-                victim.hurt(damageSource, (float) damageSource.instance.getPreMitigationsAmount());
+                victim.hurt(damageSource, (float) damageSource.instance.getPreMitigatedValue());
 
 
             } else {
@@ -206,22 +207,21 @@ public class GameEventHandler {
 
 
 
-                if (player.isCreative() && instance.getDamage_type()!= DamageTypeEnum.VOID) {
+                if (player.isCreative() && instance.getDamageType()!= DamageTypeEnum.VOID) {
                     event.setCanceled(true);
                     return;
                 }
             }
 
-            if (!instance.isMitigated) {
+            if (!instance.isMitigated()) {
 
 
                 double mitigate = CombatEngine.getMitigatedDamage(victim, instance);
 
                 instance.setMitigateDamage((float) mitigate);
 
-                instance.savedMotion=victim.getDeltaMovement();
 
-                victim.hurt(source, (float) instance.postMitigationsAmount);
+                victim.hurt(source, (float) instance.getMitigatedAmount());
                 event.setCanceled(true);
 
                 return;
@@ -229,7 +229,7 @@ public class GameEventHandler {
             } else {
 
 
-                if (instance.cancel) {
+                if (instance.isCancelled()) {
                     victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_NODAMAGE, SoundSource.NEUTRAL, 1, 1);
 
 
@@ -237,20 +237,11 @@ public class GameEventHandler {
                 }
 
 
-                if (!instance.doesKnockback ){
-
-                    System.out.println("shouldn't knockback!");
-
-                    if (instance.savedMotion!=null) {
-                        System.out.println("There's a saved motion!");
-                        victim.setDeltaMovement(0,0,0);
-                    }
-                }
 
 
 
 
-                if (instance.postMitigationsAmount / victim.getMaxHealth() > 0.4) {
+                if (instance.getMitigatedAmount() / victim.getMaxHealth() > 0.4) {
 
                     victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.NEUTRAL, 1, 1);
 
@@ -263,7 +254,7 @@ public class GameEventHandler {
 
                 }
 
-                if (instance.isCritical) {
+                if (instance.isCritical()) {
 
 
                     victim.getLevel().playSound(null, victim, SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.NEUTRAL, 1, 1);
@@ -300,7 +291,7 @@ public class GameEventHandler {
 
                     ServerLevel serverLevel = (ServerLevel) level;
 
-                    WorldTextOptions textOptions = WorldTextOptions.getWorldNumberOptionByDamage(instance.damage_type, (float) instance.postMitigationsAmount, instance.isCritical);
+                    WorldTextOptions textOptions = WorldTextOptions.getWorldNumberOptionByDamage(instance.getDamageType(), (float) instance.getMitigatedAmount(), instance.getCriticalInstanceCount());
 
 
                     Random random = serverLevel.getRandom();
@@ -806,15 +797,7 @@ public class GameEventHandler {
 
                 LivingEntity victim = event.getEntityLiving();
 
-                if (!instance.doesKnockback ){
 
-                    System.out.println("shouldn't knockback! nk");
-                    System.out.println("DT: " + instance.damage_type.toString());
-
-                    if (instance.savedMotion!=null) {
-                         victim.setDeltaMovement( 0,0,0);
-                    }
-                }
             }
 
 

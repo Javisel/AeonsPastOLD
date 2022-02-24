@@ -1,9 +1,9 @@
 package com.javisel.aeonspast.common.effects.buffs.spell;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
-import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
-import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
+import com.javisel.aeonspast.common.combat.damage.sources.APDamageSource;
+import com.javisel.aeonspast.common.combat.damage.sources.APEntityDamageSource;
 import com.javisel.aeonspast.common.effects.ComplexEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,12 +21,12 @@ public class TrueStrikeSpellBuff extends ComplexEffect {
 
         DamageInstance instance = damageSource.instance;
 
-        if (instance.doesProcWeaponHitEffects && instance.damageDevice instanceof ItemStack) {
+        if (instance.doesProcWeaponHitEffects() && instance.getDamageDevice() instanceof ItemStack) {
 
 
-            float damage = (float) (instance.getPreMitigationsAmount() * 0.60f);
+            float damage = (float) (instance.getBaseAmount() * 0.60f);
 
-            DamageInstance damageInstance = new DamageInstance(DamageTypeEnum.TRUE, damage);
+            DamageInstance damageInstance =   DamageInstance.getGenericProcInstance(DamageTypeEnum.TRUE, damage);
             APEntityDamageSource apEntityDamageSource = new APEntityDamageSource(damageSource.getMsgId(), damageInstance, attacker);
             blocker.hurt(apEntityDamageSource, damage);
             consumeEffect(attacker);

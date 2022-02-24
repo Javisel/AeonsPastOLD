@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BaseWeapon extends BaseItem {
 
@@ -32,11 +33,7 @@ public class BaseWeapon extends BaseItem {
         if (attributes != null) {
 
             attributeList = new ArrayList<>();
-            for (AttributeContainer attribute : attributes) {
-
-                attributeList.add(attribute);
-
-            }
+            attributeList.addAll(Arrays.asList(attributes));
 
         }
     }

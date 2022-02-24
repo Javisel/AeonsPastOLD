@@ -62,18 +62,8 @@ public class WeaponData {
         this.status_chance = status_chance;
 
 
-        for (String property : properties) {
-
-            this.properties.add(property);
-
-
-        }
-        for (String spell : spells) {
-
-            this.spells.add(spell);
-
-
-        }
+        this.properties.addAll(properties);
+        this.spells.addAll(spells);
 
 
     }
@@ -265,7 +255,7 @@ public class WeaponData {
     }
 
 
-    public boolean isIs_ranged() {
+    public boolean isRanged() {
         return is_ranged;
     }
 

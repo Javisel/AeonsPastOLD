@@ -18,6 +18,6 @@ public class ItemRegistration {
 
 
     public static final RegistryObject<Item> SWIFT_STRIKES_STONE = ITEMS.register("swift_strikes_spell_stone", () -> new BasicSpellStone(TrinketTypes.ACTIVE, SpellRegistration.SWIFT_STRIKE));
-
+    public static final RegistryObject<Item> TAUNT_STONE = ITEMS.register("taunt_spell_stone", () -> new BasicSpellStone(TrinketTypes.ACTIVE, SpellRegistration.TAUNT));
 
 }

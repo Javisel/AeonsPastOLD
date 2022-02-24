@@ -4,6 +4,7 @@ import com.javisel.aeonspast.AeonsPast;
 import com.javisel.aeonspast.common.spell.NoneSpell;
 import com.javisel.aeonspast.common.spell.Spell;
 import com.javisel.aeonspast.common.spell.spells.basicspell.SwiftStrikes;
+import com.javisel.aeonspast.common.spell.spells.basicspell.Taunt;
 import com.javisel.aeonspast.common.spell.spells.classspell.WarriorClassSpell;
 import com.javisel.aeonspast.common.spell.spells.weaponspell.*;
 import net.minecraftforge.registries.DeferredRegister;
@@ -35,6 +36,8 @@ public class SpellRegistration {
     public static final RegistryObject<Spell> ARROW_STORM = SPELLS.register("arrow_storm", () -> new ArrowStorm());
 
 
+    //Spells - Martial (Warrior)
+    public static final RegistryObject<Spell> TAUNT = SPELLS.register("taunt", () -> new Taunt());
     public static final RegistryObject<Spell> SWIFT_STRIKE = SPELLS.register("swift_strikes", () -> new SwiftStrikes());
 
 

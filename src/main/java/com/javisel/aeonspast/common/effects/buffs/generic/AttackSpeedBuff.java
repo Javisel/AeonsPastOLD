@@ -1,5 +1,6 @@
-package com.javisel.aeonspast.common.effects;
+package com.javisel.aeonspast.common.effects.buffs.generic;
 
+import com.javisel.aeonspast.common.effects.ComplexStatChangeEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;

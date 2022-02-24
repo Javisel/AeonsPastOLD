@@ -1,6 +1,6 @@
 package com.javisel.aeonspast.common.items.properties.weapon;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;

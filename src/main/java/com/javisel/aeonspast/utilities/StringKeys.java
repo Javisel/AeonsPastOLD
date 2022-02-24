@@ -3,26 +3,18 @@ package com.javisel.aeonspast.utilities;
 import com.javisel.aeonspast.AeonsPast;
 
 public class StringKeys {
-
-    public static final String START_AMOUNT = "start_amount";
-    public static final String END_AMOUNT = "end_amount";
-
-    public static final String SPELL = "spell";
-    public static final String WEAPON_TYPE = "weapon_type";
+     public static final String WEAPON_TYPE = "weapon_type";
     public static final String STATISTICS = "statistics";
-
-    public static final String WEAPON = "weapon";
-    public static final String INVENTORY = "inventory";
-    public static final String TRINKET = "trinket";
 
     public static final String WEAPON_SPELL = "weapon_spell";
 
+
+    public static final String SPELL = "spell";
     public static final String SPELL_STATE = "spell_state";
     public static final String SPELLS = "spells";
     public static final String SPELL_BAR = "spell_bar";
     public static final String EMPTY = "empty";
 
-    public static final String ARMOR = "armor";
     public static final String ARMOR_TYPE = "armor_type";
 
 
@@ -41,18 +33,12 @@ public class StringKeys {
     public static final String CLASSES = "classes";
 
 
-    public static final String STORED_DATA = "storeddata";
-    public static final String MANA = "mana";
     public static final String LEVEL = "level";
     public static final String EXPERIENCE = "experience";
 
     public static final String ACTIVE_CLASS = "class";
     public static final String RESOURCE = "resource";
 
-    public static final String MAGICAL = "magical";
-    public static final String PHYSICAL = "physical";
-    public static final String TRUE = "true";
-    public static final String PENALTY = "penalty";
     public static final String BASE_DAMAGE = "base_damage";
     public static final String BASE_DAMAGE_LEVEL_SCALING = "base_damage_level_scaling";
     public static final String ATTRIBUTE = "attribute";
@@ -79,8 +65,7 @@ public class StringKeys {
     public static final String EFFECTS = "effects";
     public static final String EFFECT = "effect";
     public static final String UNIQUE_ID = "unique_id";
-
-    public static final String FLAGS = "flags";
+    public static final String NAME = "name";
 
     public static final String INSTANCE_ID = "instance_id";
     public static final String SOURCE_ID = "source_id";
@@ -90,10 +75,6 @@ public class StringKeys {
     public static final String DURATION = "duration";
     public static final String INITIAL_DURATION = "initial_duration";
     public static final String REMOVE = "remove";
-
-
-    public static final String NAME = "name";
-    public static final String AMOUNT = "amount";
     public static final String TRINKET_TYPE = "trinket_type";
     public static final String ATTRIBUTE_MODIFIERS = "attribute_modifiers";
     public static final String SHOOTER_ITEM = "shooter_item_id";
@@ -102,4 +83,14 @@ public class StringKeys {
     public static final String CRITICAL_STREAK_COUNT = "critical_streak_count";
     public static final String CRITICAL_STREAK_TYPE = "critical_streak_type";
 
+    public static final String ORIGINAL_AMOUNT = "original_amount";
+    public static final String MITIGATED_AMOUNT = "mitigated_amount";
+    public static final String DAMAGE_DEVICE = "damage_device";
+    public static final String DAMAGE_DEVICE_TYPE = "damage_device_type";
+
+    public static final String ITEM = "item";
+    public static final String DAMAGE_FLAGS = "damage_flags";
+    public static final String DAMAGE_MODIFIERS = "damage_modifiers";
+
+    public static final String OPERATION = "operation";
 }

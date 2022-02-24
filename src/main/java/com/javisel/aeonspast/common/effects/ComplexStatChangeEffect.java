@@ -22,6 +22,8 @@ public class ComplexStatChangeEffect extends StatusEffect {
         this.operation = operation;
     }
 
+
+
     @Override
     public void addnewComplexInstance(ComplexEffectInstance instance, LivingEntity user) {
         super.addnewComplexInstance(instance, user);

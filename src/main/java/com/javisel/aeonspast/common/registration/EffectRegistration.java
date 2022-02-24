@@ -1,9 +1,11 @@
 package com.javisel.aeonspast.common.registration;
 
 import com.javisel.aeonspast.AeonsPast;
-import com.javisel.aeonspast.common.effects.AttackSpeedBuff;
-import com.javisel.aeonspast.common.effects.BrutalCooldown;
+import com.javisel.aeonspast.common.effects.Debuffs.TauntDebuff;
+import com.javisel.aeonspast.common.effects.buffs.generic.AttackSpeedBuff;
+import com.javisel.aeonspast.common.effects.trackers.BrutalCooldown;
 import com.javisel.aeonspast.common.effects.Debuffs.*;
+import com.javisel.aeonspast.common.effects.buffs.generic.PhysicalPowerBuff;
 import com.javisel.aeonspast.common.effects.buffs.spell.TrueStrikeSpellBuff;
 import com.javisel.aeonspast.common.effects.buffs.spell.UppercutSpellBuff;
 import net.minecraft.world.effect.MobEffect;
@@ -31,6 +33,8 @@ public class EffectRegistration {
 
 
     public static final RegistryObject<MobEffect> ATTACK_SPEED_BUFF = EFFECTS.register("complex_attack_speed_buff", () -> new AttackSpeedBuff());
+    public static final RegistryObject<MobEffect> PHYSICAL_POWER_BUFF = EFFECTS.register("complex_physical_power_buff", () -> new PhysicalPowerBuff());
 
+    public static final RegistryObject<MobEffect> TAUNT_DEBUFF = EFFECTS.register("taunt_debuff", () -> new TauntDebuff());
 
 }

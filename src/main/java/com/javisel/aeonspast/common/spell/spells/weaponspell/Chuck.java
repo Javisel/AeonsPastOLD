@@ -34,7 +34,7 @@ public class Chuck extends WeaponSpell {
             ServerLevel serverLevel = (ServerLevel) level;
 
             AxeEntity axeEntity =  new AxeEntity(entity,serverLevel,weapon.copy());
-            Utilities.getProjectileData(axeEntity).setShooterItemID(ItemEngine.getUniqueID(weapon));
+            Utilities.getProjectileData(axeEntity).setShooterItem(weapon);
              axeEntity.shootFromRotation(entity,entity.getXRot(),entity.getYRot(),0,1.5f,0f);
             axeEntity.setXRot(entity.getXRot());
             axeEntity.setYRot(entity.getYRot());

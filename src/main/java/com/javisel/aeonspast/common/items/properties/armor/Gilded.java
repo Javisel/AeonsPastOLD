@@ -1,9 +1,12 @@
 package com.javisel.aeonspast.common.items.properties.armor;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageModifier;
 import com.javisel.aeonspast.common.items.properties.ArmorProperty;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+
+import java.util.UUID;
 
 public class Gilded extends ArmorProperty {
     public Gilded() {
@@ -18,8 +21,11 @@ public class Gilded extends ArmorProperty {
 
             if (attacker.getMobType() == MobType.UNDEAD) {
 
-                damageInstance.preMitigationsAmount *= 0.975f;
 
+                DamageModifier modifier = new DamageModifier(UUID.fromString("5458148e-d777-45ca-9ac3-5222080844d7"),super.getRegistryName().toString(), DamageModifier.Operation.MULTIPLE_TOTAL,-0.025f);
+
+
+                damageInstance.addModifier(modifier);
 
             }
 

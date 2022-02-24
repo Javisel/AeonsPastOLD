@@ -1,8 +1,8 @@
 package com.javisel.aeonspast.common.entities.spell;
 
 import com.javisel.aeonspast.common.combat.CombatEngine;
-import com.javisel.aeonspast.common.combat.DamageInstance;
-import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.sources.APEntityDamageSource;
 import com.javisel.aeonspast.common.items.ItemEngine;
 import com.javisel.aeonspast.common.registration.EntityTypeRegistration;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -76,12 +76,16 @@ public abstract class WeaponEntity extends ThrowableItemProjectile {
 
          LivingEntity thrower = (LivingEntity) super.getOwner();
 
+         /*
         DamageInstance instance = CombatEngine.calculateThrownDamage(thrower, this, getItem(), entityData.get(THROW_POWER));
         instance.preMitigationsAmount+=this.entityData.get(DAMAGE);
 
-        instance.damage_type= ItemEngine.getItemDamageType(getItem());
-        APEntityDamageSource apEntityDamageSource = new APEntityDamageSource("itemthrown", instance, thrower);
-        hitResult.getEntity().hurt(apEntityDamageSource, (float) instance.preMitigationsAmount);
+         APEntityDamageSource apEntityDamageSource = new APEntityDamageSource("itemthrown", instance, thrower);
+        hitResult.getEntity().hurt(apEntityDamageSource, (float) instance.getPreMitigatedValue());
+
+
+          */
+
         ItemEntity itemEntity  =new ItemEntity(super.level,super.xo,super.yo,super.zo,this.getItem());
         itemEntity.setDefaultPickUpDelay();
         if (this.getOwner()!=null) {

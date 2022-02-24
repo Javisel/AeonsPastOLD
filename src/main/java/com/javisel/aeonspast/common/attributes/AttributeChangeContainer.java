@@ -1,4 +1,4 @@
-package com.javisel.aeonspast.common.effects;
+package com.javisel.aeonspast.common.attributes;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;

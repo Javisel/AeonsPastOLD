@@ -1,6 +1,8 @@
 package com.javisel.aeonspast.common.combat;
 
-import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageModifier;
+import com.javisel.aeonspast.common.combat.damage.sources.APDamageSource;
 import com.javisel.aeonspast.common.config.weapon.WeaponData;
 import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.effects.IDamageStatus;
@@ -10,8 +12,9 @@ import com.javisel.aeonspast.common.items.properties.ItemProperty;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import com.javisel.aeonspast.common.registration.AttributeRegistration;
 import com.javisel.aeonspast.common.spell.Spell;
+import com.javisel.aeonspast.common.spell.SpellStack;
 import com.javisel.aeonspast.server.ServerHandler;
-import net.minecraft.util.Mth;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -27,83 +30,85 @@ public class CombatEngine {
 
     public static void attemptCriticalHit(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
-        if (rollCriticalHit(attacker)) {
 
-            applyCriticalHits(attacker,victim,instance);
+        double chance = attacker.getAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get());
+        if (rollCriticalNumber(attacker,chance, 101)) {
+
+            applyCriticalHits(attacker, victim, instance);
+
+
+            double reRolls = chance-100;
+            while (reRolls > 0) {
+
+
+                if (rollCriticalNumber(attacker,reRolls,reRolls+101)) {
+
+                     applyCriticalHits(attacker,victim,instance);
+                 }
+
+
+
+
+
+                reRolls-=100;
+
+
+            }
+
+
+
+
+
+
         }
-
 
 
     }
 
-    public static boolean rollCriticalHit(LivingEntity roller) {
+    public static boolean rollCriticalNumber(LivingEntity roller, double input, double bind) {
 
         Random random = roller.getRandom();
 
 
-        float chance = random.nextFloat(101);
+        double chance = random.nextDouble(bind);
 
 
-        return chance <= roller.getAttributeValue(AttributeRegistration.CRITICAL_CHANCE.get());
+        return chance <= input;
 
 
     }
+
     public static void applyCriticalHits(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
 
+        double critDamage =  instance.getBaseAmount() * ( attacker.getAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get()));
 
 
-        double critDamage = attacker.getAttributeValue(AttributeRegistration.CRITICAL_DAMAGE.get());
-
-        double base = instance.getPreMitigationsAmount();
-
-        base *= critDamage;
 
 
-        base *= instance.critPower;
 
+        DamageModifier crit = new DamageModifier(UUID.fromString("a66f3903-d7db-4787-9a34-b7eded3435ab"),"aeonspast:critical_strike", DamageModifier.Operation.ADDITON,critDamage);
 
-        instance.preMitigationsAmount =  base;
-
-        instance.isCritical = true;
+        instance.addCritical(crit);
 
 
     }
-
-
-
 
 
     public static void attemptStatusHit(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
 
-        if (instance.getDamage_type().getStatusEffect() == null  ) {
+        if (instance.getDamageType().getStatusEffect() == null) {
             return;
         }
-        if (rollStatusHit(attacker,    instance.doesDeviceMatch(attacker.getMainHandItem()))) {
+        if (rollStatusHit(attacker, instance.doesDeviceMatch(attacker.getMainHandItem()))) {
 
-            applyStatusHit(attacker,victim,instance);
+            applyStatusHit(attacker, victim, instance);
         }
 
 
-
     }
-    
-    public void disableKnockback(LivingEntity knocker, LivingEntity target) {
 
-
-
-
-        double d1 = knocker.getX() - target.getX();
-
-        double d0;
-        for(d0 = knocker.getZ() - target.getZ(); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
-            d1 = (Math.random() - Math.random()) * 0.01D;
-        }
-
-        target.hurtDir = (float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)target.getYRot());
-        target.knockback((double)-0.4F, -d1, -d0);
-    }
 
     public static boolean rollStatusHit(LivingEntity applier, boolean excludeWeapon) {
 
@@ -117,8 +122,7 @@ public class CombatEngine {
         if (excludeWeapon) {
 
 
-
-            if (applier.getAttribute(AttributeRegistration.STATUS_CHANCE.get()).getModifier(UUID.fromString(WeaponData.WEAPON_MOD_ID)) !=null) {
+            if (applier.getAttribute(AttributeRegistration.STATUS_CHANCE.get()).getModifier(UUID.fromString(WeaponData.WEAPON_MOD_ID)) != null) {
                 chance -= applier.getAttribute(AttributeRegistration.STATUS_CHANCE.get()).getModifier(UUID.fromString(WeaponData.WEAPON_MOD_ID)).getAmount();
 
             }
@@ -126,50 +130,30 @@ public class CombatEngine {
         }
 
 
-         return attempt <= chance;
+        return attempt <= chance;
     }
+
     public static void applyStatusHit(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
 
-
-        ComplexEffect complexEffect = (ComplexEffect) instance.getDamage_type().getStatusEffect();
+        ComplexEffect complexEffect = (ComplexEffect) instance.getDamageType().getStatusEffect();
 
         IDamageStatus damageStatus = (IDamageStatus) complexEffect;
 
 
+        complexEffect.addnewComplexInstance(damageStatus.getDefaultDamageInstance(attacker, victim, instance), victim);
 
-        complexEffect.addnewComplexInstance(damageStatus.getDefaultDamageInstance(attacker,victim,instance),victim);
-
-        instance.isStatus = true;
+        instance.setStatus();
 
 
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     public static void applyWeaponLifesteal(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
-        double amount = instance.postMitigationsAmount * (attacker.getAttributeValue(AttributeRegistration.WEAPON_LIFESTEAL.get()) / 100);
+        double amount = instance.getMitigatedAmount() * (attacker.getAttributeValue(AttributeRegistration.WEAPON_LIFESTEAL.get()) / 100);
         amount *= attacker.getAttributeValue(AttributeRegistration.HEALING_INTAKE.get());
         amount = EventFactory.onLifesteal(attacker, victim, (float) amount);
-
-        if (instance.isArea) {
-
-            amount *= 0.33;
-
-
-        }
 
 
         if (amount > 0) {
@@ -183,16 +167,9 @@ public class CombatEngine {
 
     public static void applySpellLifestal(LivingEntity attacker, LivingEntity victim, DamageInstance instance) {
 
-        double amount = instance.postMitigationsAmount * (attacker.getAttributeValue(AttributeRegistration.SPELL_LIFESTEAL.get()) / 100);
+        double amount = instance.getMitigatedAmount() * (attacker.getAttributeValue(AttributeRegistration.SPELL_LIFESTEAL.get()) / 100);
         amount *= attacker.getAttributeValue(AttributeRegistration.HEALING_INTAKE.get());
         amount = EventFactory.onLifesteal(attacker, victim, (float) amount);
-
-        if (instance.isArea) {
-
-            amount *= 0.33;
-
-
-        }
 
 
         if (amount > 0) {
@@ -241,8 +218,7 @@ public class CombatEngine {
         WeaponData weaponData = ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(weapon);
 
 
-        DamageInstance instance = new DamageInstance(weapon, weaponData.getWeapon_type().getDamageType(), total, false, false, true);
-        ;
+        DamageInstance instance = DamageInstance.genericWeaponDamage(weaponData.getWeapon_type().getDamageType(), total, weapon, !weaponData.isRanged());
 
         return instance;
 
@@ -265,12 +241,13 @@ public class CombatEngine {
 
         double total = (baseDamage + physicalPower) * (1 + (rangeBonus / 100));
 
-        total*=rangedPower;
+        total *= rangedPower;
 
-         total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
+        total *= attacker.getAttributeValue(AttributeRegistration.DAMAGE_OUTPUT.get());
 
+        WeaponData weaponData = ServerHandler.WEAPON_STATISTICS_LOADER.getWeaponData(weapon);
 
-        DamageInstance instance = new DamageInstance(weapon, DamageTypeEnum.PUNCTURE, total, false, false, false);
+        DamageInstance instance = DamageInstance.genericWeaponDamage(weaponData.getWeapon_type().getDamageType(), total, weapon, !weaponData.isRanged());
         ;
 
         return instance;
@@ -279,35 +256,30 @@ public class CombatEngine {
     }
 
 
-
-
-
-
     public static double getMitigatedDamage(LivingEntity victim, DamageInstance instance) {
 
 
-        double baseamount = instance.getPreMitigationsAmount();
+        double baseamount = instance.getPreMitigatedValue();
 
 
         double armor = 0;
         double damageMod = 1;
         damageMod += victim.getAttributeValue(AttributeRegistration.DAMAGE_INTAKE.get()) / 100;
 
-        if (instance.getDamage_type().isAbsolute()) {
+        if (instance.getDamageType().isAbsolute()) {
 
             return baseamount;
         } else {
 
 
-            if (!instance.isMagic) {
+            if (!instance.isMagical()) {
 
                 armor = victim.getAttribute(AttributeRegistration.ARMOR.get()).getValue();
                 armor *= 1 + victim.getAttribute(AttributeRegistration.ARMOR_TOUGHNESS.get()).getValue();
 
                 damageMod -= victim.getAttributeValue(AttributeRegistration.PHYSICAL_MITIGATIONS.get()) / 100;
 
-            }
-            if (instance.isMagic) {
+            } else {
 
 
                 armor += victim.getAttribute(AttributeRegistration.MAGIC_RESISTANCE.get()).getValue();
@@ -338,34 +310,30 @@ public class CombatEngine {
 
         }
 
-        if (damageSource.getInstance().canCritical) {
+        if (damageSource.getInstance().canCritical()) {
 
 
             CombatEngine.attemptCriticalHit(attacker, victim, damageSource.instance);
         }
 
 
-
-
-
         DamageInstance instance = damageSource.instance;
 
 
-        Object device = instance.damageDevice;
+        Object device = instance.getDamageDevice();
 
 
-        if (device != null) {
+        if (attacker != null) {
 
-            if (attacker != null) {
+            if (device != null) {
 
-                if (device instanceof Spell) {
+                if (device instanceof SpellStack) {
 
+
+                    //TODO Spellhit effects
 
                 }
-                if (device instanceof ItemStack) {
-
-
-                    ItemStack weapon = (ItemStack) device;
+                if (device instanceof ItemStack weapon) {
 
 
                     for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
@@ -377,59 +345,20 @@ public class CombatEngine {
                     }
                 }
 
-                ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
-                for (ItemStack attackerStack : attackerItems) {
-
-
-                    if (ItemEngine.isItemInitialized(attackerStack)) {
-
-
-                        for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
-
-
-                            result = property.onPreHitEntity(attacker, victim, instance);
-
-
-                        }
-
-                    }
-
-
-                }
-
-                Collection<MobEffectInstance> effects = attacker.getActiveEffects();
-
-
-                for (MobEffectInstance mobEffectInstance : effects) {
-
-                    if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
-
-                        ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
-
-                        result = effect.onpreHitEffect(attacker, victim, damageSource);
-
-                    }
-
-
-                }
-
-
             }
 
 
-            ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+            ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+            for (ItemStack attackerStack : attackerItems) {
 
 
-            for (ItemStack victimStack : victimItems) {
+                if (ItemEngine.isItemInitialized(attackerStack)) {
 
 
-                if (ItemEngine.isItemInitialized(victimStack)) {
+                    for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
 
 
-                    for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
-
-
-                        result = property.onOwnerPreHit(attacker, victim, instance);
+                        result = property.onPreHitEntity(attacker, victim, instance);
 
 
                     }
@@ -439,22 +368,57 @@ public class CombatEngine {
 
             }
 
-
-            Collection<MobEffectInstance> effects = victim.getActiveEffects();
+            Collection<MobEffectInstance> effects = attacker.getActiveEffects();
 
 
             for (MobEffectInstance mobEffectInstance : effects) {
 
-                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+                if (mobEffectInstance.getEffect() instanceof ComplexEffect effect) {
 
-                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
-
-                    result = effect.onOwnerpreHitEffect(attacker, victim, damageSource);
+                    result = effect.onpreHitEffect(attacker, victim, damageSource);
 
                 }
 
 
             }
+
+
+        }
+
+        ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+
+
+        for (ItemStack victimStack : victimItems) {
+
+
+            if (ItemEngine.isItemInitialized(victimStack)) {
+
+
+                for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
+
+
+                    result = property.onOwnerPreHit(attacker, victim, instance);
+
+
+                }
+
+            }
+
+
+        }
+
+
+        Collection<MobEffectInstance> effects = victim.getActiveEffects();
+
+
+        for (MobEffectInstance mobEffectInstance : effects) {
+
+            if (mobEffectInstance.getEffect() instanceof ComplexEffect effect) {
+
+                result = effect.onOwnerpreHitEffect(attacker, victim, damageSource);
+
+            }
+
 
         }
 
@@ -466,7 +430,7 @@ public class CombatEngine {
         DamageInstance instance = damageSource.instance;
 
 
-        Object device = instance.damageDevice;
+        Object device = instance.getDamageDevice();
 
         if (EventFactory.onDamageHit(attacker, victim, damageSource)) {
 
@@ -475,21 +439,25 @@ public class CombatEngine {
         }
 
 
-        victim.hurt(damageSource, (float) damageSource.instance.getPreMitigationsAmount());
+        victim.hurt(damageSource, (float) damageSource.instance.getPreMitigatedValue());
 
 
-        if (device != null) {
+        if (attacker != null) {
 
-            if (attacker != null) {
+            if (device != null) {
 
                 if (device instanceof Spell) {
 
 
                 }
-                if (device instanceof ItemStack) {
+                if (device instanceof ItemStack weapon) {
 
 
-                    ItemStack weapon = (ItemStack) device;
+                    if (instance.isMelee()) {
+
+                        weapon.hurt(1, attacker.getRandom(), attacker instanceof ServerPlayer ? (ServerPlayer) attacker : null);
+
+                    }
 
 
                     for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
@@ -501,34 +469,35 @@ public class CombatEngine {
                     }
                 }
 
-                ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
-                for (ItemStack attackerStack : attackerItems) {
+            }
 
 
-                    if (ItemEngine.isItemInitialized(attackerStack)) {
+            ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+            for (ItemStack attackerStack : attackerItems) {
 
 
-                        for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
+                if (ItemEngine.isItemInitialized(attackerStack)) {
 
 
-                            property.onHitEntity(attacker, victim, instance);
+                    for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
 
 
-                        }
+                        property.onHitEntity(attacker, victim, instance);
+
 
                     }
 
-
                 }
 
-                Collection<MobEffectInstance> effects = attacker.getActiveEffects();
 
+            }
+            Collection<MobEffectInstance> attackerActiveEffects = attacker.getActiveEffects();
 
-                for (MobEffectInstance mobEffectInstance : effects) {
+            if (!attackerActiveEffects.isEmpty()) {
 
-                    if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+                for (MobEffectInstance mobEffectInstance : attacker.getActiveEffects()) {
 
-                        ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+                    if (mobEffectInstance.getEffect() instanceof ComplexEffect effect) {
 
                         effect.onHitEffect(attacker, victim, damageSource);
 
@@ -536,42 +505,39 @@ public class CombatEngine {
 
 
                 }
-
-
             }
+        }
+        ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
 
 
-            ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+        for (ItemStack victimStack : victimItems) {
 
 
-            for (ItemStack victimStack : victimItems) {
+            if (ItemEngine.isItemInitialized(victimStack)) {
 
 
-                if (ItemEngine.isItemInitialized(victimStack)) {
+                for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
 
 
-                    for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
+                    property.onOwnerHit(attacker, victim, instance);
 
-
-                        property.onOwnerHit(attacker, victim, instance);
-
-
-                    }
 
                 }
 
-
             }
 
 
-            Collection<MobEffectInstance> effects = victim.getActiveEffects();
+        }
 
+
+        Collection<MobEffectInstance> effects = victim.getActiveEffects();
+
+
+        if (!effects.isEmpty()) {
 
             for (MobEffectInstance mobEffectInstance : effects) {
 
-                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
-
-                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
+                if (mobEffectInstance.getEffect() instanceof ComplexEffect effect) {
 
                     effect.onOwnerHitEffect(attacker, victim, damageSource);
 
@@ -580,11 +546,8 @@ public class CombatEngine {
 
             }
 
+
         }
-
-
-        return;
-
     }
 
     public static void cycleAllPostHitEffects(LivingEntity attacker, LivingEntity victim, APDamageSource damageSource) {
@@ -592,12 +555,12 @@ public class CombatEngine {
         DamageInstance instance = damageSource.instance;
 
 
-        Object device = instance.damageDevice;
+        Object device = instance.getDamageDevice();
 
 
-        if (device != null) {
+        if (attacker != null) {
 
-            if (attacker != null) {
+            if (device != null) {
 
                 if (device instanceof Spell) {
 
@@ -606,12 +569,10 @@ public class CombatEngine {
 
 
                 }
-                if (device instanceof ItemStack) {
+                if (device instanceof ItemStack weapon) {
 
 
                     CombatEngine.applyWeaponLifesteal(attacker, victim, instance);
-
-                    ItemStack weapon = (ItemStack) device;
 
 
                     for (ItemProperty property : ItemEngine.getItemProperties(weapon)) {
@@ -623,59 +584,21 @@ public class CombatEngine {
                     }
                 }
 
-                ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
-                for (ItemStack attackerStack : attackerItems) {
-
-
-                    if (ItemEngine.isItemInitialized(attackerStack)) {
-
-
-                        for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
-
-
-                            property.postHitEntity(attacker, victim, instance);
-
-
-                        }
-
-                    }
-
-
-                }
-
-                Collection<MobEffectInstance> effects = attacker.getActiveEffects();
-
-
-                for (MobEffectInstance mobEffectInstance : effects) {
-
-                    if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
-
-                        ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
-
-                        effect.onpostHitEffect(attacker, victim, damageSource);
-
-                    }
-
-
-                }
-
 
             }
 
 
-            ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+            ArrayList<ItemStack> attackerItems = ItemEngine.getAllAppicableItems(attacker);
+            for (ItemStack attackerStack : attackerItems) {
 
 
-            for (ItemStack victimStack : victimItems) {
+                if (ItemEngine.isItemInitialized(attackerStack)) {
 
 
-                if (ItemEngine.isItemInitialized(victimStack)) {
+                    for (ItemProperty property : ItemEngine.getItemProperties(attackerStack)) {
 
 
-                    for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
-
-
-                        property.onOwnerPostHit(attacker, victim, instance);
+                        property.postHitEntity(attacker, victim, instance);
 
 
                     }
@@ -685,22 +608,56 @@ public class CombatEngine {
 
             }
 
-
-            Collection<MobEffectInstance> effects = victim.getActiveEffects();
+            Collection<MobEffectInstance> effects = attacker.getActiveEffects();
 
 
             for (MobEffectInstance mobEffectInstance : effects) {
 
-                if (mobEffectInstance.getEffect() instanceof ComplexEffect) {
+                if (mobEffectInstance.getEffect() instanceof ComplexEffect effect) {
 
-                    ComplexEffect effect = (ComplexEffect) mobEffectInstance.getEffect();
-
-                    effect.onOwnerpostHitEffect(attacker, victim, damageSource);
+                    effect.onpostHitEffect(attacker, victim, damageSource);
 
                 }
 
 
             }
+
+
+        }
+        ArrayList<ItemStack> victimItems = ItemEngine.getAllAppicableItems(victim);
+
+
+        for (ItemStack victimStack : victimItems) {
+
+
+            if (ItemEngine.isItemInitialized(victimStack)) {
+
+
+                for (ItemProperty property : ItemEngine.getItemProperties(victimStack)) {
+
+
+                    property.onOwnerPostHit(attacker, victim, instance);
+
+
+                }
+
+            }
+
+
+        }
+
+
+        Collection<MobEffectInstance> victimActiveEffects = victim.getActiveEffects();
+
+
+        for (MobEffectInstance mobEffectInstance : victimActiveEffects) {
+
+            if (mobEffectInstance.getEffect() instanceof ComplexEffect effect) {
+
+                effect.onOwnerpostHitEffect(attacker, victim, damageSource);
+
+            }
+
 
         }
 
@@ -721,9 +678,7 @@ public class CombatEngine {
                 for (ItemProperty property : properties) {
 
 
-                    if (property instanceof WeaponProperty) {
-
-                        WeaponProperty weaponProperty = (WeaponProperty) property;
+                    if (property instanceof WeaponProperty weaponProperty) {
 
 
                         weaponProperty.onSwingItem(attacker, stack);

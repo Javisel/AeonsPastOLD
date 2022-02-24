@@ -54,7 +54,7 @@ public enum DamageTypeEnum {
     public boolean isMagical() {
 
 
-        return this != SLASH && this != PUNCTURE && this != IMPACT && this != BLEED;
+        return  !isAbsolute()  && this != SLASH && this != PUNCTURE && this != IMPACT && this != BLEED;
     }
 
     public boolean isAbsolute() {

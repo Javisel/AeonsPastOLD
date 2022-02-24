@@ -1,9 +1,9 @@
 package com.javisel.aeonspast.common.effects.Debuffs;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
-import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
-import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
+import com.javisel.aeonspast.common.combat.damage.sources.APDamageSource;
+import com.javisel.aeonspast.common.combat.damage.sources.APEntityDamageSource;
 import com.javisel.aeonspast.common.effects.ComplexEffect;
 import com.javisel.aeonspast.common.effects.ComplexEffectInstance;
 import com.javisel.aeonspast.common.effects.IDamageStatus;
@@ -35,7 +35,7 @@ public class Burn extends ComplexEffect implements IDamageStatus {
         if (!level.isClientSide) {
 
             ServerLevel serverLevel = (ServerLevel) level;
-            DamageInstance dmg = DamageInstance.getBurnDamage(instance.power);
+            DamageInstance dmg = DamageInstance.getGenericProcInstance(DamageTypeEnum.BURN,instance.power);
 
             DamageSource source  = instance.source !=null ? new APEntityDamageSource("burn",dmg,serverLevel.getEntity(instance.source)) : new APDamageSource("burn",dmg);
 

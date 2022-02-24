@@ -43,8 +43,9 @@
   "aeonspast:dps": "DPS",
   "effect.aeonspast.uppercut_spell_buff": "Uppercut",
   "itemGroup.aeonspast": "Aeon's Past",
+
   "aeonspast:warrior_class_spell": "Indomitable",
-  "aeonspast.warrior_class_spell.desc.generic": "Passive: Reduced Crowd Control. Active: Heal. Has two charges.",
+  "aeonspast:warrior_class_spell.desc.generic": "Passive: Reduced Crowd Control.  Active: Heal. Has two charges.",
   "spell.aeonspast.warrior_class_spell.desc.simple": "Passive: Reduces all Crowd Control by %f percent, before other reduction effects. Active: Heal %f.",
   "spell.aeonspast.warrior_class_spell.desc.expanded": "Passive: Reduces all Crowd Control by (%f + %f+%s) percent, before other reduction effects. Active: Heal (%f + %f+%s).",
 
@@ -60,7 +61,7 @@
   "aeonspast:double_slash": "Double Slash",
   "aeonspast:double_strike.simpledesc": "Swing twice dealing Weapon Damage",
   "aeonspast:true_strike": "True Strike",
-  "spell.aeonspast.true_strike.desc.generic": "Next attack deals bonus true damage.",
+  "aeonspast:true_strike.desc.generic": "Next attack deals bonus true damage.",
 
 
 

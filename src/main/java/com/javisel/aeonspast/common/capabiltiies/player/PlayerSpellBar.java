@@ -56,9 +56,9 @@ public class PlayerSpellBar {
         for (String key : tag.getAllKeys()) {
 
 
-            Integer in = Integer.parseInt(key);
+            int in = Integer.parseInt(key);
 
-            Spell spelladd = tag.getString(key) == StringKeys.EMPTY ? Spell.getDefaultSpell() : Spell.getSpellByResourceLocation(new ResourceLocation(tag.getString(key)));
+            Spell spelladd = tag.getString(key).equals(StringKeys.EMPTY) ? Spell.getDefaultSpell() : Spell.getSpellByResourceLocation(new ResourceLocation(tag.getString(key)));
 
             spells.set(in, spelladd);
 

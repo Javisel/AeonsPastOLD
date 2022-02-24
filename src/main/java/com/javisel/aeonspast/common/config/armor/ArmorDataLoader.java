@@ -95,10 +95,7 @@ public class ArmorDataLoader extends SimpleJsonResourceReloadListener {
         JsonObject json = jsonElement.getAsJsonObject();
 
 
-        ArmorData armorData = new Gson().fromJson(json, ArmorData.class);
-
-
-        return armorData;
+        return new Gson().fromJson(json, ArmorData.class);
 
 
     }

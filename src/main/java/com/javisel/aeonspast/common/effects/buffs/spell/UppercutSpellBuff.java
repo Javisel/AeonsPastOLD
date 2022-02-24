@@ -1,7 +1,7 @@
 package com.javisel.aeonspast.common.effects.buffs.spell;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
-import com.javisel.aeonspast.common.combat.damagesource.APDamageSource;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.sources.APDamageSource;
 import com.javisel.aeonspast.common.effects.ComplexEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +22,7 @@ public class UppercutSpellBuff extends ComplexEffect {
 
         DamageInstance instance = damageSource.instance;
 
-        if (instance.isMelee && instance.doesProcWeaponHitEffects && instance.damageDevice instanceof ItemStack) {
+        if (instance.isMelee() && instance.doesProcWeaponHitEffects() && instance.getDamageDevice() instanceof ItemStack) {
 
 
             double power = .8;

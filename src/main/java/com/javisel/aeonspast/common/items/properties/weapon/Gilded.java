@@ -1,8 +1,8 @@
 package com.javisel.aeonspast.common.items.properties.weapon;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 import com.javisel.aeonspast.common.combat.DamageTypeEnum;
-import com.javisel.aeonspast.common.combat.damagesource.APEntityDamageSource;
+import com.javisel.aeonspast.common.combat.damage.sources.APEntityDamageSource;
 import com.javisel.aeonspast.common.items.properties.WeaponProperty;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
@@ -24,13 +24,13 @@ public class Gilded extends WeaponProperty {
             if (victim.getMobType() == MobType.UNDEAD) {
 
 
-                DamageInstance proc =DamageInstance.getGenericProcDamage(DamageTypeEnum.RADIANT, ((damageInstance.getPreMitigationsAmount()) * 0.10) * damageInstance.procPower);
+                DamageInstance proc = DamageInstance.getGenericProcInstance(DamageTypeEnum.RADIANT, ((damageInstance.getBaseAmount()) * 0.10) );
 
-                proc.damageDevice=damageInstance.damageDevice;
+                proc.setDamageDevice(damageInstance.getDamageDevice());
 
                 APEntityDamageSource source = new APEntityDamageSource(attacker instanceof Player ? "player" : "mob", proc, attacker);
 
-                victim.hurt(source, (float) proc.getPreMitigationsAmount());
+                victim.hurt(source, (float) proc.getPreMitigatedValue());
 
             }
 

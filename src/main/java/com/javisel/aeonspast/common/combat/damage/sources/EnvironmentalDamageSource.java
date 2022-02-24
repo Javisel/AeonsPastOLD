@@ -1,6 +1,6 @@
-package com.javisel.aeonspast.common.combat.damagesource;
+package com.javisel.aeonspast.common.combat.damage.sources;
 
-import com.javisel.aeonspast.common.combat.DamageInstance;
+import com.javisel.aeonspast.common.combat.damage.instances.DamageInstance;
 
 public class EnvironmentalDamageSource extends APDamageSource {
 

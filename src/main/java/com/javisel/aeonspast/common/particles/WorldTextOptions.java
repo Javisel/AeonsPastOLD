@@ -83,7 +83,7 @@ public class WorldTextOptions implements ParticleOptions {
                 .apply(instance, WorldTextOptions::new));
     }
 
-    public static WorldTextOptions getWorldNumberOptionByDamage(DamageTypeEnum type, float amount, boolean critical) {
+    public static WorldTextOptions getWorldNumberOptionByDamage(DamageTypeEnum type, float amount, int criticals) {
 
 
         WorldTextOptions worldNumberOptions = new WorldTextOptions();
@@ -93,12 +93,17 @@ public class WorldTextOptions implements ParticleOptions {
 
         worldNumberOptions.component = worldNumberOptions.component.copy().withStyle(Style.EMPTY.withColor(type.getColor()));
 
-        if (critical) {
 
-            worldNumberOptions.component = worldNumberOptions.component.copy().append("!");
-            worldNumberOptions.component = worldNumberOptions.component.copy().withStyle(ChatFormatting.BOLD);
-        }
+             for (int i = 0; i < criticals;i++ ) {
+                worldNumberOptions.component = worldNumberOptions.component.copy().append("!");
 
+
+            }
+
+            if (criticals>0) {
+                worldNumberOptions.component = worldNumberOptions.component.copy().withStyle(ChatFormatting.BOLD);
+
+            }
 
         return worldNumberOptions;
 

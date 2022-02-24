@@ -419,6 +419,7 @@ public class ToolTipHandler {
 
     public static Component getAttributeComponent(Attribute attribute, ItemStack stack, StatisticPair pair, double value) {
 
+
         boolean isminute = false;
         boolean isPercentage = false;
         boolean isAdditive = false;
@@ -441,6 +442,9 @@ public class ToolTipHandler {
 
         TranslatableComponent component = (TranslatableComponent) getVariableStringComponent(attribute.getDescriptionId());
 
+        if (pair==null) {
+            return component;
+        }
 
         if (isAdditive) {
             component.append(new TranslatableComponent("+ "));
